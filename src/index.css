@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --retro-blue: #000095;
+  --retro-link: #1d1895;
 }
 @font-face {
   font-family: "Monotone";
@@ -24,13 +29,9 @@
   src: url("/assets/fonts/VCR_OSD_MONO_1.001.ttf");
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
+  font-family: "Monotone";
 }
 
 .text-monotone {
@@ -55,4 +56,12 @@ a:hover {
 
 .text-retro-blue {
   color: var(--retro-blue);
+}
+
+.shadow-button {
+  box-shadow: inset;
+}
+
+a {
+  color: var(--retro-link);
 }
