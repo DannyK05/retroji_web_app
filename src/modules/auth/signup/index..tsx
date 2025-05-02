@@ -7,15 +7,15 @@ export default function SignUp() {
       <h1 className="text-6xl text-center">Sign in</h1>
       <form className="space-y-4">
         <label className="flex flex-row items-center space-x-4">
-          <span className="text-4xl">First Name:</span>
+          <span className="text-4xl">first name:</span>
           <Input title="First Name" name="firstName" placeholder="First Name" />
         </label>
         <label className="flex flex-row items-center space-x-4">
-          <span className="text-4xl">username:</span>
+          <span className="text-4xl">last name:</span>
           <Input title="Last Name" name="lastName" placeholder="Last Name" />
         </label>
         <label className="flex flex-row items-center space-x-4">
-          <span className="text-4xl">email address</span>
+          <span className="text-4xl">email address:</span>
           <Input
             title="Email Address"
             name="emailAddress"

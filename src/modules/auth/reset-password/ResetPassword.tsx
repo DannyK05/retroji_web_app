@@ -7,7 +7,7 @@ export default function ResetPassword() {
       <h1 className="text-6xl text-center">Reset Password</h1>
       <form className="space-y-4">
         <label className="flex flex-row items-center space-x-4">
-          <span className="text-4xl">email address</span>
+          <span className="text-4xl">email address:</span>
           <Input
             title="Email Address"
             name="emailAddress"

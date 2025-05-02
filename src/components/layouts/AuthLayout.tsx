@@ -6,9 +6,7 @@ export default function AuthLayout() {
       <div className="flex flex-col border-[1px]  p-4 items-center w-3/5 space-y-4 lg:justify-between lg:flex-row">
         <div className="w-1/2 h-full flex items-center justify-center">
           <div>
-            <h1 className="text-orbitronio text-retro-blue text-6xl">
-              Retroji
-            </h1>
+            <h1 className="text-pacifico text-retro-blue text-6xl">Retroji</h1>
             <p className="text-4xl">The nostalgic form of social connection </p>
           </div>
         </div>

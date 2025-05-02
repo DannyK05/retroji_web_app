@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import AuthLayout from "./components/layouts/AuthLayout";
 import Chat from "./modules/chat";
-import Scoop from "./modules/scoop";
+import Scoop from "./modules/scoops";
 import Snapz from "./modules/snapz";
 import Layout from "./components/layouts/Layout";
 import SignUp from "./modules/auth/signup/index.";
@@ -20,13 +20,13 @@ const router = createBrowserRouter([
   {
     Component: Layout,
     children: [
-      { path: "chart", Component: Chat },
+      { path: "/chart", Component: Chat },
       {
-        path: "scoops",
+        path: "/scoops",
         element: <Scoop />,
       },
       {
-        path: "snapz",
+        path: "/snapz",
         element: <Snapz />,
       },
     ],
