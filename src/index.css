@@ -8,6 +8,7 @@
   --retro-blue: #000095;
   --retro-link: #1d1895;
 }
+
 @font-face {
   font-family: "Monotone";
   src: url("../public/assets/fonts/Monotone.ttf");
