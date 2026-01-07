@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   {
     Component: Layout,
     children: [
-      { path: "/chart", Component: Chat },
+      { path: "/chats", Component: Chat },
       {
         path: "/scoops",
         element: <Scoop />,
