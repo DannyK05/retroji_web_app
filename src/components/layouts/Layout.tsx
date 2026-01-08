@@ -20,12 +20,14 @@ export default function Layout() {
 
             <div className="border text-3xl flex flex-col items-start space-y-1 p-1">
               <p className="font-semibold text-4xl">search</p>
+
               <input
                 className="border p-1 "
                 title="Search"
                 placeholder="Dig it.."
                 type="search"
               />
+
               <button className="border w-full bg-grey-400">search</button>
             </div>
           </div>

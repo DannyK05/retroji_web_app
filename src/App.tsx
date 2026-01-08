@@ -7,6 +7,8 @@ import Layout from "./components/layouts/Layout";
 import SignUp from "./modules/auth/signup/index.";
 import SignIn from "./modules/auth/signin/index.";
 import ResetPassword from "./modules/auth/reset-password/ResetPassword";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +36,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
 }
 
 export default App;

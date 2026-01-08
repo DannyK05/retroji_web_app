@@ -11,23 +11,23 @@
 
 @font-face {
   font-family: "Monotone";
-  src: url("../public/assets/fonts/Monotone.ttf");
+  src: url("/assets/fonts/Monotone.ttf");
 }
 @font-face {
   font-family: "Orbitronio";
-  src: url("../public/assets/fonts/Orbitronio.ttf");
+  src: url("/assets/fonts/Orbitronio.ttf");
 }
 @font-face {
   font-family: "Pacifico";
-  src: url("../public/assets/fonts/Pacifico.ttf");
+  src: url("/assets/fonts/Pacifico.ttf");
 }
 @font-face {
   font-family: "PressStart";
-  src: url("../public/assets/fonts/PressStart2P.ttf");
+  src: url("/assets/fonts/PressStart2P.ttf");
 }
 @font-face {
   font-family: "VCR";
-  src: url("../public/assets/fonts/VCR_OSD_MONO_1.001.ttf");
+  src: url("/assets/fonts/VCR_OSD_MONO_1.001.ttf");
 }
 
 * {
