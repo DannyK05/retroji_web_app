@@ -9,3 +9,5 @@ export type TSignupResponse = TApiResponse<{ user: TUser }>;
 
 export type TLoginDto = { username: string; password: string };
 export type TLoginResponse = TApiResponse<{ user: TUser }>;
+
+export type TLogoutResponse = { message: string; status: number };

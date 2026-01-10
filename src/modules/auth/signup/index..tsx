@@ -1,28 +1,36 @@
 import { Link, useNavigate } from "react-router";
 import Input from "../../../components/common/input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import type { TSignupDto } from "../../../store/types/auth";
 import { useSignupMutation } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { setCredentials } from "../../../store/features/authSlice";
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
+import type { TSignupDto } from "../../../store/types/auth";
+import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm<TSignupDto>();
+
   const [signup, { isLoading }] = useSignupMutation();
+  const { handleApiMessage } = useHandleApiMessage();
+
+  const { register, handleSubmit } = useForm<TSignupDto>();
+
   const onSubmit: SubmitHandler<TSignupDto> = async (data) => {
     try {
       const response = await signup(data);
+
       if (response.data) {
-        dispatch(setCredentials(response.data.user));
+        dispatch(setCredentials(response.data.data.user));
+        handleApiMessage(response.data);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="w-full flex flex-col items-center">
       <h1 className="text-6xl text-center">Sign up</h1>
@@ -68,7 +76,7 @@ export default function SignUp() {
 
         <button
           type="submit"
-          className="text-center font-bold text-press border-[1px] p-1 w-full cursor-pointer"
+          className="text-center flex items-center justify-center font-bold text-press border-[1px] p-1 w-full cursor-pointer"
           disabled={isLoading}
         >
           {!isLoading ? "Sign up" : "..."}

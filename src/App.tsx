@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { ApiMessageProvider } from "./components/common/message-banner/context";
+import StoreProvider from "./store/provider";
 import AuthLayout from "./components/layouts/AuthLayout";
 import Chat from "./modules/chat";
 import Scoop from "./modules/scoops";
@@ -7,8 +9,6 @@ import Layout from "./components/layouts/Layout";
 import SignUp from "./modules/auth/signup/index.";
 import SignIn from "./modules/auth/signin/index.";
 import ResetPassword from "./modules/auth/reset-password/ResetPassword";
-import { Provider } from "react-redux";
-import { store } from "./store";
 
 const router = createBrowserRouter([
   {
@@ -37,9 +37,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <ApiMessageProvider>
+      <StoreProvider>
+        <RouterProvider router={router} />
+      </StoreProvider>
+    </ApiMessageProvider>
   );
 }
 

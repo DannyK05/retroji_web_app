@@ -5,8 +5,8 @@ export default function Snapz() {
     <div>
       <h1 className="text-4xl">Snapz</h1>
       <div className="w-full flex flex-col h-[calc(100vh-80px)] pb-2 items-center space-y-4 overflow-y-auto">
-        {scoops.map(({ name, date, image, caption }) => (
-          <div className="flex w-auto flex-col items-start border ">
+        {scoops.map(({ name, date, image, caption }, index) => (
+          <div key={index} className="flex w-auto flex-col items-start border ">
             <div className="w-full flex items-center text-2xl bg-[var(--retro-blue)] text-white justify-between p-2">
               <p>{name}</p>
               <span>{date}</span>

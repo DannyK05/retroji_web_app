@@ -1,23 +1,29 @@
 import { Link, useNavigate } from "react-router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "../../../components/common/input";
-import { TLoginDto } from "../../../store/types/auth";
 import { useLoginMutation } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { setCredentials } from "../../../store/features/authSlice";
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
+import type { TLoginDto } from "../../../store/types/auth";
+import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 
 export default function SignIn() {
-  const [login, { isLoading }] = useLoginMutation();
-  const { register, handleSubmit } = useForm<TLoginDto>();
-  const dispatch = useAppDispatch();
+   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [login, { isLoading }] = useLoginMutation();
+
+  const {handleApiMessage} = useHandleApiMessage();
+
+  const { register, handleSubmit } = useForm<TLoginDto>();
+ 
   const onSubmit: SubmitHandler<TLoginDto> = async (data) => {
     try {
       const response = await login(data);
       if (response.data) {
-        dispatch(setCredentials(response.data.user));
+        dispatch(setCredentials(response.data.data.user));
+        handleApiMessage(response.data)
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error) {
@@ -51,7 +57,7 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className=" text-center font-bold text-press border-[1px] p-1 w-full cursor-pointer"
+          className=" text-center flex items-center justify-center font-bold text-press border-[1px] p-1 w-full cursor-pointer"
           disabled={isLoading}
         >
           {isLoading ? "..." : "Sign in"}
