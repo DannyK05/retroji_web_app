@@ -7,9 +7,11 @@ import {
 } from "../../lib/storage";
 import { RETROJI_USER } from "../../lib/constants";
 
-const initialState: TAuthState = getFromLocalStorage(RETROJI_USER)
-  ? JSON.parse(getFromLocalStorage(RETROJI_USER) ?? "{}")
-  : null;
+const storedUser = getFromLocalStorage(RETROJI_USER);
+
+const initialState: TAuthState = {
+  user: storedUser ? JSON.parse(storedUser) : null,
+};
 
 export const authSlice = createSlice({
   name: "auth",
@@ -17,10 +19,10 @@ export const authSlice = createSlice({
   reducers: {
     setCredentials(
       state,
-      { payload: { user } }: PayloadAction<{ user: TUser }>
+      { payload}: PayloadAction<TUser>
     ) {
-      state.user = user;
-      setToLocalStorage(RETROJI_USER, JSON.stringify(user));
+      state.user = payload;
+      setToLocalStorage(RETROJI_USER, JSON.stringify(payload));
     },
     removeCredentials(state) {
       state.user = null;

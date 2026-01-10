@@ -1,6 +1,19 @@
-import { Link, NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useNavigate } from "react-router";
+import { useLogoutMutation } from "../../store/api/auth";
+import { useAppDispatch } from "../../store/hooks";
+import { removeCredentials } from "../../store/features/authSlice";
+
 
 export default function Layout() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    await logout();
+    dispatch(removeCredentials());
+    navigate("/");
+  };
   return (
     <>
       <header>
@@ -38,9 +51,9 @@ export default function Layout() {
 
           <div className="hidden border-[1px] fixed right-6 p-2 lg:block">
             <p className="text-vcr border-b-[1px] text-lg">Kolade</p>
-            <Link className="text-4xl" to={"/"}>
+            <button type="submit" onClick={handleLogout} className="text-4xl">
               logout
-            </Link>
+            </button>
           </div>
         </div>
       </main>
