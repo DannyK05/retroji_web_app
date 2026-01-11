@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { ApiMessageProvider } from "./components/common/message-banner/context";
+import StoreProvider from "./store/provider";
 import AuthLayout from "./components/layouts/AuthLayout";
 import Chat from "./modules/chat";
 import Scoop from "./modules/scoops";
@@ -20,7 +22,7 @@ const router = createBrowserRouter([
   {
     Component: Layout,
     children: [
-      { path: "/chart", Component: Chat },
+      { path: "/chats", Component: Chat },
       {
         path: "/scoops",
         element: <Scoop />,
@@ -34,7 +36,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ApiMessageProvider>
+      <StoreProvider>
+        <RouterProvider router={router} />
+      </StoreProvider>
+    </ApiMessageProvider>
+  );
 }
 
 export default App;
