@@ -1,33 +1,36 @@
 import { Link, useNavigate } from "react-router";
-import Input from "../../../components/common/input";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Input from "../../../components/common/input";
+import PasswordInput from "../../../components/common/password-input";
+import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+
 import { useSignupMutation } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { setCredentials } from "../../../store/features/authSlice";
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TSignupDto } from "../../../store/types/auth";
-import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+import type { TErrorResponse } from "../../../store/types/generic";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [signup, { isLoading }] = useSignupMutation();
-  const { handleApiMessage } = useHandleApiMessage();
+  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
   const { register, handleSubmit } = useForm<TSignupDto>();
 
   const onSubmit: SubmitHandler<TSignupDto> = async (data) => {
     try {
-      const response = await signup(data);
+      const response = await signup(data).unwrap();
 
       if (response.data) {
-        dispatch(setCredentials(response.data.data.user));
-        handleApiMessage(response.data);
+        dispatch(setCredentials(response.data.user));
+        handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      handleErrorMessage(error.data as TErrorResponse);
     }
   };
 
@@ -56,8 +59,7 @@ export default function SignUp() {
 
         <label className="flex items-center space-x-4">
           <span className="text-4xl">password:</span>
-          <Input
-            type="password"
+          <PasswordInput
             title="User Password"
             {...register("password")}
             placeholder="Password"
@@ -66,8 +68,7 @@ export default function SignUp() {
 
         <label className="flex items-center space-x-4">
           <span className="text-4xl">confirm password:</span>
-          <Input
-            type="password"
+          <PasswordInput
             title="User Password"
             name="confirmPassword"
             placeholder="Confirm Password"

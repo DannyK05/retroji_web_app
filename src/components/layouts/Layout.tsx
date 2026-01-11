@@ -16,7 +16,7 @@ export default function Layout() {
     const response = await logout();
     handleApiMessage(response as TApiResponse<any>);
     dispatch(removeCredentials());
-    navigate("/");
+    setTimeout(() => navigate("/"), 1000);
   };
   return (
     <>

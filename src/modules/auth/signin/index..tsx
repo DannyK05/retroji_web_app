@@ -1,33 +1,37 @@
 import { Link, useNavigate } from "react-router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "../../../components/common/input";
+import PasswordInput from "../../../components/common/password-input";
+import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 import { useLoginMutation } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
 import { setCredentials } from "../../../store/features/authSlice";
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TLoginDto } from "../../../store/types/auth";
-import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+import type { TErrorResponse } from "../../../store/types/generic";
+
 
 export default function SignIn() {
-   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
 
-  const {handleApiMessage} = useHandleApiMessage();
+  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
   const { register, handleSubmit } = useForm<TLoginDto>();
- 
+
   const onSubmit: SubmitHandler<TLoginDto> = async (data) => {
     try {
-      const response = await login(data);
+      const response = await login(data).unwrap();
       if (response.data) {
-        dispatch(setCredentials(response.data.data.user));
-        handleApiMessage(response.data)
+        dispatch(setCredentials(response.data.user));
+        handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      handleErrorMessage(error.data as TErrorResponse);
     }
   };
 
@@ -47,9 +51,8 @@ export default function SignIn() {
 
         <label className="flex items-center space-x-4">
           <span className="text-4xl">password:</span>
-          <Input
-            type="password"
-            title="User Name"
+          <PasswordInput
+            title="Password"
             {...register("password")}
             placeholder="Password"
           />

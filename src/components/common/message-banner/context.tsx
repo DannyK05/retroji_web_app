@@ -1,5 +1,8 @@
 import { createContext, useState, ReactNode } from "react";
-import type { TApiResponse } from "../../../store/types/generic";
+import type {
+  TApiResponse,
+  TErrorResponse,
+} from "../../../store/types/generic";
 import type { TApiMessageContextType } from "./types";
 
 export const ApiMessageContext = createContext<
@@ -20,11 +23,32 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
     }, 3000);
   };
 
+  const handleErrorMessage = (err: TErrorResponse) => {
+    if (err.message) {
+      setMessage(err.message);
+    } else {
+      setMessage("An error occurred");
+    }
+
+    setCode(err.status ?? 400);
+
+    setTimeout(() => {
+      setMessage(null);
+      setCode(null);
+    }, 3000);
+  };
+
   const clearMessage = () => setMessage(null);
 
   return (
     <ApiMessageContext.Provider
-      value={{ message, handleApiMessage, clearMessage, code }}
+      value={{
+        message,
+        handleApiMessage,
+        handleErrorMessage,
+        clearMessage,
+        code,
+      }}
     >
       {children}
     </ApiMessageContext.Provider>
