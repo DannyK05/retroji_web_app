@@ -1,4 +1,4 @@
-import { TApiResponse } from "./generic";
+import type { TApiResponse } from "./generic";
 
 export type TAuthState = { user: TUser | null };
 
