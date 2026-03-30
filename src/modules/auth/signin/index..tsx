@@ -10,7 +10,6 @@ import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TLoginDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
 
-
 export default function SignIn() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -25,7 +24,12 @@ export default function SignIn() {
     try {
       const response = await login(data).unwrap();
       if (response.data) {
-        dispatch(setCredentials(response.data.user));
+        dispatch(
+          setCredentials({
+            user: response.data.user,
+            tokens: response.tokens,
+          }),
+        );
         handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }

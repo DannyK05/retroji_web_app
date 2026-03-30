@@ -25,7 +25,12 @@ export default function SignUp() {
       const response = await signup(data).unwrap();
 
       if (response.data) {
-        dispatch(setCredentials(response.data.user));
+        dispatch(
+          setCredentials({
+            user: response.data.user,
+            tokens: response.tokens,
+          }),
+        );
         handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }

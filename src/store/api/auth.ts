@@ -3,6 +3,7 @@ import { baseQuery } from "../helpers";
 import type {
   TLoginDto,
   TLoginResponse,
+  TLogoutDto,
   TLogoutResponse,
   TSignupDto,
   TSignupResponse,
@@ -26,10 +27,11 @@ export const authApi = createApi({
         body: payload,
       }),
     }),
-    logout: builder.mutation<TLogoutResponse, void>({
-      query: () => ({
+    logout: builder.mutation<TLogoutResponse, TLogoutDto>({
+      query: (payload) => ({
         url: "/auth/logout/",
         method: "POST",
+        body: payload,
       }),
     }),
   }),

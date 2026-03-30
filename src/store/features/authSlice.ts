@@ -1,16 +1,18 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { TAuthState, TUser } from "../types/auth";
+import { TAuthState, TToken, TUser } from "../types/auth";
 import {
   getFromLocalStorage,
   removeFromLocalStorage,
   setToLocalStorage,
 } from "../../lib/storage";
-import { RETROJI_USER } from "../../lib/constants";
+import { RETROJI_TOKENS, RETROJI_USER } from "../../lib/constants";
 
 const storedUser = getFromLocalStorage(RETROJI_USER);
+const storedToken = getFromLocalStorage(RETROJI_TOKENS);
 
 const initialState: TAuthState = {
   user: storedUser ? JSON.parse(storedUser) : null,
+  tokens: storedToken ? JSON.parse(storedToken) : null,
 };
 
 export const authSlice = createSlice({
@@ -19,14 +21,20 @@ export const authSlice = createSlice({
   reducers: {
     setCredentials(
       state,
-      { payload}: PayloadAction<TUser>
+      {
+        payload: { user, tokens },
+      }: PayloadAction<{ user: TUser; tokens: TToken }>,
     ) {
-      state.user = payload;
-      setToLocalStorage(RETROJI_USER, JSON.stringify(payload));
+      state.user = user;
+      state.tokens = tokens;
+      setToLocalStorage(RETROJI_USER, JSON.stringify(user));
+      setToLocalStorage(RETROJI_TOKENS, JSON.stringify(tokens));
     },
     removeCredentials(state) {
       state.user = null;
+      state.tokens = null;
       removeFromLocalStorage(RETROJI_USER);
+      removeFromLocalStorage(RETROJI_TOKENS);
     },
   },
 });
