@@ -5,4 +5,5 @@ export type SnapzProps = {
   caption: string;
   like_count: number;
   comment_count: number;
+  handleComments: () => void;
 };

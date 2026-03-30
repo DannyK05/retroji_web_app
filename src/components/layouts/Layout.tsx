@@ -7,12 +7,16 @@ import { useHandleApiMessage } from "../common/message-banner/hooks";
 import { TApiResponse } from "../../store/types/generic";
 import { getFromLocalStorage } from "../../lib/storage";
 import { RETROJI_TOKENS } from "../../lib/constants";
+import Button from "../common/button";
+import { getUserData } from "../../lib/helpers";
+import { TUser } from "../../store/types/auth";
 
 export default function Layout() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
   const { handleApiMessage } = useHandleApiMessage();
+  const user: TUser = getUserData();
 
   const handleLogout = async () => {
     const tokens = getFromLocalStorage(RETROJI_TOKENS);
@@ -24,6 +28,7 @@ export default function Layout() {
     dispatch(removeCredentials());
     setTimeout(() => navigate("/"), 1000);
   };
+
   return (
     <>
       <header>
@@ -53,7 +58,7 @@ export default function Layout() {
                 type="search"
               />
 
-              <button className="border w-full bg-grey-400">search</button>
+              <Button>search</Button>
             </div>
           </div>
 
@@ -62,11 +67,11 @@ export default function Layout() {
           </div>
 
           <div className="hidden border-[1px] fixed right-6 p-2 lg:block">
-            <p className="text-vcr border-b-[1px] text-lg">Kolade</p>
+            <p className="text-vcr border-b-[1px] text-lg">{user.username}</p>
             <button
               type="submit"
               onClick={handleLogout}
-              className="text-4xl cursor-pointer"
+              className="text-4xl cursor-pointer text-retro-blue lg:hover:underline"
             >
               logout
             </button>

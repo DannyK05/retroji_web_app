@@ -9,10 +9,11 @@ export default function SnapzCard({
   caption,
   like_count,
   comment_count,
+  handleComments,
 }: SnapzProps) {
   const returnedDate = new Date(date);
   return (
-    <div className="flex w-auto flex-col items-start border ">
+    <div className="flex w-auto flex-col items-start border border-b-0">
       <div className="w-full flex items-center text-2xl bg-[var(--retro-blue)] text-white justify-between p-2">
         <p>{name}</p>
         <span>{returnedDate.toLocaleString()}</span>
@@ -21,11 +22,11 @@ export default function SnapzCard({
         <img src={image} width={340} alt="Scoop pic" />
       </div>
       <p className="p-1 text-2xl">{caption}</p>
-      <div className="w-full h-10 grid grid-cols-2 gap-1 pt-2">
+      <div className="w-full grid grid-cols-2 gap-1">
         <Button>
           <ThumbsUpIcon /> <span className="text-2xl">{like_count}</span>
         </Button>{" "}
-        <Button>
+        <Button onClick={() => handleComments()}>
           <DiamondIcon /> <span className="text-2xl">{comment_count}</span>
         </Button>
       </div>
