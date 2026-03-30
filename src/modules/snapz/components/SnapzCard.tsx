@@ -1,8 +1,11 @@
 import { DiamondIcon, ThumbsUpIcon } from "lucide-react";
-import { SnapzProps } from "../types";
+
 import Button from "../../../components/common/button";
 
+import type { SnapzProps } from "../types";
+
 export default function SnapzCard({
+  id,
   name,
   date,
   image,
@@ -26,7 +29,7 @@ export default function SnapzCard({
         <Button>
           <ThumbsUpIcon /> <span className="text-2xl">{like_count}</span>
         </Button>{" "}
-        <Button onClick={() => handleComments()}>
+        <Button onClick={() => handleComments(id)}>
           <DiamondIcon /> <span className="text-2xl">{comment_count}</span>
         </Button>
       </div>

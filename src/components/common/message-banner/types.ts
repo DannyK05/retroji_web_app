@@ -8,7 +8,7 @@ export type TMonitoredStatusCodes = 200 | 201 | number;
 export type TApiMessageContextType = {
   message: string | null;
   code: number | null;
-  handleApiMessage: (response: TApiResponse<any>) => void;
+  handleApiMessage: (response: TApiResponse<unknown>) => void;
   handleErrorMessage: (err: TErrorResponse) => void;
   clearMessage: () => void;
 };

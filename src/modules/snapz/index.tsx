@@ -1,42 +1,90 @@
-import { useState } from "react";
+import React, { useState } from "react";
+
+import { Loader, SendHorizontal } from "lucide-react";
+
+import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
+
+import {
+  useLazyGetAllCommentsBySnapzIdQuery,
+  useGetAllSnapzQuery,
+  usePostCommentMutation,
+} from "../../store/api/snapz";
+
 import { SideContainer } from "../../components/common/side-container";
-import { useGetAllSnapzQuery } from "../../store/api/snapz";
 import SnapzCard from "./components/SnapzCard";
-// import { scoops } from "./data";
+import Input from "../../components/common/input";
+import Button from "../../components/common/button";
+
+import type { TErrorResponse } from "../../store/types/generic";
+import type { TPostCommentData } from "../../store/types/snapz";
 
 export default function Snapz() {
-  const { data: snapz, isLoading } = useGetAllSnapzQuery();
+  const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
+  const [
+    getComments,
+    {
+      data: comments,
+      isLoading: isLoadingAllComments,
+      isFetching: isFetchingAllComments,
+    },
+  ] = useLazyGetAllCommentsBySnapzIdQuery();
+  const [postComment, { isLoading: isPostingComment }] =
+    usePostCommentMutation();
+
+  const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
+
+  const [commentPayload, setCommentPayload] = useState<TPostCommentData>({
+    content: "",
+    snapz_id: "",
+  });
+
   const [isSideOpen, setIsSideOpen] = useState(false);
 
   const handleisSideOpen = () => {
     setIsSideOpen((prev) => !prev);
   };
-  const handleDisplayComments = () => {
-    setIsSideOpen(true);
-    console.log("kk");
+
+  const handleDisplayComments = (snapz_id: string) => {
+    if (!isSideOpen) {
+      setIsSideOpen(true);
+      getComments({ snapz_id });
+      setCommentPayload({ content: "", snapz_id: snapz_id });
+    }
+  };
+
+  const handlePostComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await postComment(commentPayload);
+      if (response.data) {
+        handleApiMessage(response?.data);
+        setCommentPayload((prev) => ({ ...prev, content: "" }));
+      }
+    } catch (error) {
+      handleErrorMessage(error as TErrorResponse);
+    }
   };
 
   return (
     <div className="w-full">
       <h1 className="text-4xl">Snapz</h1>
       <div className="w-full grid grid-cols-2 gap-x-4 py-2">
-        <div className="w-full flex flex-col h-[calc(100vh-80px)] pb-2 items-start space-y-4 overflow-y-auto">
-          {isLoading
+        <div className="w-full flex flex-col h-[calc(100vh-100px)] pb-2 items-start space-y-4 overflow-y-auto">
+          {isLoadingAllSnapz
             ? "..."
             : snapz?.data.map(
-                (
-                  {
-                    author,
-                    created_at,
-                    image,
-                    caption,
-                    like_count,
-                    comment_count,
-                  },
-                  index,
-                ) => (
+                ({
+                  id,
+                  author,
+                  created_at,
+                  image,
+                  caption,
+                  like_count,
+                  comment_count,
+                }) => (
                   <SnapzCard
-                    key={index}
+                    key={id}
+                    id={id}
                     name={author.toString()}
                     date={created_at}
                     image={image}
@@ -51,7 +99,44 @@ export default function Snapz() {
 
         {isSideOpen && (
           <SideContainer title="Comments" handleClose={handleisSideOpen}>
-            <div>KKKK</div>
+            <div className="w-full h-[350px] flex flex-col items-center space-y-2 overflow-y-auto">
+              {isLoadingAllComments || isFetchingAllComments
+                ? "..."
+                : comments?.data.map(({ content, author }, index) => (
+                    <div
+                      className="w-full flex flex-col items-start p-1 border"
+                      key={index}
+                    >
+                      <p className="w-full text-2xl border-b">{author} says</p>
+                      <p className="text-3xl">{content}</p>
+                    </div>
+                  ))}
+            </div>
+
+            <form onSubmit={handlePostComment}>
+              <div className="w-full  absolute bottom-0 left-0 flex items-end">
+                <Input
+                  name="Comment"
+                  className="w-9/10 h-10"
+                  type="text"
+                  value={commentPayload.content}
+                  onChange={(e) => {
+                    setCommentPayload((prev) => ({
+                      content: e.target.value,
+                      snapz_id: prev.snapz_id,
+                    }));
+                  }}
+                  placeholder="What's on your mind ?"
+                />
+                <Button
+                  type="submit"
+                  disabled={isPostingComment || commentPayload.content === ""}
+                  className="w-1/10 h-10"
+                >
+                  {isPostingComment ? <Loader /> : <SendHorizontal />}
+                </Button>
+              </div>
+            </form>
           </SideContainer>
         )}
       </div>

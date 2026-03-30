@@ -1,15 +1,20 @@
 import { NavLink, Outlet, useNavigate } from "react-router";
+
 import { useLogoutMutation } from "../../store/api/auth";
 import { useAppDispatch } from "../../store/hooks";
 import { removeCredentials } from "../../store/features/authSlice";
-import MessageBanner from "../common/message-banner";
+
 import { useHandleApiMessage } from "../common/message-banner/hooks";
-import { TApiResponse } from "../../store/types/generic";
+import { getUserData } from "../../lib/helpers";
+
 import { getFromLocalStorage } from "../../lib/storage";
 import { RETROJI_TOKENS } from "../../lib/constants";
+
 import Button from "../common/button";
-import { getUserData } from "../../lib/helpers";
-import { TUser } from "../../store/types/auth";
+import MessageBanner from "../common/message-banner";
+
+import type { TApiResponse } from "../../store/types/generic";
+import type { TUser } from "../../store/types/auth";
 
 export default function Layout() {
   const navigate = useNavigate();

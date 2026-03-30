@@ -13,7 +13,7 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState<string | null>(null);
   const [code, setCode] = useState<number | null>(null);
 
-  const handleApiMessage = (response: TApiResponse<any>) => {
+  const handleApiMessage = (response: TApiResponse<unknown>) => {
     setMessage(response.message);
     setCode(response.status);
 

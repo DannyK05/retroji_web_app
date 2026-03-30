@@ -27,10 +27,10 @@ export type TGetSnapzByIdData = { snapz_id: string };
 export type TGetSnapzByIdResponse = TApiResponse<TSnapz>;
 
 export type TGetAllCommentsBySnapzIdData = { snapz_id: string };
-export type TGetAllCommentsBySnapzIdResponse = TApiResponse<TComment>;
+export type TGetAllCommentsBySnapzIdResponse = TApiResponse<TComment[]>;
 
-export type TPostCommentData = { content: string; snapz_id: string};
+export type TPostCommentData = { content: string; snapz_id: string };
 export type TPostCommentResponse = TApiResponse<TComment>;
 
-export type TLikeData = { content: string; snapz_id: string};
+export type TLikeData = { content: string; snapz_id: string };
 export type TLikeResponse = TApiResponse<void>;

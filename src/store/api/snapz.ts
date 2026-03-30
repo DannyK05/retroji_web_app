@@ -16,12 +16,14 @@ import type {
 export const snapzApi = createApi({
   reducerPath: "snapzApi",
   baseQuery: baseQuery,
+  tagTypes: ["getAllSnapz", "getAllComments"],
   endpoints: (builder) => ({
     getAllSnapz: builder.query<TGetAllSnapzResponse, void>({
       query: () => ({
         url: "snapz/",
         method: "GET",
       }),
+      providesTags: ["getAllSnapz"],
     }),
     postSnapz: builder.mutation<TPostSnapzResponse, TPostSnapzData>({
       query: (body) => ({
@@ -29,10 +31,11 @@ export const snapzApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["getAllSnapz"],
     }),
     getSnapzById: builder.query<TGetAllSnapzResponse, TGetSnapzByIdData>({
       query: ({ snapz_id }) => ({
-        url: `snapz/uuid:${snapz_id}`,
+        url: `snapz/${snapz_id}`,
         method: "GET",
       }),
     }),
@@ -41,9 +44,10 @@ export const snapzApi = createApi({
       TGetAllCommentsBySnapzIdData
     >({
       query: ({ snapz_id }) => ({
-        url: `snapz/uuid:${snapz_id}/comments/`,
+        url: `snapz/${snapz_id}/comments/`,
         method: "GET",
       }),
+      providesTags: ["getAllComments"],
     }),
     postComment: builder.mutation<TPostCommentResponse, TPostCommentData>({
       query: (body) => ({
@@ -51,6 +55,7 @@ export const snapzApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["getAllComments"],
     }),
     like: builder.mutation<TLikeResponse, TLikeData>({
       query: (body) => ({
@@ -64,7 +69,7 @@ export const snapzApi = createApi({
 
 export const {
   useGetAllSnapzQuery,
-  useGetAllCommentsBySnapzIdQuery,
+  useLazyGetAllCommentsBySnapzIdQuery,
   useGetSnapzByIdQuery,
   usePostCommentMutation,
   useLikeMutation,
