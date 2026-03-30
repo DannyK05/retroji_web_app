@@ -1,23 +1,38 @@
-import { scoops } from "./data";
+import { useGetAllSnapzQuery } from "../../store/api/snapz";
+import SnapzCard from "./component/SnapzCard";
+// import { scoops } from "./data";
 
 export default function Snapz() {
+  const { data: snapz, isLoading } = useGetAllSnapzQuery();
   return (
     <div>
       <h1 className="text-4xl">Snapz</h1>
-      <div className="w-full flex flex-col h-[calc(100vh-80px)] pb-2 items-center space-y-4 overflow-y-auto">
-        {scoops.map(({ name, date, image, caption }, index) => (
-          <div key={index} className="flex w-auto flex-col items-start border ">
-            <div className="w-full flex items-center text-2xl bg-[var(--retro-blue)] text-white justify-between p-2">
-              <p>{name}</p>
-              <span>{date}</span>
-            </div>
-            <div className="px-2">
-              <img src={image} width={340} alt="Scoop pic" />
-            </div>
-            <p className="p-1 text-2xl">{caption}</p>
-            <div></div>
-          </div>
-        ))}
+      <div className="w-full flex flex-col h-[calc(100vh-80px)] pb-2 items-start space-y-4 overflow-y-auto">
+        {isLoading
+          ? "..."
+          : snapz?.data.map(
+              (
+                {
+                  author,
+                  created_at,
+                  image,
+                  caption,
+                  like_count,
+                  comment_count,
+                },
+                index,
+              ) => (
+                <SnapzCard
+                  key={index}
+                  name={author.toString()}
+                  date={created_at}
+                  image={image}
+                  caption={caption}
+                  like_count={like_count}
+                  comment_count={comment_count}
+                />
+              ),
+            )}
       </div>
     </div>
   );
