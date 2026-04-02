@@ -8,6 +8,7 @@ import {
   useLazyGetAllCommentsBySnapzIdQuery,
   useGetAllSnapzQuery,
   usePostCommentMutation,
+  useLikeMutation,
 } from "../../store/api/snapz";
 
 import { SideContainer } from "../../components/common/side-container";
@@ -30,6 +31,7 @@ export default function Snapz() {
   ] = useLazyGetAllCommentsBySnapzIdQuery();
   const [postComment, { isLoading: isPostingComment }] =
     usePostCommentMutation();
+  const [like] = useLikeMutation();
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
 
@@ -65,6 +67,17 @@ export default function Snapz() {
     }
   };
 
+   const handleLike= async (snapz_id:string) => {
+    try {
+      const response = await like({snapz_id});
+      if (response.data) {
+        handleApiMessage(response?.data);
+      }
+    } catch (error) {
+      handleErrorMessage(error as TErrorResponse);
+    }
+  };
+
   return (
     <div className="w-full">
       <h1 className="text-4xl">Snapz</h1>
@@ -89,9 +102,10 @@ export default function Snapz() {
                     date={created_at}
                     image={image}
                     caption={caption}
-                    handleComments={handleDisplayComments}
-                    like_count={like_count}
+                     like_count={like_count}
                     comment_count={comment_count}
+                    handleComments={handleDisplayComments}
+                     handleLike={handleLike}
                   />
                 ),
               )}

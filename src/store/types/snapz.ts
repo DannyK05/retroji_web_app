@@ -32,5 +32,5 @@ export type TGetAllCommentsBySnapzIdResponse = TApiResponse<TComment[]>;
 export type TPostCommentData = { content: string; snapz_id: string };
 export type TPostCommentResponse = TApiResponse<TComment>;
 
-export type TLikeData = { content: string; snapz_id: string };
+export type TLikeData = { snapz_id: string };
 export type TLikeResponse = TApiResponse<void>;

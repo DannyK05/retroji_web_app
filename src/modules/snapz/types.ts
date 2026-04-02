@@ -7,4 +7,5 @@ export type SnapzProps = {
   like_count: number;
   comment_count: number;
   handleComments: (snapz_id: string) => void;
+  handleLike: (snapz_id: string) => void;
 };
