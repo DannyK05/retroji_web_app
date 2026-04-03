@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { DiamondIcon, ThumbsUpIcon } from "lucide-react";
 
 import Button from "../../../components/common/button";
 
 import type { SnapzProps } from "../types";
-import { useState } from "react";
 
 export default function SnapzCard({
   id,

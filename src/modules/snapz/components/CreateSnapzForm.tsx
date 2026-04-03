@@ -1,12 +1,18 @@
+import { useState } from "react"; 
+
 import { Loader } from "lucide-react";
-import Button from "../../../components/common/button";
-import { TPostSnapzData } from "../../../store/types/snapz";
-import { useState } from "react";
+
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
-import { TErrorResponse } from "../../../store/types/generic";
 import { usePostSnapzMutation } from "../../../store/api/snapz";
+
+import Button from "../../../components/common/button";
 import TextArea from "../../../components/common/text-area";
 import ImageInput from "../../../components/common/image-input";
+
+import type { TPostSnapzData } from "../../../store/types/snapz";
+import type { TErrorResponse } from "../../../store/types/generic";
+
+
 
 export default function CreateSnapzForm() {
   const [snapzPayload, setSnapzPayload] = useState<TPostSnapzData>({

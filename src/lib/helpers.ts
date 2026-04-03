@@ -10,3 +10,7 @@ export const getUserData = () => {
     return "Unknown User";
   }
 };
+
+export const shortenString = (str: string, count = 20) => {
+  return str.length > count ? str.slice(0, count) + "..." : str;
+};

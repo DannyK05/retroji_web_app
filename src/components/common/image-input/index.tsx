@@ -1,7 +1,11 @@
-import { ImagesIcon, XSquareIcon } from "lucide-react";
 import { InputHTMLAttributes, useEffect, useState } from "react";
+
+import { ImagesIcon, XSquareIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { TPreview } from "./types";
+
+import { shortenString } from "../../../lib/helpers";
+
+import type { TPreview } from "./types";
 
 type ImageInputProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
@@ -51,7 +55,7 @@ export default function ImageInput({
         <div className="flex flex-col items-center space-y-2 cursor-pointer">
           <ImagesIcon />
           <p>Browse Images</p>
-          <span>{imageDisplayName}</span>
+          <span>{shortenString(imageDisplayName, 50)}</span>
         </div>
 
         <input
