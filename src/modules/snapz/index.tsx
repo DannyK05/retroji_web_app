@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Loader, SendHorizontal } from "lucide-react";
+import { Loader, PlusSquare, SendHorizontal } from "lucide-react";
 
 import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
 
@@ -18,6 +18,8 @@ import Button from "../../components/common/button";
 
 import type { TErrorResponse } from "../../store/types/generic";
 import type { TPostCommentData } from "../../store/types/snapz";
+import Dialog from "../../components/common/dialog";
+import CreateSnapzForm from "./components/CreateSnapzForm";
 
 export default function Snapz() {
   const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
@@ -41,9 +43,14 @@ export default function Snapz() {
   });
 
   const [isSideOpen, setIsSideOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleisSideOpen = () => {
     setIsSideOpen((prev) => !prev);
+  };
+
+  const handleisDialogOpen = () => {
+    setIsDialogOpen((prev) => !prev);
   };
 
   const handleDisplayComments = (snapz_id: string) => {
@@ -67,9 +74,9 @@ export default function Snapz() {
     }
   };
 
-   const handleLike= async (snapz_id:string) => {
+  const handleLike = async (snapz_id: string) => {
     try {
-      const response = await like({snapz_id});
+      const response = await like({ snapz_id });
       if (response.data) {
         handleApiMessage(response?.data);
       }
@@ -102,10 +109,10 @@ export default function Snapz() {
                     date={created_at}
                     image={image}
                     caption={caption}
-                     like_count={like_count}
+                    like_count={like_count}
                     comment_count={comment_count}
                     handleComments={handleDisplayComments}
-                     handleLike={handleLike}
+                    handleLike={handleLike}
                   />
                 ),
               )}
@@ -154,6 +161,21 @@ export default function Snapz() {
           </SideContainer>
         )}
       </div>
+
+      {isDialogOpen && (
+        <Dialog handleClose={handleisDialogOpen} title="Create Snapz">
+          <CreateSnapzForm />
+        </Dialog>
+      )}
+
+      <Button
+        onClick={handleisDialogOpen}
+        className="w-auto absolute right-10 bottom-10"
+      >
+        <div className="flex items-center space-x-2 text-3xl">
+          <PlusSquare /> <p>Create Snapz</p>
+        </div>
+      </Button>
     </div>
   );
 }

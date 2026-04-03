@@ -20,7 +20,7 @@ export type TComment = {
 
 export type TGetAllSnapzResponse = TApiResponse<TSnapz[]>;
 
-export type TPostSnapzData = { caption: string; image: ImageData };
+export type TPostSnapzData = { caption: string; image: File[] };
 export type TPostSnapzResponse = TApiResponse<TSnapz>;
 
 export type TGetSnapzByIdData = { snapz_id: string };
