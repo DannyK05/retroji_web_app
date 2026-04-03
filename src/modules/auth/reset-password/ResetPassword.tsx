@@ -34,7 +34,7 @@ export default function ResetPassword() {
         </label>
         <button
           type="submit"
-          className=" text-center font-bold text-press border-[1px] p-1 w-full "
+          className=" text-center font-bold text-press border p-1 w-full "
         >
           Reset
         </button>

@@ -12,7 +12,7 @@ export default function Input({
 }: InputProps) {
   return (
     <input
-      className={twMerge(`w-45 outline-1 border-[1px] p-1 text-3xl`, className)}
+      className={twMerge(`w-45 outline-1 border p-1 text-3xl`, className)}
       {...rest}
       type={type}
     />

@@ -12,7 +12,7 @@ export default function Button({ className, children, ...rest }: ButtonProps) {
       type="button"
       {...rest}
       className={twMerge(
-        `w-full flex items-center justify-center space-x-1 bg-grey-400 shadow-lg border cursor-pointer active:shadow-sm lg:hover:bg-[var(--retro-blue)] lg:hover:text-white`,
+        `w-full flex items-center justify-center space-x-1 bg-grey-400 px-3 py-2 shadow-lg border text-2xl cursor-pointer active:shadow-sm active:border-3 lg:hover:bg-[var(--retro-blue)] lg:hover:text-white disabled:opacity-40`,
         className,
       )}
     >

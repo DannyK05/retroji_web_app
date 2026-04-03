@@ -71,7 +71,7 @@ export default function Layout() {
             <Outlet />
           </div>
 
-          <div className="hidden border-[1px] fixed right-6 p-2 lg:block">
+          <div className="hidden border fixed right-6 p-2 lg:block">
             <p className="text-vcr border-b-[1px] text-lg">{user.username}</p>
             <button
               type="submit"

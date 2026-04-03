@@ -82,7 +82,7 @@ export default function SignUp() {
 
         <button
           type="submit"
-          className="text-center flex items-center justify-center font-bold text-press border-[1px] p-1 w-full cursor-pointer"
+          className="text-center flex items-center justify-center font-bold text-press border p-1 w-full cursor-pointer"
           disabled={isLoading}
         >
           {!isLoading ? "Sign up" : "..."}
