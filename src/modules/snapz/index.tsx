@@ -89,7 +89,7 @@ export default function Snapz() {
     <div className="w-full">
       <h1 className="text-4xl">Snapz</h1>
       <div className="w-full grid grid-cols-2 gap-x-4 py-2">
-        <div className="w-full flex flex-col h-[calc(100vh-100px)] pb-2 items-start space-y-4 overflow-y-auto">
+        <div className="w-full h-[calc(100vh-100px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto">
           {isLoadingAllSnapz
             ? "..."
             : snapz?.data.map(
