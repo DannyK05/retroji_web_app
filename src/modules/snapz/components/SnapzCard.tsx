@@ -5,6 +5,7 @@ import Button from "../../../components/common/button";
 
 import type { SnapzProps } from "../types";
 import { twJoin } from "tailwind-merge";
+import { getRelativeTime } from "../../../lib/helpers";
 
 export default function SnapzCard({
   id,
@@ -18,16 +19,13 @@ export default function SnapzCard({
   handleComments,
   handleLike,
 }: SnapzProps) {
-  
-  const returnedDate = new Date(date);
-
   const [clickLiked, setClickedLiked] = useState(false);
 
   return (
     <div className="flex w-full flex-col items-start bg-white border">
       <div className="w-full flex items-center text-2xl bg-[var(--retro-blue)] text-white justify-between p-2">
         <p>{name}</p>
-        <span>{returnedDate.getTime()}</span>
+        <span>{getRelativeTime(date)}</span>
       </div>
       <div className="w-full grid grid-cols-2 gap-1 px-2 flex-1 min-h-0">
         {images.length <= 1 ? (

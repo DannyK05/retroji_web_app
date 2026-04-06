@@ -20,6 +20,7 @@ import type { TErrorResponse } from "../../store/types/generic";
 import type { TPostCommentDto } from "../../store/types/snapz";
 import Dialog from "../../components/common/dialog";
 import CreateSnapzForm from "./components/CreateSnapzForm";
+import { getRelativeTime } from "../../lib/helpers";
 
 export default function Snapz() {
   const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
@@ -129,17 +130,20 @@ export default function Snapz() {
             <div className="w-full h-[350px] flex flex-col items-center space-y-2 overflow-y-auto">
               {isLoadingAllComments || isFetchingAllComments
                 ? "..."
-                : comments?.data.map(({ content, author }, index) => (
-                    <div
-                      className="w-full flex flex-col items-start p-1 border"
-                      key={index}
-                    >
-                      <p className="w-full text-2xl border-b">
-                        {author.username} says
-                      </p>
-                      <p className="text-3xl">{content}</p>
-                    </div>
-                  ))}
+                : comments?.data.map(
+                    ({ content, author, created_at }, index) => (
+                      <div
+                        className="w-full flex flex-col items-start p-1 border"
+                        key={index}
+                      >
+                        <div className="w-full flex items-center justify-between text-2xl border-b">
+                          <p>{author.username} says</p>
+                          <span>{getRelativeTime(created_at)}</span>
+                        </div>
+                        <p className="text-3xl">{content}</p>
+                      </div>
+                    ),
+                  )}
             </div>
 
             <form onSubmit={handlePostComment}>
