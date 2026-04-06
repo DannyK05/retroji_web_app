@@ -1,10 +1,9 @@
-export type TApiResponse<T> = { message: string; data: T; status: number };
+export type TApiResponse<T> = { message: string; data: T;};
 
 export type TAuthApiResponse<T> = {
   message: string;
   data: T;
-  tokens: { refresh: string; access: string };
-  status: number;
+  tokens: { access: string };
 };
 
 export type TErrorResponse = { message: string; status: number };

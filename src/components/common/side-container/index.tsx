@@ -1,14 +1,22 @@
+import { twMerge } from "tailwind-merge";
+
 import { ArrowLeftCircle } from "lucide-react";
 
 import type { SideContainerProps } from "./types";
 
 export function SideContainer({
   title,
+  className,
   children,
   handleClose,
 }: SideContainerProps) {
   return (
-    <aside className="w-full relative flex flex-col items-start space-y-2 border shadow-md">
+    <aside
+      className={twMerge(
+        "w-full relative flex flex-col items-start space-y-2 border shadow-md",
+        className,
+      )}
+    >
       <div className="w-full flex items-center space-x-5 p-3 border-b">
         <span
           className="cursor-pointer active:text-[var(--retro-blue)] lg:hover:text-[var(--retro-blue)]"

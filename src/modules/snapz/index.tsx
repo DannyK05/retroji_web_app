@@ -17,7 +17,7 @@ import Input from "../../components/common/input";
 import Button from "../../components/common/button";
 
 import type { TErrorResponse } from "../../store/types/generic";
-import type { TPostCommentData } from "../../store/types/snapz";
+import type { TPostCommentDto } from "../../store/types/snapz";
 import Dialog from "../../components/common/dialog";
 import CreateSnapzForm from "./components/CreateSnapzForm";
 
@@ -37,7 +37,7 @@ export default function Snapz() {
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
 
-  const [commentPayload, setCommentPayload] = useState<TPostCommentData>({
+  const [commentPayload, setCommentPayload] = useState<TPostCommentDto>({
     content: "",
     snapz_id: "",
   });
@@ -88,8 +88,8 @@ export default function Snapz() {
   return (
     <div className="w-full">
       <h1 className="text-4xl">Snapz</h1>
-      <div className="w-full grid grid-cols-2 gap-x-4 py-2">
-        <div className="w-full h-[calc(100vh-100px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto">
+      <div className="w-full grid grid-cols-5 gap-x-4 py-2">
+        <div className="w-full h-[calc(100vh-100px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto">
           {isLoadingAllSnapz
             ? "..."
             : snapz?.data.map(
@@ -97,19 +97,21 @@ export default function Snapz() {
                   id,
                   author,
                   created_at,
-                  image,
+                  images,
                   caption,
                   like_count,
                   comment_count,
+                  is_liked,
                 }) => (
                   <SnapzCard
                     key={id}
                     id={id}
-                    name={author.toString()}
+                    name={author.username}
                     date={created_at}
-                    image={image}
+                    images={images}
                     caption={caption}
                     like_count={like_count}
+                    isLiked={is_liked}
                     comment_count={comment_count}
                     handleComments={handleDisplayComments}
                     handleLike={handleLike}
@@ -119,7 +121,11 @@ export default function Snapz() {
         </div>
 
         {isSideOpen && (
-          <SideContainer title="Comments" handleClose={handleisSideOpen}>
+          <SideContainer
+            className="col-span-2"
+            title="Comments"
+            handleClose={handleisSideOpen}
+          >
             <div className="w-full h-[350px] flex flex-col items-center space-y-2 overflow-y-auto">
               {isLoadingAllComments || isFetchingAllComments
                 ? "..."
@@ -128,14 +134,16 @@ export default function Snapz() {
                       className="w-full flex flex-col items-start p-1 border"
                       key={index}
                     >
-                      <p className="w-full text-2xl border-b">{author} says</p>
+                      <p className="w-full text-2xl border-b">
+                        {author.username} says
+                      </p>
                       <p className="text-3xl">{content}</p>
                     </div>
                   ))}
             </div>
 
             <form onSubmit={handlePostComment}>
-              <div className="w-full  absolute bottom-0 left-0 flex items-end">
+              <div className="w-full absolute bottom-0 left-0 flex items-end">
                 <Input
                   name="Comment"
                   className="w-9/10 h-10"
@@ -152,7 +160,7 @@ export default function Snapz() {
                 <Button
                   type="submit"
                   disabled={isPostingComment || commentPayload.content === ""}
-                  className="w-1/10 h-10"
+                  className="w-10 h-10"
                 >
                   {isPostingComment ? <Loader /> : <SendHorizontal />}
                 </Button>
@@ -164,7 +172,7 @@ export default function Snapz() {
 
       {isDialogOpen && (
         <Dialog handleClose={handleisDialogOpen} title="Create Snapz">
-          <CreateSnapzForm />
+          <CreateSnapzForm handleClose={handleisDialogOpen} />
         </Dialog>
       )}
 

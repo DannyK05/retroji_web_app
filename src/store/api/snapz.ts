@@ -1,15 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../helpers";
 import type {
-  TGetAllCommentsBySnapzIdData,
+  TGetAllCommentsBySnapzIdDto,
   TGetAllCommentsBySnapzIdResponse,
   TGetAllSnapzResponse,
-  TGetSnapzByIdData,
-  TLikeData,
+  TGetSnapzByIdDto,
+  TLikeDto,
   TLikeResponse,
-  TPostCommentData,
+  TPostCommentDto,
   TPostCommentResponse,
-  TPostSnapzData,
   TPostSnapzResponse,
 } from "../types/snapz";
 
@@ -25,7 +24,7 @@ export const snapzApi = createApi({
       }),
       providesTags: ["getAllSnapz"],
     }),
-    postSnapz: builder.mutation<TPostSnapzResponse, TPostSnapzData>({
+    postSnapz: builder.mutation<TPostSnapzResponse, FormData>({
       query: (body) => ({
         url: "snapz/post/",
         method: "POST",
@@ -33,7 +32,7 @@ export const snapzApi = createApi({
       }),
       invalidatesTags: ["getAllSnapz"],
     }),
-    getSnapzById: builder.query<TGetAllSnapzResponse, TGetSnapzByIdData>({
+    getSnapzById: builder.query<TGetAllSnapzResponse, TGetSnapzByIdDto>({
       query: ({ snapz_id }) => ({
         url: `snapz/${snapz_id}`,
         method: "GET",
@@ -41,7 +40,7 @@ export const snapzApi = createApi({
     }),
     getAllCommentsBySnapzId: builder.query<
       TGetAllCommentsBySnapzIdResponse,
-      TGetAllCommentsBySnapzIdData
+      TGetAllCommentsBySnapzIdDto
     >({
       query: ({ snapz_id }) => ({
         url: `snapz/${snapz_id}/comments/`,
@@ -49,20 +48,21 @@ export const snapzApi = createApi({
       }),
       providesTags: ["getAllComments"],
     }),
-    postComment: builder.mutation<TPostCommentResponse, TPostCommentData>({
+    postComment: builder.mutation<TPostCommentResponse, TPostCommentDto>({
       query: (body) => ({
         url: "snapz/comment/post/",
         method: "POST",
         body,
       }),
-      invalidatesTags: ["getAllComments"],
+      invalidatesTags: ["getAllComments", "getAllSnapz"],
     }),
-    like: builder.mutation<TLikeResponse, TLikeData>({
+    like: builder.mutation<TLikeResponse, TLikeDto>({
       query: (body) => ({
         url: "snapz/like/",
         method: "POST",
         body,
       }),
+      invalidatesTags: ["getAllSnapz"],
     }),
   }),
 });

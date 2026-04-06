@@ -1,10 +1,12 @@
-import { Edit } from "lucide-react";
-import Button from "../../components/common/button";
-import ScoopCard from "./components/ScoopCard";
-import { scoops } from "./data";
 import { useState } from "react";
+import { Edit } from "lucide-react";
+
+import Button from "../../components/common/button";
 import Dialog from "../../components/common/dialog";
 import CreateScoopsForm from "./components/CreateScoopsForm";
+import ScoopCard from "./components/ScoopCard";
+
+import { scoops } from "./data";
 
 export default function Scoop() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -35,6 +37,7 @@ export default function Scoop() {
           <CreateScoopsForm />
         </Dialog>
       )}
+
       <Button
         onClick={handleisDialogOpen}
         className="w-auto absolute right-10 bottom-10"

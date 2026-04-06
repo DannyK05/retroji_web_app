@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useState } from "react";
 
 import { Loader } from "lucide-react";
 
@@ -9,15 +9,14 @@ import Button from "../../../components/common/button";
 import TextArea from "../../../components/common/text-area";
 import ImageInput from "../../../components/common/image-input";
 
-import type { TPostSnapzData } from "../../../store/types/snapz";
+import type { TPostSnapzDto } from "../../../store/types/snapz";
 import type { TErrorResponse } from "../../../store/types/generic";
+import type { CreateSnapzFormProps } from "../types";
 
-
-
-export default function CreateSnapzForm() {
-  const [snapzPayload, setSnapzPayload] = useState<TPostSnapzData>({
+export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
+  const [snapzPayload, setSnapzPayload] = useState<TPostSnapzDto>({
     caption: "",
-    image: [],
+    images: [],
   });
   const [postSnapz, { isLoading: isPostingSnapz }] = usePostSnapzMutation();
 
@@ -25,10 +24,23 @@ export default function CreateSnapzForm() {
 
   const handlePostSnapz = async (e: React.FormEvent) => {
     e.preventDefault();
+    const snapzFormData = new FormData();
+    snapzFormData.append("caption", snapzPayload.caption);
+    if (snapzPayload.images) {
+      snapzPayload.images.forEach((image) => {
+        snapzFormData.append("images", image);
+      });
+    }
+
     try {
-      const response = await postSnapz(snapzPayload);
+      const response = await postSnapz(snapzFormData);
       if (response.data) {
         handleApiMessage(response?.data);
+        setSnapzPayload({
+          caption: "",
+          images: [],
+        });
+        handleClose();
       }
     } catch (error) {
       handleErrorMessage(error as TErrorResponse);
@@ -36,11 +48,13 @@ export default function CreateSnapzForm() {
   };
 
   const handleRemoveImage = (name: string) => {
-    const removedImage = snapzPayload.image.find((image) => name == image.name);
+    const removedImage = snapzPayload.images.find(
+      (image) => name == image.name,
+    );
     if (removedImage) {
-      const image_payload = [...snapzPayload.image];
-      image_payload.splice(snapzPayload.image.indexOf(removedImage), 1);
-      setSnapzPayload((prev) => ({ ...prev, image: image_payload }));
+      const image_payload = [...snapzPayload.images];
+      image_payload.splice(snapzPayload.images.indexOf(removedImage), 1);
+      setSnapzPayload((prev) => ({ ...prev, images: image_payload }));
       return removedImage.name;
     }
   };
@@ -56,7 +70,7 @@ export default function CreateSnapzForm() {
             onChange={(e) => {
               setSnapzPayload((prev) => ({
                 caption: e.target.value,
-                image: prev.image,
+                images: prev.images,
               }));
             }}
             placeholder="Create your caption.... "
@@ -68,7 +82,7 @@ export default function CreateSnapzForm() {
             onChange={(e) => {
               setSnapzPayload((prev) => ({
                 caption: prev.caption,
-                image: e.target.files ? Array.from(e.target.files) : [],
+                images: e.target.files ? Array.from(e.target.files) : [],
               }));
             }}
           />
