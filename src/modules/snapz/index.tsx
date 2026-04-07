@@ -21,9 +21,15 @@ import type { TPostCommentDto } from "../../store/types/snapz";
 import Dialog from "../../components/common/dialog";
 import CreateSnapzForm from "./components/CreateSnapzForm";
 import { getRelativeTime } from "../../lib/helpers";
+import LoadingScreen from "../../components/common/loading-screen";
+import EmptyScreen from "../../components/common/empty-screen";
 
 export default function Snapz() {
-  const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
+  const {
+    data: snapz,
+    isLoading: isLoadingAllSnapz,
+    isFetching: isFetchingAllSnapz,
+  } = useGetAllSnapzQuery();
   const [
     getComments,
     {
@@ -91,34 +97,38 @@ export default function Snapz() {
       <h1 className="text-4xl">Snapz</h1>
       <div className="w-full grid grid-cols-5 gap-x-4 py-2">
         <div className="w-full h-[calc(100vh-100px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto">
-          {isLoadingAllSnapz
-            ? "..."
-            : snapz?.data.map(
-                ({
-                  id,
-                  author,
-                  created_at,
-                  images,
-                  caption,
-                  like_count,
-                  comment_count,
-                  is_liked,
-                }) => (
-                  <SnapzCard
-                    key={id}
-                    id={id}
-                    name={author.username}
-                    date={created_at}
-                    images={images}
-                    caption={caption}
-                    like_count={like_count}
-                    isLiked={is_liked}
-                    comment_count={comment_count}
-                    handleComments={handleDisplayComments}
-                    handleLike={handleLike}
-                  />
-                ),
-              )}
+          {isLoadingAllSnapz || isFetchingAllSnapz ? (
+            <LoadingScreen />
+          ) : snapz?.data ? (
+            snapz?.data.map(
+              ({
+                id,
+                author,
+                created_at,
+                images,
+                caption,
+                like_count,
+                comment_count,
+                is_liked,
+              }) => (
+                <SnapzCard
+                  key={id}
+                  id={id}
+                  name={author.username}
+                  date={created_at}
+                  images={images}
+                  caption={caption}
+                  like_count={like_count}
+                  isLiked={is_liked}
+                  comment_count={comment_count}
+                  handleComments={handleDisplayComments}
+                  handleLike={handleLike}
+                />
+              ),
+            )
+          ) : (
+            <EmptyScreen />
+          )}
         </div>
 
         {isSideOpen && (
@@ -128,22 +138,24 @@ export default function Snapz() {
             handleClose={handleisSideOpen}
           >
             <div className="w-full h-[350px] flex flex-col items-center space-y-2 overflow-y-auto">
-              {isLoadingAllComments || isFetchingAllComments
-                ? "..."
-                : comments?.data.map(
-                    ({ content, author, created_at }, index) => (
-                      <div
-                        className="w-full flex flex-col items-start p-1 border"
-                        key={index}
-                      >
-                        <div className="w-full flex items-center justify-between text-2xl border-b">
-                          <p>{author.username} says</p>
-                          <span>{getRelativeTime(created_at)}</span>
-                        </div>
-                        <p className="text-3xl">{content}</p>
-                      </div>
-                    ),
-                  )}
+              {isLoadingAllComments || isFetchingAllComments ? (
+                <LoadingScreen />
+              ) : comments?.data ? (
+                comments?.data.map(({ content, author, created_at }, index) => (
+                  <div
+                    className="w-full flex flex-col items-start p-1 border"
+                    key={index}
+                  >
+                    <div className="w-full flex items-center justify-between text-2xl border-b">
+                      <p>{author.username} says</p>
+                      <span>{getRelativeTime(created_at)}</span>
+                    </div>
+                    <p className="text-3xl">{content}</p>
+                  </div>
+                ))
+              ) : (
+                <EmptyScreen />
+              )}
             </div>
 
             <form onSubmit={handlePostComment}>
