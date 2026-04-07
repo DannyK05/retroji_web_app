@@ -5,8 +5,8 @@ import type {
   TGetAllCommentsBySnapzIdResponse,
   TGetAllSnapzResponse,
   TGetSnapzByIdDto,
-  TLikeDto,
-  TLikeResponse,
+  TLikeSnapzDto,
+  TLikeSnapzResponse,
   TPostCommentDto,
   TPostCommentResponse,
   TPostSnapzResponse,
@@ -56,7 +56,7 @@ export const snapzApi = createApi({
       }),
       invalidatesTags: ["getAllComments", "getAllSnapz"],
     }),
-    like: builder.mutation<TLikeResponse, TLikeDto>({
+    likeSnapz: builder.mutation<TLikeSnapzResponse, TLikeSnapzDto>({
       query: (body) => ({
         url: "snapz/like/",
         method: "POST",
@@ -72,6 +72,6 @@ export const {
   useLazyGetAllCommentsBySnapzIdQuery,
   useGetSnapzByIdQuery,
   usePostCommentMutation,
-  useLikeMutation,
+  useLikeSnapzMutation,
   usePostSnapzMutation,
 } = snapzApi;

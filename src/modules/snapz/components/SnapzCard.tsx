@@ -4,7 +4,7 @@ import { DiamondIcon, ThumbsUpIcon } from "lucide-react";
 import Button from "../../../components/common/button";
 
 import type { SnapzProps } from "../types";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { getRelativeTime } from "../../../lib/helpers";
 
 export default function SnapzCard({
@@ -61,18 +61,20 @@ export default function SnapzCard({
 
       <div className="w-full grid grid-cols-2 gap-1">
         <Button
+          className={twMerge(
+            "group",
+            isLiked || clickLiked
+              ? "text-retro-blue lg:hover:text-white"
+              : "",
+          )}
           onClick={() => {
             setClickedLiked((prev) => !prev);
             handleLike(id);
           }}
         >
-          <ThumbsUpIcon
-            className={
-              isLiked || clickLiked ? "text-retro-blue hover:text-white" : ""
-            }
-          />{" "}
+          <ThumbsUpIcon className="text-inherit" />
           <span className="text-2xl">{like_count}</span>
-        </Button>{" "}
+        </Button>
         <Button onClick={() => handleComments(id)}>
           <DiamondIcon /> <span className="text-2xl">{comment_count}</span>
         </Button>

@@ -8,7 +8,7 @@ import {
   useLazyGetAllCommentsBySnapzIdQuery,
   useGetAllSnapzQuery,
   usePostCommentMutation,
-  useLikeMutation,
+  useLikeSnapzMutation,
 } from "../../store/api/snapz";
 
 import { SideContainer } from "../../components/common/side-container";
@@ -40,7 +40,7 @@ export default function Snapz() {
   ] = useLazyGetAllCommentsBySnapzIdQuery();
   const [postComment, { isLoading: isPostingComment }] =
     usePostCommentMutation();
-  const [like] = useLikeMutation();
+  const [like] = useLikeSnapzMutation();
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
 

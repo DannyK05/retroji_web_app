@@ -12,4 +12,4 @@ export type TLoginDto = { username: string; password: string };
 export type TLoginResponse = TAuthApiResponse<{ user: TUser }>;
 
 export type TLogoutDto = void;
-export type TLogoutResponse = { message: string; status: number };
+export type TLogoutResponse = { message: string;};
