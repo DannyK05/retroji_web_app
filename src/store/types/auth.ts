@@ -3,7 +3,7 @@ import type { TAuthApiResponse } from "./generic";
 export type TAuthState = { user: TUser | null; tokens: TToken | null };
 
 export type TUser = { id: number; username: string; email: string };
-export type TToken = { access: string; refresh: string };
+export type TToken = { access: string;};
 
 export type TSignupDto = { username: string; email: string; password: string };
 export type TSignupResponse = TAuthApiResponse<{ user: TUser }>;

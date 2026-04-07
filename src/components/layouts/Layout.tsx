@@ -7,8 +7,6 @@ import { removeCredentials } from "../../store/features/authSlice";
 import { useHandleApiMessage } from "../common/message-banner/hooks";
 import { getUserData } from "../../lib/helpers";
 
-import { getFromLocalStorage } from "../../lib/storage";
-import { RETROJI_TOKENS } from "../../lib/constants";
 
 import Button from "../common/button";
 import MessageBanner from "../common/message-banner";
@@ -24,12 +22,9 @@ export default function Layout() {
   const user: TUser = getUserData();
 
   const handleLogout = async () => {
-    const tokens = getFromLocalStorage(RETROJI_TOKENS);
-    if (tokens) {
-      const refreshToken = JSON.parse(tokens).refresh;
-      const response = await logout({ refresh: refreshToken });
+      const response = await logout();
       handleApiMessage(response as TApiResponse<unknown>);
-    }
+    
     dispatch(removeCredentials());
     setTimeout(() => navigate("/"), 1000);
   };

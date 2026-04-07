@@ -33,8 +33,7 @@ export default function SignIn() {
         handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
-    } catch (error: any) {
-      console.log(error);
+    } catch (error:any) {
       handleErrorMessage(error.data as TErrorResponse);
     }
   };

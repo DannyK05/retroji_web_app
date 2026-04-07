@@ -15,7 +15,7 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
 
   const handleApiMessage = (response: TApiResponse<unknown>) => {
     setMessage(response.message);
-    setCode(response.status);
+    setCode(200);
 
     setTimeout(() => {
       setMessage(null);
@@ -30,7 +30,7 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
       setMessage("An error occurred");
     }
 
-    setCode(err.status ?? 400);
+    setCode(400);
 
     setTimeout(() => {
       setMessage(null);

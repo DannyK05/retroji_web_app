@@ -3,7 +3,7 @@ import { useHandleApiMessage } from "./hooks";
 
 export default function MessageBanner() {
   const { message, code, clearMessage } = useHandleApiMessage();
-  const isError = code && code >= 400;
+  const isError = code && code == 400;
   return (
     <div
       onClick={clearMessage}
