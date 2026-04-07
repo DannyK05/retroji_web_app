@@ -20,4 +20,4 @@ export type TPostScoopsDto = { content: string; parent_id?: string };
 export type TPostScoopsResponse = TApiResponse<{ scoops: TScoops }>;
 
 export type TLikeScoopsDto = { scoop_id: string };
-export type TLikeScoopsResponse = { message: string };
+export type TLikeScoopsResponse = TApiResponse<{ message: string }>;

@@ -30,6 +30,7 @@ export default function Snapz() {
     isLoading: isLoadingAllSnapz,
     isFetching: isFetchingAllSnapz,
   } = useGetAllSnapzQuery();
+  
   const [
     getComments,
     {
@@ -38,8 +39,10 @@ export default function Snapz() {
       isFetching: isFetchingAllComments,
     },
   ] = useLazyGetAllCommentsBySnapzIdQuery();
+
   const [postComment, { isLoading: isPostingComment }] =
     usePostCommentMutation();
+
   const [like] = useLikeSnapzMutation();
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();

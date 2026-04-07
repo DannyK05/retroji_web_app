@@ -19,7 +19,7 @@ export default function SnapzCard({
   handleComments,
   handleLike,
 }: SnapzProps) {
-  const [clickLiked, setClickedLiked] = useState(false);
+  const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
 
   return (
     <div className="flex w-full flex-col items-start bg-white border">

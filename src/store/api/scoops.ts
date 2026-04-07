@@ -10,6 +10,7 @@ import type {
 
 export const scoopsApi = createApi({
   reducerPath: "scoopsApi",
+  tagTypes: ["getAllScoops", "getAllScoopsById"],
   baseQuery: baseQuery,
   endpoints: (builder) => ({
     getAllScoops: builder.query<TGetAllScoopsResponse, void>({
@@ -17,26 +18,30 @@ export const scoopsApi = createApi({
         url: "/scoops/",
         method: "GET",
       }),
+      providesTags: ["getAllScoops"],
     }),
     getAllScoopsById: builder.query<TGetAllScoopsResponse, string>({
       query: (parent_id) => ({
         url: `/scoops/${parent_id}`,
         method: "GET",
       }),
+      providesTags: ["getAllScoopsById"],
     }),
     postScoops: builder.mutation<TPostScoopsResponse, TPostScoopsDto>({
       query: (payload) => ({
-        url: `/scoops/post`,
+        url: `/scoops/post/`,
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["getAllScoops", "getAllScoopsById"],
     }),
     likeScoops: builder.mutation<TLikeScoopsResponse, TLikeScoopsDto>({
       query: (payload) => ({
-        url: `/scoops/like`,
+        url: `/scoops/like/`,
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["getAllScoops", "getAllScoopsById"],
     }),
   }),
 });
