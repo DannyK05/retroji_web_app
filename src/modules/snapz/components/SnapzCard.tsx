@@ -63,13 +63,11 @@ export default function SnapzCard({
         <Button
           className={twMerge(
             "group",
-            isLiked || clickLiked
-              ? "text-retro-blue lg:hover:text-white"
-              : "",
+            isLiked || clickLiked ? "text-retro-blue lg:hover:text-white" : "",
           )}
-          onClick={() => {
+          onClick={(e) => {
             setClickedLiked((prev) => !prev);
-            handleLike(id);
+            handleLike(id, e);
           }}
         >
           <ThumbsUpIcon className="text-inherit" />

@@ -1,3 +1,4 @@
+import React from "react";
 import type { TSnapzImage } from "../../store/types/snapz";
 
 export type SnapzProps = {
@@ -10,7 +11,7 @@ export type SnapzProps = {
   comment_count: number;
   isLiked: boolean;
   handleComments: (snapz_id: string) => void;
-  handleLike: (snapz_id: string) => void;
+  handleLike: (snapz_id: string, e: React.FormEvent) => void;
 };
 
 export type CreateSnapzFormProps = {

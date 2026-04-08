@@ -30,7 +30,7 @@ export default function Snapz() {
     isLoading: isLoadingAllSnapz,
     isFetching: isFetchingAllSnapz,
   } = useGetAllSnapzQuery();
-  
+
   const [
     getComments,
     {
@@ -84,7 +84,8 @@ export default function Snapz() {
     }
   };
 
-  const handleLike = async (snapz_id: string) => {
+  const handleLike = async (snapz_id: string, e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const response = await like({ snapz_id });
       if (response.data) {

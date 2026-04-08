@@ -7,7 +7,6 @@ import { removeCredentials } from "../../store/features/authSlice";
 import { useHandleApiMessage } from "../common/message-banner/hooks";
 import { getUserData } from "../../lib/helpers";
 
-
 import Button from "../common/button";
 import MessageBanner from "../common/message-banner";
 
@@ -22,9 +21,9 @@ export default function Layout() {
   const user: TUser = getUserData();
 
   const handleLogout = async () => {
-      const response = await logout();
-      handleApiMessage(response as TApiResponse<unknown>);
-    
+    const response = await logout();
+    handleApiMessage(response as TApiResponse<unknown>);
+
     dispatch(removeCredentials());
     setTimeout(() => navigate("/"), 1000);
   };
@@ -44,7 +43,7 @@ export default function Layout() {
             <nav className="flex flex-col p-2 items-start text-orbitronio text-3xl border">
               <p className="text-4xl w-full border-b-[1px]">getting around</p>
               <NavLink to={"/snapz"}>snapz</NavLink>
-              <NavLink to={"/scoops"}>scoops</NavLink>
+              <NavLink to={"/scoops/"}>scoops</NavLink>
               <NavLink to={"/profile"}>profile</NavLink>
             </nav>
 

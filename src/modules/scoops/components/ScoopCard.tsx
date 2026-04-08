@@ -1,8 +1,10 @@
-import { Diamond, HeartIcon } from "lucide-react";
-import type { ScoopCardProps } from "../types";
-import { getRelativeTime } from "../../../lib/helpers";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
+import { Diamond, HeartIcon } from "lucide-react";
+
+import { getRelativeTime } from "../../../lib/helpers";
+
+import type { ScoopCardProps } from "../types";
 
 export default function ScoopCard({
   id,

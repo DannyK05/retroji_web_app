@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { NuqsAdapter } from "nuqs/adapters/react";
 import { ApiMessageProvider } from "./components/common/message-banner/context";
 import StoreProvider from "./store/provider";
 import AuthLayout from "./components/layouts/AuthLayout";
@@ -39,7 +40,9 @@ function App() {
   return (
     <ApiMessageProvider>
       <StoreProvider>
-        <RouterProvider router={router} />
+        <NuqsAdapter>
+          <RouterProvider router={router} />
+        </NuqsAdapter>
       </StoreProvider>
     </ApiMessageProvider>
   );
