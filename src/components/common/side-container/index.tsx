@@ -13,13 +13,13 @@ export function SideContainer({
   return (
     <aside
       className={twMerge(
-        "w-full relative flex flex-col items-start space-y-2 border shadow-md",
+        "absolute left-0 bottom-0 w-full h-screen flex flex-col items-start space-y-2 border shadow-md bg-white lg:relative lg:h-auto",
         className,
       )}
     >
       <div className="w-full flex items-center space-x-5 p-3 border-b">
         <span
-          className="cursor-pointer active:text-[var(--retro-blue)] lg:hover:text-[var(--retro-blue)]"
+          className="cursor-pointer active:text-retro-blue active:scale-110 lg:hover:text-[var(--retro-blue)]"
           onClick={handleClose}
         >
           <ArrowLeftCircle />

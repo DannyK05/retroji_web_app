@@ -8,11 +8,11 @@ export default function Dialog({ children, title, handleClose }: DialogProps) {
   return (
     <div
       onClick={handleClose}
-      className="z-10 absolute h-screen w-screen top-0 left-0 flex items-center justify-center bg-black/40 cursor-pointer"
+      className="z-10 absolute h-screen w-screen top-0 left-0 flex items-center justify-center px-2 bg-black/40 cursor-pointer"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-1/2 h-3/5 flex flex-col items-start bg-white border"
+        className="w-full max-h-3/5 flex flex-col items-start bg-white border lg:w-1/2 lg:h-3/5"
       >
         <div className="w-full flex items-center justify-between px-2 py-1 border-b">
           <h2 className="text-3xl">{title}</h2>

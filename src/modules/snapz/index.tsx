@@ -97,10 +97,17 @@ export default function Snapz() {
   };
 
   return (
-    <div className="w-full">
-      <h1 className="text-4xl">Snapz</h1>
-      <div className="w-full grid grid-cols-5 gap-x-4 py-2">
-        <div className="w-full h-[calc(100vh-100px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto">
+    <div className="w-full pt-2">
+      <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
+        <h1 className="text-4xl">Snapz</h1>{" "}
+        <Button onClick={handleisDialogOpen} className="w-auto h-10 lg:hidden">
+          <div className="flex items-center space-x-2 text-2xl">
+            <PlusSquare /> <p>Post Snapz</p>
+          </div>
+        </Button>
+      </div>
+      <div className="w-full grid grid-cols-1 gap-x-4 py-2 lg:grid-cols-5">
+        <div className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]">
           {isLoadingAllSnapz || isFetchingAllSnapz ? (
             <LoadingScreen />
           ) : snapz?.data ? (
@@ -137,11 +144,11 @@ export default function Snapz() {
 
         {isSideOpen && (
           <SideContainer
-            className="col-span-2"
+            className="lg:col-span-2"
             title="Comments"
             handleClose={handleisSideOpen}
           >
-            <div className="w-full h-[350px] flex flex-col items-center space-y-2 overflow-y-auto">
+            <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
               {isLoadingAllComments || isFetchingAllComments ? (
                 <LoadingScreen />
               ) : comments?.data ? (
@@ -191,17 +198,17 @@ export default function Snapz() {
       </div>
 
       {isDialogOpen && (
-        <Dialog handleClose={handleisDialogOpen} title="Create Snapz">
+        <Dialog handleClose={handleisDialogOpen} title="Post Snapz">
           <CreateSnapzForm handleClose={handleisDialogOpen} />
         </Dialog>
       )}
 
       <Button
         onClick={handleisDialogOpen}
-        className="w-auto absolute right-10 bottom-10"
+        className="hidden w-auto absolute right-10 bottom-10 lg:block"
       >
         <div className="flex items-center space-x-2 text-3xl">
-          <PlusSquare /> <p>Create Snapz</p>
+          <PlusSquare /> <p>Post Snapz</p>
         </div>
       </Button>
     </div>

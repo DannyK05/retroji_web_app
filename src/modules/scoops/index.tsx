@@ -87,10 +87,18 @@ export default function Scoop() {
     }
   };
   return (
-    <div className="w-full">
-      <h1 className="text-4xl">Scoops</h1>
-      <div className="w-full grid grid-cols-2 gap-x-2 py-2">
-        <div className="w-full h-[calc(100vh-100px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto">
+    <div className="w-full pt-2">
+      <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
+        <h1 className="text-4xl">Scoops</h1>{" "}
+        <Button onClick={handleisDialogOpen} className="w-auto h-10 lg:hidden">
+          <div className="flex items-center space-x-2 text-2xl">
+            <Edit /> <p>Post Scoops</p>
+          </div>
+        </Button>
+      </div>
+
+      <div className="w-full grid grid-cols-1 gap-x-2 py-2 lg:grid-cols-2">
+        <div className="w-full h-[calc(100vh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]">
           {isLoadingScoops ? (
             <LoadingScreen />
           ) : scoops?.data ? (
@@ -126,7 +134,7 @@ export default function Scoop() {
 
         {isSideOpen && (
           <SideContainer title="Replies" handleClose={handleisSideOpen}>
-            <div className="w-full h-[350px] flex flex-col items-center space-y-2 overflow-y-auto">
+            <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
               {isLoadingAllReplies || isFetchingAllReplies ? (
                 <LoadingScreen />
               ) : replies?.data ? (
@@ -161,7 +169,7 @@ export default function Scoop() {
             </div>
 
             <form onSubmit={handlePostReplies}>
-              <div className="w-full absolute bottom-0 left-0 flex items-end">
+              <div className="w-full absolute bottom-0 left-0 flex items-end bg-white">
                 <Input
                   name="Replies"
                   className="w-9/10 h-10"
@@ -196,7 +204,7 @@ export default function Scoop() {
 
       <Button
         onClick={handleisDialogOpen}
-        className="w-auto absolute right-10 bottom-10"
+        className="hidden w-auto absolute right-10 bottom-10 lg:block"
       >
         <div className="flex items-center space-x-2 text-3xl">
           <Edit /> <p>Post Scoops</p>
