@@ -115,6 +115,7 @@ export default function Scoop() {
                 <ScoopCard
                   key={id}
                   id={id}
+                  userId={author.id}
                   name={author.username}
                   content={content}
                   date={created_at}
@@ -151,6 +152,7 @@ export default function Scoop() {
                     <ScoopCard
                       key={id}
                       id={id}
+                      userId={author.id}
                       name={author.username}
                       content={content}
                       date={created_at}

@@ -126,6 +126,7 @@ export default function Snapz() {
                   key={id}
                   id={id}
                   name={author.username}
+                  userId={author.id}
                   date={created_at}
                   images={images}
                   caption={caption}

@@ -73,9 +73,24 @@ export default function Layout() {
               </button>
               <nav className="flex flex-col p-2 items-start text-orbitronio text-3xl border">
                 <p className="text-4xl w-full border-b-[1px]">getting around</p>
-                <NavLink to={"/snapz"}>snapz</NavLink>
-                <NavLink to={"/scoops/"}>scoops</NavLink>
-                <NavLink to={"/profile"}>profile</NavLink>
+                <NavLink
+                  className="text-retro-link hover:underline"
+                  to={"/snapz"}
+                >
+                  snapz
+                </NavLink>
+                <NavLink
+                  className="text-retro-link hover:underline"
+                  to={"/scoops/"}
+                >
+                  scoops
+                </NavLink>
+                <NavLink
+                  className="text-retro-link hover:underline"
+                  to={`/profile/${user.id}`}
+                >
+                  profile
+                </NavLink>
               </nav>
 
               <div className="hidden border text-3xl flex flex-col items-start space-y-1 p-1 lg:block">

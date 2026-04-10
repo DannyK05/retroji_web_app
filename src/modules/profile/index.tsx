@@ -1,14 +1,47 @@
 import { useState } from "react";
 import type { TNav } from "./types";
 import { twJoin } from "tailwind-merge";
+import { useParams } from "react-router";
+import {
+  useFollowUserMutation,
+  useGetUserProfileQuery,
+} from "../../store/api/profile";
+import { TUser } from "../../store/types/auth";
+import { getUserData } from "../../lib/helpers";
+import Button from "../../components/common/button";
+import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
+import { TErrorResponse } from "../../store/types/generic";
 
 export default function Profile() {
+  const [follow] = useFollowUserMutation();
+  const user: TUser = getUserData();
+  const params = useParams();
+  const id = params.id ?? "";
+
+  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
+
   const nav: TNav[] = ["snapz", "scoops", "replies", "likes"];
 
   const [currentNav, setCurrentNav] = useState<TNav>("snapz");
 
   const handleCurrentNav = (nav: TNav) => {
     setCurrentNav(nav);
+  };
+
+  const { data: profile } = useGetUserProfileQuery(id);
+
+  const followUser = async () => {
+    try {
+      const data = {
+        user_id: profile?.data.profile.user.id.toString() ?? "",
+      };
+      const response = await follow(data);
+      if (response.data) {
+        handleApiMessage(response);
+      }
+    } catch (error: any) {
+      handleErrorMessage(error.data as TErrorResponse);
+    }
   };
 
   return (
@@ -29,16 +62,34 @@ export default function Profile() {
         />
 
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl">Kolade05</h2>
+          <h2 className="text-3xl">{profile?.data.profile.user?.username}</h2>
           <div className="flex items-center space-x-4 text-2xl">
             <p>
-              <span className="text-retro-blue font-semibold">2</span> following
-            </p>{" "}
+              <span className="text-retro-blue font-semibold">
+                {profile?.data.profile.user?.following}
+              </span>{" "}
+              following
+            </p>
+
             <span>.</span>
+
             <p>
-              <span className="text-retro-blue font-semibold">2</span> followers
+              <span className="text-retro-blue font-semibold">
+                {profile?.data.profile.user?.followers ?? 0}
+              </span>{" "}
+              followers
             </p>
           </div>
+          {user.id.toString() !== params.id && (
+            <Button
+              className="w-full"
+              onClick={() => {
+                followUser();
+              }}
+            >
+              Follow
+            </Button>
+          )}
         </div>
 
         <div className="w-full flex flex-col items-start">
@@ -49,8 +100,9 @@ export default function Profile() {
 
       <div className="w-full flex flex-col items-center pt-40 px-3">
         <div className="w-4/5 lg:w-3/5 h-7 flex items-center justify-between p-2 text-3xl border">
-          {nav.map((nav) => (
+          {nav.map((nav, index) => (
             <span
+              key={index}
               onClick={() => handleCurrentNav(nav)}
               className={twJoin(
                 "text-retro-blue cursor-pointer active:underline lg:hover:underline",
@@ -64,6 +116,8 @@ export default function Profile() {
 
         <h2 className="w-full text-left text-3xl">{currentNav}</h2>
       </div>
+
+      <div className="w-full flex flex-col items-center space-y-2"></div>
     </section>
   );
 }

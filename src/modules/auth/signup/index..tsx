@@ -89,7 +89,7 @@ export default function SignUp() {
         </button>
       </form>
       <div className=" w-1/2 text-3xl text-center">
-        <Link to="/" className="underline">
+        <Link to="/" className="text-retro-link hover:underline">
           signin
         </Link>
       </div>

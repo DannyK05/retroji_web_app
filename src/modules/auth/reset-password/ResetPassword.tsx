@@ -40,10 +40,10 @@ export default function ResetPassword() {
         </button>
       </form>
       <div className=" w-1/2 flex items-center justify-between  text-3xl">
-        <Link to="/signup" className="underline">
+        <Link to="/signup" className="text-retro-link hover:underline">
           signup
         </Link>{" "}
-        <Link to="/" className="underline">
+        <Link to="/" className="text-retro-link hover:underline">
           signin
         </Link>
       </div>

@@ -33,7 +33,7 @@ export default function SignIn() {
         handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       handleErrorMessage(error.data as TErrorResponse);
     }
   };
@@ -71,10 +71,10 @@ export default function SignIn() {
       </form>
 
       <div className=" w-1/2 flex items-center justify-between  text-3xl">
-        <Link to="/signup" className="underline">
+        <Link to="/signup" className="text-retro-link hover:underline">
           signup
         </Link>{" "}
-        <Link to="/reset-password" className="underline">
+        <Link to="/reset-password" className="text-retro-link hover:underline">
           reset password
         </Link>
       </div>

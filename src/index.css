@@ -60,12 +60,12 @@
   color: var(--retro-blue);
 }
 
-.shadow-button {
-  box-shadow: inset;
+.text-retro-link {
+  color: var(--retro-blue);
 }
 
-a {
-  color: var(--retro-link);
+.shadow-button {
+  box-shadow: inset;
 }
 
 /* Css loaders */

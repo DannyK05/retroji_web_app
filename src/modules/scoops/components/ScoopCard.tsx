@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { twJoin } from "tailwind-merge";
 import { Diamond, HeartIcon } from "lucide-react";
 
@@ -8,6 +9,7 @@ import type { ScoopCardProps } from "../types";
 
 export default function ScoopCard({
   id,
+  userId,
   image,
   name,
   date,
@@ -31,7 +33,14 @@ export default function ScoopCard({
 
       <div className="w-full flex min-h-23 flex-col items-start space-y-1 border">
         <div className="flex w-full items-center justify-between text-xl text-white bg-black px-1">
-          <p>{name}</p>
+          <p>
+            <Link
+              className="text-white hover:underline"
+              to={`/profile/${userId}`}
+            >
+              {name}
+            </Link>
+          </p>
           <span>{getRelativeTime(date)}</span>
         </div>
 
