@@ -93,7 +93,7 @@ export default function Layout() {
 
               <div className="block border p-2 lg:hidden">
                 <p className="text-vcr border-b-[1px] text-lg">
-                  {user.username}
+                  {user.username ?? "Retroji User"}
                 </p>
                 <button
                   type="submit"
@@ -111,7 +111,7 @@ export default function Layout() {
             onClick={handleIsNavOpen}
             className={twMerge(
               !isNavOpen && "hidden",
-              "absolute h-full w-full top-0 bg-black/40 lg:hidden",
+              "absolute z-10 h-full w-full top-0 bg-black/40 lg:hidden",
             )}
           ></div>
 
@@ -120,7 +120,9 @@ export default function Layout() {
           </div>
 
           <div className="hidden border fixed right-6 p-2 lg:block">
-            <p className="text-vcr border-b-[1px] text-lg">{user.username}</p>
+            <p className="text-vcr border-b-[1px] text-lg">
+              {user.username ?? "Retroji User"}
+            </p>
             <button
               type="submit"
               onClick={handleLogout}
