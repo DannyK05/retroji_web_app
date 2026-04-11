@@ -1,1 +1,3 @@
-export type TNav = "snapz" | "scoops" | "replies" | "likes";
+export type TNav = "snapz" | "scoops" | "comments";
+
+export type TSection = { userId: number };

@@ -2,7 +2,10 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../helpers";
 import type {
   TFollowUserDto,
-  TProfileResponse,
+  TGetUserCommentsResponse,
+  TGetUserProfileResponse,
+  TGetUserScoopsResponse,
+  TGetUserSnapzResponse,
   TUpdateUserProfileDto,
 } from "../types/profile";
 
@@ -11,12 +14,13 @@ export const profileApi = createApi({
   tagTypes: ["getUserProfile"],
   baseQuery: baseQuery,
   endpoints: (builder) => ({
-    getUserProfile: builder.query<TProfileResponse, string>({
+    getUserProfile: builder.query<TGetUserProfileResponse, string>({
       query: (user_id) => ({ url: `/profile/${user_id}/`, method: "GET" }),
       providesTags: ["getUserProfile"],
     }),
+
     updateUserProfile: builder.mutation<
-      TProfileResponse,
+      TGetUserProfileResponse,
       TUpdateUserProfileDto
     >({
       query: (payload) => ({
@@ -26,6 +30,28 @@ export const profileApi = createApi({
       }),
       invalidatesTags: ["getUserProfile"],
     }),
+
+    getUserSnapz: builder.query<TGetUserSnapzResponse, number>({
+      query: (user_id) => ({
+        url: `/profile/snapz/${user_id}/`,
+        method: "GET",
+      }),
+    }),
+
+    getUserScoops: builder.query<TGetUserScoopsResponse, number>({
+      query: (user_id) => ({
+        url: `/profile/scoops/${user_id}/`,
+        method: "GET",
+      }),
+    }),
+
+    getUserComments: builder.query<TGetUserCommentsResponse, number>({
+      query: (user_id) => ({
+        url: `/profile/comments/${user_id}/`,
+        method: "GET",
+      }),
+    }),
+
     followUser: builder.mutation<void, TFollowUserDto>({
       query: (payload) => ({
         url: `/profile/follow/`,
@@ -41,4 +67,7 @@ export const {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useFollowUserMutation,
+  useGetUserSnapzQuery,
+  useGetUserScoopsQuery,
+  useGetUserCommentsQuery,
 } = profileApi;

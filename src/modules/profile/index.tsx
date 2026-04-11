@@ -8,8 +8,12 @@ import {
 } from "../../store/api/profile";
 import { TUser } from "../../store/types/auth";
 import { getUserData } from "../../lib/helpers";
-import Button from "../../components/common/button";
 import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
+import Button from "../../components/common/button";
+import SnapzSection from "./components/SnapzSection";
+import ScoopsSection from "./components/ScoopsSection";
+import CommentsSection from "./components/CommentsSection";
+
 import { TErrorResponse } from "../../store/types/generic";
 
 export default function Profile() {
@@ -20,7 +24,7 @@ export default function Profile() {
 
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
-  const nav: TNav[] = ["snapz", "scoops", "replies", "likes"];
+  const nav: TNav[] = ["snapz", "scoops", "comments"];
 
   const [currentNav, setCurrentNav] = useState<TNav>("snapz");
 
@@ -33,7 +37,7 @@ export default function Profile() {
   const followUser = async () => {
     try {
       const data = {
-        user_id: profile?.data.profile.user.id.toString() ?? "",
+        user_id: profile?.data.profile.user.id?.toString() ?? "",
       };
       const response = await follow(data);
       if (response.data) {
@@ -46,27 +50,27 @@ export default function Profile() {
 
   return (
     <section className="relative w-full h-[calc(100vh-70px)] flex flex-col items-center mt-5 border pb-2 overflow-y-auto lg:h-[calc(100vh-70px)]">
-      <div className="w-full h-40 overflow-hidden lg:h-60">
-        <img
-          className="w-full object-cover"
-          src="/assets/images/scoop_4.webp"
-          alt="Cover Image"
-        />
-      </div>
+      <img
+        className="w-full h-40 object-cover lg:h-60"
+        src="/assets/images/scoop_4.webp"
+        alt="Cover Image"
+      />
 
-      <div className="absolute z-5 top-30 w-4/5 lg:top-50 lg:w-3/5 flex flex-col items-center border bg-white pt-11 px-2">
+      <div className="w-4/5 flex flex-col items-center -mt-10 border bg-white pt-11 px-2 lg:w-3/5 lg:-mt-10">
         <img
-          className="absolute top-[-50px] lg:top-[-80px] w-20 h-20 lg:w-30 lg:h-30 object-cover border-2"
+          className="w-20 h-20 object-cover -mt-20 border-2  lg:w-30 lg:h-30 lg:-mt-20"
           src="/assets/images/profile_pic.jpg"
-          alt="Cover Image"
+          alt="Profile Pic"
         />
 
         <div className="flex flex-col items-center">
-          <h2 className="text-3xl">{profile?.data.profile.user?.username}</h2>
+          <h2 className="text-3xl">
+            {profile?.data.profile.user?.username ?? "retroji_user"}
+          </h2>
           <div className="flex items-center space-x-4 text-2xl">
             <p>
               <span className="text-retro-blue font-semibold">
-                {profile?.data.profile.user?.following}
+                {profile?.data.profile.user?.following ?? 0}
               </span>{" "}
               following
             </p>
@@ -80,14 +84,15 @@ export default function Profile() {
               followers
             </p>
           </div>
-          {user.id.toString() !== params.id && (
+
+          {user.id?.toString() !== params.id && (
             <Button
               className="w-full"
               onClick={() => {
                 followUser();
               }}
             >
-              Follow
+              {profile?.data.profile.is_followed ? "Following" : "Follow"}
             </Button>
           )}
         </div>
@@ -98,8 +103,8 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col items-center pt-40 px-3">
-        <div className="w-4/5 lg:w-3/5 h-7 flex items-center justify-between p-2 text-3xl border">
+      <div className="w-full flex flex-col items-center px-3">
+        <div className="w-4/5 h-7 flex items-center justify-between p-2 text-3xl border mt-4 lg:w-3/5">
           {nav.map((nav, index) => (
             <span
               key={index}
@@ -115,9 +120,17 @@ export default function Profile() {
         </div>
 
         <h2 className="w-full text-left text-3xl">{currentNav}</h2>
-      </div>
 
-      <div className="w-full flex flex-col items-center space-y-2"></div>
+        {currentNav === "snapz"
+          ? profile && <SnapzSection userId={profile.data.profile.user?.id} />
+          : currentNav === "scoops"
+            ? profile && (
+                <ScoopsSection userId={profile.data.profile.user?.id} />
+              )
+            : profile && (
+                <CommentsSection userId={profile.data.profile.user?.id} />
+              )}
+      </div>
     </section>
   );
 }

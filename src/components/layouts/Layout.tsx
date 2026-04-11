@@ -46,7 +46,7 @@ export default function Layout() {
           title="toggle"
           type="button"
         >
-          <MenuIcon className="size-10" />
+          <MenuIcon className="size-8" />
         </button>
         <h1 className="text-pacifico text-center text-retro-blue text-4xl">
           Retroji
@@ -108,7 +108,7 @@ export default function Layout() {
 
               <div className="block border p-2 lg:hidden">
                 <p className="text-vcr border-b-[1px] text-lg">
-                  {user.username ?? "Retroji User"}
+                  {user.username ?? "retroji_user"}
                 </p>
                 <button
                   type="submit"
