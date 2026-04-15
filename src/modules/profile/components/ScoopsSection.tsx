@@ -7,7 +7,7 @@ import type { TSection } from "../types";
 export default function ScoopsSection({ userId }: TSection) {
   const { data, isLoading } = useGetUserScoopsQuery(userId);
   return (
-    <section className="w-full flex items-center space-y-3 py-2 px-3">
+    <section className="w-full flex flex-col items-center space-y-3 py-2 px-3">
       {isLoading ? (
         <LoadingScreen />
       ) : data && data.data.scoops.length > 0 ? (

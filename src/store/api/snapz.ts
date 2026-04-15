@@ -69,7 +69,7 @@ export const snapzApi = createApi({
 
 export const {
   useGetAllSnapzQuery,
-  useLazyGetAllCommentsBySnapzIdQuery,
+  useGetAllCommentsBySnapzIdQuery,
   useGetSnapzByIdQuery,
   usePostCommentMutation,
   useLikeSnapzMutation,

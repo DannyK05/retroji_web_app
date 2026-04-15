@@ -20,3 +20,7 @@ export type TLoginResponse = TAuthApiResponse<{ user: TUser }>;
 
 export type TLogoutDto = void;
 export type TLogoutResponse = { message: string };
+
+export type TIsUsernameTakenResponse = TAuthApiResponse<{
+  is_taken: boolean;
+}>;
