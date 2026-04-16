@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Edit, Loader, SendHorizontal } from "lucide-react";
+import { Edit } from "lucide-react";
 
 import Button from "../../components/common/button";
 import Dialog from "../../components/common/dialog";
@@ -8,32 +8,17 @@ import ScoopCard from "./components/ScoopCard";
 
 import {
   useGetAllScoopsQuery,
-  useLazyGetAllScoopsByIdQuery,
   useLikeScoopsMutation,
-  usePostScoopsMutation,
 } from "../../store/api/scoops";
 import LoadingScreen from "../../components/common/loading-screen";
 import EmptyScreen from "../../components/common/empty-screen";
+import RepliesSection from "../../components/core/replies-section";
 import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
 import { TPostScoopsDto } from "../../store/types/scoops";
 import { TErrorResponse } from "../../store/types/generic";
-import Input from "../../components/common/input";
-import { SideContainer } from "../../components/common/side-container";
 
 export default function Scoop() {
   const { data: scoops, isLoading: isLoadingScoops } = useGetAllScoopsQuery();
-
-  const [
-    getReplies,
-    {
-      data: replies,
-      isLoading: isLoadingAllReplies,
-      isFetching: isFetchingAllReplies,
-    },
-  ] = useLazyGetAllScoopsByIdQuery();
-
-  const [postReplies, { isLoading: isPostingReplies }] =
-    usePostScoopsMutation();
 
   const [likeScoops] = useLikeScoopsMutation();
 
@@ -58,22 +43,15 @@ export default function Scoop() {
   const handleDisplayReplies = (parent_id: string) => {
     if (!isSideOpen) {
       setIsSideOpen(true);
-      getReplies(parent_id);
       setRepliesPayload({ content: "", parent_id: parent_id });
     }
   };
 
-  const handlePostReplies = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await postReplies(repliesPayload);
-      if (response.data) {
-        handleApiMessage(response?.data);
-        setRepliesPayload((prev) => ({ ...prev, content: "" }));
-      }
-    } catch (error) {
-      handleErrorMessage(error as TErrorResponse);
-    }
+  const handleRepliesPayload = (content: string, parent_id?: string) => {
+    setRepliesPayload((prev) => ({
+      content: content !== undefined ? content : prev.content,
+      parent_id: parent_id ? parent_id : prev.parent_id,
+    }));
   };
 
   const handleLike = async (scoop_id: string) => {
@@ -134,67 +112,11 @@ export default function Scoop() {
         </div>
 
         {isSideOpen && (
-          <SideContainer title="Replies" handleClose={handleisSideOpen}>
-            <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
-              {isLoadingAllReplies || isFetchingAllReplies ? (
-                <LoadingScreen />
-              ) : replies?.data ? (
-                replies?.data.map(
-                  ({
-                    id,
-                    content,
-                    author,
-                    is_liked,
-                    like_count,
-                    replies_count,
-                    created_at,
-                  }) => (
-                    <ScoopCard
-                      key={id}
-                      id={id}
-                      userId={author.id}
-                      name={author.username}
-                      content={content}
-                      date={created_at}
-                      image={"/public/assets/images/profile_pic.jpg"}
-                      likeCount={like_count}
-                      isLiked={is_liked}
-                      repliesCount={replies_count}
-                      handleReplies={handleDisplayReplies}
-                      handleLike={handleLike}
-                    />
-                  ),
-                )
-              ) : (
-                <EmptyScreen />
-              )}
-            </div>
-
-            <form onSubmit={handlePostReplies}>
-              <div className="w-full absolute bottom-0 left-0 flex items-end bg-white">
-                <Input
-                  name="Replies"
-                  className="w-9/10 h-10"
-                  type="text"
-                  value={repliesPayload.content}
-                  onChange={(e) => {
-                    setRepliesPayload((prev) => ({
-                      content: e.target.value,
-                      parent_id: prev.parent_id,
-                    }));
-                  }}
-                  placeholder="What's on your mind ?"
-                />
-                <Button
-                  type="submit"
-                  disabled={isPostingReplies || repliesPayload.content === ""}
-                  className="flex-1 h-10"
-                >
-                  {isPostingReplies ? <Loader /> : <SendHorizontal />}
-                </Button>
-              </div>
-            </form>
-          </SideContainer>
+          <RepliesSection
+            repliesPayload={repliesPayload}
+            handleRepliesPayload={handleRepliesPayload}
+            handleClose={handleisSideOpen}
+          />
         )}
       </div>
 

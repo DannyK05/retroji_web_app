@@ -1,5 +1,5 @@
-import { TUser } from "../../../store/types/auth";
-import { TPostCommentDto } from "../../../store/types/snapz";
+import type { TUser } from "../../../store/types/auth";
+import type { TPostCommentDto } from "../../../store/types/snapz";
 
 export type CommentSectionProps = {
   commentPayload: TPostCommentDto;

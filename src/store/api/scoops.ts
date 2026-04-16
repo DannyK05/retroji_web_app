@@ -50,7 +50,7 @@ export const scoopsApi = createApi({
 
 export const {
   useGetAllScoopsQuery,
-  useLazyGetAllScoopsByIdQuery,
+  useGetAllScoopsByIdQuery,
   usePostScoopsMutation,
   useLikeScoopsMutation,
 } = scoopsApi;

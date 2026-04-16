@@ -60,7 +60,7 @@ export default function SnapzSection({ userId }: TSection) {
 
   return (
     <section className="w-full h-full grid grid-cols-2 gap-2 py-2 px-3">
-      <div className="w-full h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto">
+      <div className="w-full max-h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto">
         {isLoading ? (
           <LoadingScreen />
         ) : data && data.data.snapz.length > 0 ? (
