@@ -27,7 +27,7 @@ export default function SnapzCard({
   return (
     <div
       className={twMerge(
-        "flex w-full flex-col items-start bg-white border",
+        "flex w-full flex-col items-start bg-white border transition-opacity duration-300",
         className,
       )}
     >

@@ -91,11 +91,9 @@ export default function Snapz() {
         <div
           onScroll={(e) => {
             const currentScroll = e.currentTarget.scrollTop;
-            if (
-              (isSideOpen && currentScroll > previousScrollRef.current + 50) ||
-              (isSideOpen && currentScroll > previousScrollRef.current - 50)
-            ) {
+            if (isSideOpen && currentScroll > previousScrollRef.current + 17) {
               setIsSideOpen(false);
+              console.log(previousScrollRef.current, currentScroll);
             }
             previousScrollRef.current = currentScroll;
           }}
@@ -116,6 +114,11 @@ export default function Snapz() {
                 is_liked,
               }) => (
                 <SnapzCard
+                  className={
+                    isSideOpen && commentPayload.snapz_id !== id
+                      ? "opacity-40"
+                      : ""
+                  }
                   key={id}
                   id={id}
                   name={author.username}

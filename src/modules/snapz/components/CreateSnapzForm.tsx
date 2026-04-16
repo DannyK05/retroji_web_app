@@ -79,11 +79,8 @@ export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
           <ImageInput
             name="snapz_image"
             handleRemoveImage={handleRemoveImage}
-            onChange={(e) => {
-              setSnapzPayload((prev) => ({
-                caption: prev.caption,
-                images: e.target.files ? Array.from(e.target.files) : [],
-              }));
+            handleImages={(files: File[]) => {
+              setSnapzPayload((prev) => ({ ...prev, images: files }));
             }}
           />
 

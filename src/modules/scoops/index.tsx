@@ -81,10 +81,7 @@ export default function Scoop() {
         <div
           onScroll={(e) => {
             const currentScroll = e.currentTarget.scrollTop;
-            if (
-              (isSideOpen && currentScroll > previousScrollRef.current + 10) ||
-              (isSideOpen && currentScroll > previousScrollRef.current - 10)
-            ) {
+            if (isSideOpen && currentScroll > previousScrollRef.current + 10) {
               setIsSideOpen(false);
             }
             previousScrollRef.current = currentScroll;
@@ -107,7 +104,7 @@ export default function Scoop() {
                 <ScoopCard
                   className={
                     isSideOpen && repliesPayload.parent_id !== id
-                      ? "opacity-50"
+                      ? "opacity-40"
                       : ""
                   }
                   key={id}

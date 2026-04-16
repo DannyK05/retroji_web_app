@@ -24,7 +24,12 @@ export default function ScoopCard({
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
 
   return (
-    <div className={twMerge("flex items-start w-full p-1 text-3xl", className)}>
+    <div
+      className={twMerge(
+        "flex items-start w-full p-1 text-3xl transition-opacity duration-300",
+        className,
+      )}
+    >
       <div className="h-23 flex flex-col items-center border border-r-0">
         <img className="h-19 object-cover" src={image} alt={name} />
         <span className="w-full flex-1 text-center text-lg text-white bg-black">

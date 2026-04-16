@@ -10,7 +10,8 @@ import type { TPreview } from "./types";
 type ImageInputProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
   className?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  uploadLimit?: number;
+  handleImages: (selectedFiles: File[]) => void;
   multiple?: boolean;
   handleRemoveImage: (name: string) => string | undefined;
 };
@@ -18,8 +19,9 @@ type ImageInputProps = InputHTMLAttributes<HTMLInputElement> & {
 export default function ImageInput({
   name,
   className,
-  onChange,
+  handleImages,
   multiple = true,
+  uploadLimit = 3,
   handleRemoveImage,
   ...rest
 }: ImageInputProps) {
@@ -56,6 +58,7 @@ export default function ImageInput({
           <ImagesIcon />
           <p>Browse Images</p>
           <span>{shortenString(imageDisplayName, 50)}</span>
+          <span>Max. of {uploadLimit} images</span>
         </div>
 
         <input
@@ -74,6 +77,16 @@ export default function ImageInput({
               const selectedFiles = Array.from(e.target.files);
 
               if (selectedFiles) {
+                if (selectedFiles.length > uploadLimit) {
+                  const excess = selectedFiles.length - uploadLimit;
+                  for (let i = 0; i < excess; ++i) {
+                    selectedFiles.pop();
+                  }
+                  alert(`Maximum of ${uploadLimit} images are allowed`);
+                }
+                handleImages(selectedFiles);
+              }
+              if (selectedFiles) {
                 handleImagePreviews(selectedFiles);
                 setImageDisplayName(
                   selectedFiles.length > 0
@@ -82,8 +95,6 @@ export default function ImageInput({
                 );
               }
             }
-
-            onChange?.(e);
           }}
         />
       </label>
