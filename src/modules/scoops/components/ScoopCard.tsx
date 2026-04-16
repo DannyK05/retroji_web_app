@@ -59,7 +59,7 @@ export default function ScoopCard({
               handleLike(id);
             }}
             className={twJoin(
-              (clickLiked || isLiked) && "text-retro-blue lg:hover:text-black",
+              (clickLiked || isLiked) && "text-red-600",
               "flex items-center space-x-1 cursor-pointer lg:hover:text-[var(--retro-blue)] active:text-[var(--retro-blue)] active:scale-110",
             )}
           >

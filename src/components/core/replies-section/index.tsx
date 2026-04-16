@@ -20,8 +20,7 @@ export default function RepliesSection({
   const 
     {
       data: replies,
-      isLoading: isLoadingAllReplies,
-      isFetching: isFetchingAllReplies,
+      isLoading: isLoadingAllReplies
     }= useGetAllScoopsByIdQuery(repliesPayload.parent_id ?? "");
 
   
@@ -45,7 +44,7 @@ export default function RepliesSection({
   return (
     <SideContainer title="Replies" handleClose={handleClose}>
       <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
-        {isLoadingAllReplies || isFetchingAllReplies ? (
+        {isLoadingAllReplies ? (
           <LoadingScreen />
         ) : replies?.data ? (
           replies?.data.map(
