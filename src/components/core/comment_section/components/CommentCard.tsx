@@ -12,7 +12,7 @@ export default function CommentCard({
         <p>{author.username} says</p>
         <span>{getRelativeTime(createdAt)}</span>
       </div>
-      <p className="text-3xl">{content}</p>
+      <p className="text-3xl pt-2">{content}</p>
     </div>
   );
 }
