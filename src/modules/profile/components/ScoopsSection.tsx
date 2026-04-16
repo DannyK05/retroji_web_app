@@ -60,7 +60,7 @@ export default function ScoopsSection({ userId }: TSection) {
   };
 
   return (
-    <section className="w-full h-full grid grid-cols-2 gap-2 py-2 px-3">
+    <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 lg:grid-cols-2">
       <div
         onScroll={(e) => {
           const currentScroll = e.currentTarget.scrollTop;
@@ -72,7 +72,7 @@ export default function ScoopsSection({ userId }: TSection) {
           }
           previousScrollRef.current = currentScroll;
         }}
-        className="w-full max-h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto"
+        className="w-full flex flex-col items-center space-y-3 py-2 px-1 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
       >
         {isLoading ? (
           <LoadingScreen />

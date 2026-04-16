@@ -13,7 +13,7 @@ export function SideContainer({
   return (
     <aside
       className={twMerge(
-        "absolute left-0 bottom-0 w-full h-screen flex flex-col items-start space-y-2 border shadow-md bg-white lg:relative lg:h-auto",
+        "absolute z-100 left-0 bottom-0 w-full h-screen flex flex-col items-start space-y-2 border shadow-md bg-white lg:relative lg:h-auto",
         className,
       )}
     >

@@ -49,7 +49,7 @@ export default function Profile() {
   };
 
   return (
-    <section className="relative w-full h-[calc(100vh-70px)] flex flex-col items-center mt-5 border pb-2 overflow-y-auto lg:h-[calc(100vh-70px)]">
+    <section className="w-full h-[calc(100vh-70px)] flex flex-col items-center mt-5 border pb-2 overflow-y-auto lg:h-[calc(100vh-70px)]">
       <img
         className="w-full h-40 object-cover lg:h-60"
         src="/assets/images/scoop_4.webp"
