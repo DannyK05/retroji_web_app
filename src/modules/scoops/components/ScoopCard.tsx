@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { Diamond, HeartIcon } from "lucide-react";
 
 import { getRelativeTime } from "../../../lib/helpers";
@@ -10,6 +10,7 @@ import type { ScoopCardProps } from "../types";
 export default function ScoopCard({
   id,
   userId,
+  className,
   image,
   name,
   date,
@@ -23,7 +24,7 @@ export default function ScoopCard({
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
 
   return (
-    <div className="flex items-start w-full p-1 text-3xl">
+    <div className={twMerge("flex items-start w-full p-1 text-3xl", className)}>
       <div className="h-23 flex flex-col items-center border border-r-0">
         <img className="h-19 object-cover" src={image} alt={name} />
         <span className="w-full flex-1 text-center text-lg text-white bg-black">

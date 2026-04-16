@@ -1,6 +1,7 @@
 export type ScoopCardProps = {
   id: string;
   userId: number;
+  className?: string;
   name: string;
   image: string;
   date: Date;

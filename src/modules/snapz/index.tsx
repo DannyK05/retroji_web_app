@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { PlusSquare } from "lucide-react";
 
@@ -41,6 +41,7 @@ export default function Snapz() {
 
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const previousScrollRef = useRef(0);
 
   const handleisSideOpen = () => {
     setIsSideOpen((prev) => !prev);
@@ -87,7 +88,19 @@ export default function Snapz() {
         </Button>
       </div>
       <div className="w-full grid grid-cols-1 gap-x-4 py-2 lg:grid-cols-5">
-        <div className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]">
+        <div
+          onScroll={(e) => {
+            const currentScroll = e.currentTarget.scrollTop;
+            if (
+              (isSideOpen && currentScroll > previousScrollRef.current + 50) ||
+              (isSideOpen && currentScroll > previousScrollRef.current - 50)
+            ) {
+              setIsSideOpen(false);
+            }
+            previousScrollRef.current = currentScroll;
+          }}
+          className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
+        >
           {isLoadingAllSnapz || isFetchingAllSnapz ? (
             <LoadingScreen />
           ) : snapz?.data ? (

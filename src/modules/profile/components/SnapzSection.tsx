@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import EmptyScreen from "../../../components/common/empty-screen";
 import LoadingScreen from "../../../components/common/loading-screen";
 import CommentsSection from "../../../components/core/comment_section";
@@ -24,6 +24,7 @@ export default function SnapzSection({ userId }: TSection) {
     snapz_id: "",
   });
   const [isSideOpen, setIsSideOpen] = useState(false);
+  const previousScrollRef = useRef(0);
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
 
@@ -60,7 +61,19 @@ export default function SnapzSection({ userId }: TSection) {
 
   return (
     <section className="w-full h-full grid grid-cols-2 gap-2 py-2 px-3">
-      <div className="w-full max-h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto">
+      <div
+        onScroll={(e) => {
+          const currentScroll = e.currentTarget.scrollTop;
+          if (
+            (isSideOpen && currentScroll > previousScrollRef.current + 50) ||
+            (isSideOpen && currentScroll > previousScrollRef.current - 50)
+          ) {
+            setIsSideOpen(false);
+          }
+          previousScrollRef.current = currentScroll;
+        }}
+        className="w-full max-h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto"
+      >
         {isLoading ? (
           <LoadingScreen />
         ) : data && data.data.snapz.length > 0 ? (

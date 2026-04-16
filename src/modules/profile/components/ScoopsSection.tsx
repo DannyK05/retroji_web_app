@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import EmptyScreen from "../../../components/common/empty-screen";
 import LoadingScreen from "../../../components/common/loading-screen";
 import RepliesSection from "../../../components/core/replies-section";
@@ -27,6 +27,7 @@ export default function ScoopsSection({ userId }: TSection) {
   });
 
   const [isSideOpen, setIsSideOpen] = useState(false);
+  const previousScrollRef = useRef(0);
 
   const handleisSideOpen = () => {
     setIsSideOpen((prev) => !prev);
@@ -60,7 +61,19 @@ export default function ScoopsSection({ userId }: TSection) {
 
   return (
     <section className="w-full h-full grid grid-cols-2 gap-2 py-2 px-3">
-      <div className="w-full max-h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto">
+      <div
+        onScroll={(e) => {
+          const currentScroll = e.currentTarget.scrollTop;
+          if (
+            (isSideOpen && currentScroll > previousScrollRef.current + 10) ||
+            (isSideOpen && currentScroll > previousScrollRef.current - 10)
+          ) {
+            setIsSideOpen(false);
+          }
+          previousScrollRef.current = currentScroll;
+        }}
+        className="w-full max-h-[500px] flex flex-col items-center space-y-3 py-2 px-3 overflow-y-auto"
+      >
         {isLoading ? (
           <LoadingScreen />
         ) : data && data.data.scoops.length > 0 ? (
@@ -77,6 +90,11 @@ export default function ScoopsSection({ userId }: TSection) {
               <ScoopCard
                 key={id}
                 id={id}
+                className={
+                  isSideOpen && repliesPayload.parent_id !== id
+                    ? "opacity-50"
+                    : ""
+                }
                 userId={author.id}
                 name={author.username}
                 content={content}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Edit } from "lucide-react";
 
 import Button from "../../components/common/button";
@@ -31,6 +31,7 @@ export default function Scoop() {
 
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const previousScrollRef = useRef(0);
 
   const handleisSideOpen = () => {
     setIsSideOpen((prev) => !prev);
@@ -64,6 +65,7 @@ export default function Scoop() {
       handleErrorMessage(error as TErrorResponse);
     }
   };
+
   return (
     <div className="w-full pt-2">
       <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
@@ -76,7 +78,19 @@ export default function Scoop() {
       </div>
 
       <div className="w-full grid grid-cols-1 gap-x-2 py-2 lg:grid-cols-2">
-        <div className="w-full h-[calc(100vh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]">
+        <div
+          onScroll={(e) => {
+            const currentScroll = e.currentTarget.scrollTop;
+            if (
+              (isSideOpen && currentScroll > previousScrollRef.current + 10) ||
+              (isSideOpen && currentScroll > previousScrollRef.current - 10)
+            ) {
+              setIsSideOpen(false);
+            }
+            previousScrollRef.current = currentScroll;
+          }}
+          className="w-full h-[calc(100vh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
+        >
           {isLoadingScoops ? (
             <LoadingScreen />
           ) : scoops?.data ? (
@@ -91,6 +105,11 @@ export default function Scoop() {
                 created_at,
               }) => (
                 <ScoopCard
+                  className={
+                    isSideOpen && repliesPayload.parent_id !== id
+                      ? "opacity-50"
+                      : ""
+                  }
                   key={id}
                   id={id}
                   userId={author.id}
