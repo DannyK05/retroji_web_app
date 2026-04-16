@@ -4,6 +4,7 @@ import type { TSnapzImage } from "../../store/types/snapz";
 export type SnapzProps = {
   id: string;
   name: string;
+  className?: string;
   userId: number;
   date: Date;
   images: TSnapzImage[];

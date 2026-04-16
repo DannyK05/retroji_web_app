@@ -13,6 +13,7 @@ import type { PostCommentFormProps } from "../types";
 export default function PostCommentForm({
   commentPayload,
   handleCommentPayload,
+  refetch,
 }: PostCommentFormProps) {
   const [postComment, { isLoading: isPostingComment }] =
     usePostCommentMutation();
@@ -27,6 +28,7 @@ export default function PostCommentForm({
         handleApiMessage(response?.data);
         handleCommentPayload("");
       }
+      refetch?.();
     } catch (error) {
       handleErrorMessage(error as TErrorResponse);
     }

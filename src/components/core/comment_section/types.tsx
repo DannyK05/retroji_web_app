@@ -4,6 +4,7 @@ import { TPostCommentDto } from "../../../store/types/snapz";
 export type CommentSectionProps = {
   commentPayload: TPostCommentDto;
   handleCommentPayload: (content: string, snapz_id?: string) => void;
+  refetch?: () => void;
   handleClose: () => void;
 };
 
@@ -16,4 +17,5 @@ export type CommentCardProps = {
 export type PostCommentFormProps = {
   commentPayload: TPostCommentDto;
   handleCommentPayload: (content: string, snapz_id?: string) => void;
+  refetch?: () => void;
 };

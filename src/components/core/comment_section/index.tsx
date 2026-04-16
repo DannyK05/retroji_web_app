@@ -10,6 +10,7 @@ export default function CommentsSection({
   commentPayload,
   handleCommentPayload,
   handleClose,
+  refetch,
 }: CommentSectionProps) {
   const {
     data: comments,
@@ -43,6 +44,7 @@ export default function CommentsSection({
       <PostCommentForm
         commentPayload={commentPayload}
         handleCommentPayload={handleCommentPayload}
+        refetch={refetch}
       />
     </SideContainer>
   );

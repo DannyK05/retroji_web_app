@@ -11,6 +11,7 @@ import { getRelativeTime } from "../../../lib/helpers";
 export default function SnapzCard({
   id,
   userId,
+  className,
   name,
   date,
   images,
@@ -24,10 +25,18 @@ export default function SnapzCard({
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
 
   return (
-    <div className="flex w-full flex-col items-start bg-white border">
+    <div
+      className={twMerge(
+        "flex w-full flex-col items-start bg-white border",
+        className,
+      )}
+    >
       <div className="w-full flex items-center text-2xl bg-[var(--retro-blue)] text-white justify-between p-2">
         <p>
-          <Link className="text-white hover:underline" to={`/profile/${userId}`}>
+          <Link
+            className="text-white hover:underline"
+            to={`/profile/${userId}`}
+          >
             {name}
           </Link>
         </p>
