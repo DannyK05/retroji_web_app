@@ -24,11 +24,7 @@ import EmptyScreen from "../../components/common/empty-screen";
 import CommentsSection from "../../components/core/comment_section";
 
 export default function Snapz() {
-  const {
-    data: snapz,
-    isLoading: isLoadingAllSnapz,
-    isFetching: isFetchingAllSnapz,
-  } = useGetAllSnapzQuery();
+  const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
 
   const [like] = useLikeSnapzMutation();
 
@@ -93,13 +89,12 @@ export default function Snapz() {
             const currentScroll = e.currentTarget.scrollTop;
             if (isSideOpen && currentScroll > previousScrollRef.current + 17) {
               setIsSideOpen(false);
-              console.log(previousScrollRef.current, currentScroll);
             }
             previousScrollRef.current = currentScroll;
           }}
           className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
         >
-          {isLoadingAllSnapz || isFetchingAllSnapz ? (
+          {isLoadingAllSnapz ? (
             <LoadingScreen />
           ) : snapz?.data ? (
             snapz?.data.map(
