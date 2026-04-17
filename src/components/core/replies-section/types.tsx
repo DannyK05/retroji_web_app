@@ -5,6 +5,7 @@ export type RepliesSectionProps = {
   repliesPayload: TPostScoopsDto;
   handleRepliesPayload: (content: string, parent_id?: string) => void;
   refetch?: () => void;
+  isOpen: boolean;
   handleClose: () => void;
 };
 

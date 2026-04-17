@@ -62,7 +62,7 @@ export default function SnapzSection({ userId }: TSection) {
   return isLoading ? (
     <LoadingScreen />
   ) : data && data.data.snapz.length > 0 ? (
-    <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 lg:grid-cols-2">
+    <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 overflow-hidden lg:grid-cols-2">
       <div
         onScroll={(e) => {
           const currentScroll = e.currentTarget.scrollTop;
@@ -105,16 +105,15 @@ export default function SnapzSection({ userId }: TSection) {
         )}
       </div>
 
-      {isSideOpen && (
-        <div className="w-full h-full flex items-center justify-center">
-          <CommentsSection
-            handleClose={handleisSideOpen}
-            commentPayload={commentPayload}
-            handleCommentPayload={handleCommentPayload}
-            refetch={refetchUserSnapz}
-          />
-        </div>
-      )}
+      <div className="w-full h-full flex items-center justify-center">
+        <CommentsSection
+          isOpen={isSideOpen}
+          handleClose={handleisSideOpen}
+          commentPayload={commentPayload}
+          handleCommentPayload={handleCommentPayload}
+          refetch={refetchUserSnapz}
+        />
+      </div>
     </section>
   ) : (
     <EmptyScreen />

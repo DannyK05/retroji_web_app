@@ -131,7 +131,7 @@ export default function Layout() {
             )}
           ></div>
 
-          <div className="px-4 col-span-6 overflow-x-hidden lg:col-start-2 lg:col-end-6">
+          <div className="px-4 col-span-6 overflow-hidden lg:col-start-2 lg:col-end-6">
             <RouteGuard>
               <Outlet />
             </RouteGuard>

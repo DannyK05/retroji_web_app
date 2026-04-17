@@ -8,12 +8,14 @@ export function SideContainer({
   title,
   className,
   children,
+  isOpen,
   handleClose,
 }: SideContainerProps) {
   return (
     <aside
       className={twMerge(
-        "absolute z-100 left-0 bottom-0 w-full h-screen flex flex-col items-start space-y-2 border shadow-md bg-white lg:relative lg:h-auto",
+        "absolute z-100 left-0 bottom-0 w-full h-screen flex flex-col items-start space-y-2 border shadow-md bg-white translate-y-full opacity-0 transition-all duration-300 lg:relative lg:h-auto",
+        isOpen && "translate-y-0 opacity-100",
         className,
       )}
     >

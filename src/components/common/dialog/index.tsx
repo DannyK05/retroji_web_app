@@ -3,12 +3,21 @@ import { XIcon } from "lucide-react";
 import Button from "../button";
 
 import type { DialogProps } from "./types";
+import { twMerge } from "tailwind-merge";
 
-export default function Dialog({ children, title, handleClose }: DialogProps) {
+export default function Dialog({
+  children,
+  title,
+  isOpen,
+  handleClose,
+}: DialogProps) {
   return (
     <div
       onClick={handleClose}
-      className="z-10 absolute h-screen w-screen top-0 left-0 flex items-center justify-center px-2 bg-black/40 cursor-pointer"
+      className={twMerge(
+        "z-10 absolute h-screen w-screen top-0 left-0 flex items-center justify-center px-2 bg-black/40 cursor-pointer scale-0 opacity-0 transition-all duration-300",
+        isOpen && "scale-100 opacity-100",
+      )}
     >
       <div
         onClick={(e) => e.stopPropagation()}

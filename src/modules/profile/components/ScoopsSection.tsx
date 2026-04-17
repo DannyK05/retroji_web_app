@@ -64,7 +64,7 @@ export default function ScoopsSection({ userId }: TSection) {
       <LoadingScreen />
     </div>
   ) : data && data.data.scoops.length > 0 ? (
-    <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 lg:grid-cols-2">
+    <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 overflow-hidden lg:grid-cols-2">
       <div
         onScroll={(e) => {
           const currentScroll = e.currentTarget.scrollTop;
@@ -108,16 +108,15 @@ export default function ScoopsSection({ userId }: TSection) {
         )}
       </div>
 
-      {isSideOpen && (
-        <div className="w-full h-full flex items-center justify-center">
-          <RepliesSection
-            handleClose={handleisSideOpen}
-            repliesPayload={repliesPayload}
-            handleRepliesPayload={handleRepliesPayload}
-            refetch={refetchUserScoops}
-          />
-        </div>
-      )}
+      <div className="w-full h-full flex items-center justify-center">
+        <RepliesSection
+          isOpen={isSideOpen}
+          handleClose={handleisSideOpen}
+          repliesPayload={repliesPayload}
+          handleRepliesPayload={handleRepliesPayload}
+          refetch={refetchUserScoops}
+        />
+      </div>
     </section>
   ) : (
     <EmptyScreen />

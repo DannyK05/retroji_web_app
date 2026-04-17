@@ -133,21 +133,22 @@ export default function Scoop() {
             )}
           </div>
 
-          {isSideOpen && (
-            <RepliesSection
-              repliesPayload={repliesPayload}
-              handleRepliesPayload={handleRepliesPayload}
-              handleClose={handleisSideOpen}
-            />
-          )}
+          <RepliesSection
+            isOpen={isSideOpen}
+            repliesPayload={repliesPayload}
+            handleRepliesPayload={handleRepliesPayload}
+            handleClose={handleisSideOpen}
+          />
         </div>
       )}
 
-      {isDialogOpen && (
-        <Dialog handleClose={handleisDialogOpen} title="Post Scoops">
-          <CreateScoopsForm handleClose={handleisDialogOpen} />
-        </Dialog>
-      )}
+      <Dialog
+        isOpen={isDialogOpen}
+        handleClose={handleisDialogOpen}
+        title="Post Scoops"
+      >
+        <CreateScoopsForm handleClose={handleisDialogOpen} />
+      </Dialog>
 
       <Button
         onClick={handleisDialogOpen}

@@ -10,6 +10,7 @@ export default function CommentsSection({
   commentPayload,
   handleCommentPayload,
   handleClose,
+  isOpen,
   refetch,
 }: CommentSectionProps) {
   const {
@@ -20,6 +21,7 @@ export default function CommentsSection({
 
   return (
     <SideContainer
+      isOpen={isOpen}
       className="lg:col-span-2"
       title="Comments"
       handleClose={handleClose}

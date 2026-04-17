@@ -140,21 +140,22 @@ export default function Snapz() {
             )}
           </div>
 
-          {isSideOpen && (
-            <CommentsSection
-              handleClose={handleisSideOpen}
-              commentPayload={commentPayload}
-              handleCommentPayload={handleCommentPayload}
-            />
-          )}
+          <CommentsSection
+            isOpen={isSideOpen}
+            handleClose={handleisSideOpen}
+            commentPayload={commentPayload}
+            handleCommentPayload={handleCommentPayload}
+          />
         </div>
       )}
 
-      {isDialogOpen && (
-        <Dialog handleClose={handleisDialogOpen} title="Post Snapz">
-          <CreateSnapzForm handleClose={handleisDialogOpen} />
-        </Dialog>
-      )}
+      <Dialog
+        isOpen={isDialogOpen}
+        handleClose={handleisDialogOpen}
+        title="Post Snapz"
+      >
+        <CreateSnapzForm handleClose={handleisDialogOpen} />
+      </Dialog>
 
       <Button
         onClick={handleisDialogOpen}

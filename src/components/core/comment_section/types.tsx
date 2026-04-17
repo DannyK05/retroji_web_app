@@ -5,6 +5,7 @@ export type CommentSectionProps = {
   commentPayload: TPostCommentDto;
   handleCommentPayload: (content: string, snapz_id?: string) => void;
   refetch?: () => void;
+  isOpen: boolean;
   handleClose: () => void;
 };
 

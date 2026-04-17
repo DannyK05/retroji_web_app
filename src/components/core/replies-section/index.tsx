@@ -15,6 +15,7 @@ export default function RepliesSection({
   repliesPayload,
   handleRepliesPayload,
   handleClose,
+  isOpen,
   refetch,
 }: RepliesSectionProps) {
   const { data: replies, isLoading: isLoadingAllReplies } =
@@ -36,7 +37,7 @@ export default function RepliesSection({
   };
 
   return (
-    <SideContainer title="Replies" handleClose={handleClose}>
+    <SideContainer isOpen={isOpen} title="Replies" handleClose={handleClose}>
       <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
         {isLoadingAllReplies ? (
           <LoadingScreen />
