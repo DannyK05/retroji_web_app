@@ -15,6 +15,7 @@ import type { TUser } from "../../store/types/auth";
 import { MenuIcon, XIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useState } from "react";
+import RouteGuard from "./RouteGuard";
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -131,7 +132,9 @@ export default function Layout() {
           ></div>
 
           <div className="px-4 col-span-6 overflow-x-hidden lg:col-start-2 lg:col-end-6">
-            <Outlet />
+            <RouteGuard>
+              <Outlet />
+            </RouteGuard>
           </div>
 
           <div className="hidden border fixed right-6 p-2 lg:block">

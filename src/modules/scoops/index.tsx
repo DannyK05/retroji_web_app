@@ -77,21 +77,30 @@ export default function Scoop() {
         </Button>
       </div>
 
-      <div className="w-full grid grid-cols-1 gap-x-2 py-2 lg:grid-cols-2">
-        <div
-          onScroll={(e) => {
-            const currentScroll = e.currentTarget.scrollTop;
-            if (isSideOpen && currentScroll > previousScrollRef.current + 10) {
-              setIsSideOpen(false);
-            }
-            previousScrollRef.current = currentScroll;
-          }}
-          className="w-full h-[calc(100vh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
-        >
-          {isLoadingScoops ? (
-            <LoadingScreen />
-          ) : scoops?.data ? (
-            scoops?.data?.map(
+      {isLoadingScoops ? (
+        <div className="h-[calc(100vh-125px)]">
+          <LoadingScreen />
+        </div>
+      ) : scoops && scoops.data.length === 0 ? (
+        <div className="h-[calc(100vh-125px)]">
+          <EmptyScreen />
+        </div>
+      ) : (
+        <div className="w-full grid grid-cols-1 gap-x-2 py-2 lg:grid-cols-2">
+          <div
+            onScroll={(e) => {
+              const currentScroll = e.currentTarget.scrollTop;
+              if (
+                isSideOpen &&
+                currentScroll > previousScrollRef.current + 10
+              ) {
+                setIsSideOpen(false);
+              }
+              previousScrollRef.current = currentScroll;
+            }}
+            className="w-full h-[calc(100vh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
+          >
+            {scoops?.data?.map(
               ({
                 id,
                 author,
@@ -121,20 +130,18 @@ export default function Scoop() {
                   handleLike={handleLike}
                 />
               ),
-            )
-          ) : (
-            <EmptyScreen />
+            )}
+          </div>
+
+          {isSideOpen && (
+            <RepliesSection
+              repliesPayload={repliesPayload}
+              handleRepliesPayload={handleRepliesPayload}
+              handleClose={handleisSideOpen}
+            />
           )}
         </div>
-
-        {isSideOpen && (
-          <RepliesSection
-            repliesPayload={repliesPayload}
-            handleRepliesPayload={handleRepliesPayload}
-            handleClose={handleisSideOpen}
-          />
-        )}
-      </div>
+      )}
 
       {isDialogOpen && (
         <Dialog handleClose={handleisDialogOpen} title="Post Scoops">

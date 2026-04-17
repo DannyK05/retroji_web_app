@@ -17,18 +17,12 @@ export default function RepliesSection({
   handleClose,
   refetch,
 }: RepliesSectionProps) {
-  const 
-    {
-      data: replies,
-      isLoading: isLoadingAllReplies
-    }= useGetAllScoopsByIdQuery(repliesPayload.parent_id ?? "");
-
-  
+  const { data: replies, isLoading: isLoadingAllReplies } =
+    useGetAllScoopsByIdQuery(repliesPayload.parent_id ?? "");
 
   const [likeScoops] = useLikeScoopsMutation();
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
-
 
   const handleLike = async (scoop_id: string) => {
     try {
@@ -46,7 +40,7 @@ export default function RepliesSection({
       <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
         {isLoadingAllReplies ? (
           <LoadingScreen />
-        ) : replies?.data ? (
+        ) : replies?.data.length !== 0 ? (
           replies?.data.map(
             ({
               id,

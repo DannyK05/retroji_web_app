@@ -59,53 +59,49 @@ export default function SnapzSection({ userId }: TSection) {
     }
   };
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : data && data.data.snapz.length > 0 ? (
     <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 lg:grid-cols-2">
       <div
         onScroll={(e) => {
           const currentScroll = e.currentTarget.scrollTop;
-          if (
-            (isSideOpen && currentScroll > previousScrollRef.current + 50) ||
-            (isSideOpen && currentScroll > previousScrollRef.current - 50)
-          ) {
+          if (isSideOpen && currentScroll > previousScrollRef.current + 10) {
             setIsSideOpen(false);
           }
           previousScrollRef.current = currentScroll;
         }}
         className="w-full flex flex-col items-center space-y-3 py-2 px-1 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
       >
-        {isLoading ? (
-          <LoadingScreen />
-        ) : data && data.data.snapz.length > 0 ? (
-          data?.data.snapz.map(
-            ({
-              id,
-              author,
-              created_at,
-              images,
-              caption,
-              like_count,
-              comment_count,
-              is_liked,
-            }) => (
-              <SnapzCard
-                key={id}
-                id={id}
-                name={author.username}
-                userId={author.id}
-                date={created_at}
-                images={images}
-                caption={caption}
-                like_count={like_count}
-                isLiked={is_liked}
-                comment_count={comment_count}
-                handleComments={handleDisplayComments}
-                handleLike={handleLike}
-              />
-            ),
-          )
-        ) : (
-          <EmptyScreen />
+        {data?.data.snapz.map(
+          ({
+            id,
+            author,
+            created_at,
+            images,
+            caption,
+            like_count,
+            comment_count,
+            is_liked,
+          }) => (
+            <SnapzCard
+              key={id}
+              id={id}
+              className={
+                isSideOpen && commentPayload.snapz_id !== id ? "opacity-40" : ""
+              }
+              name={author.username}
+              userId={author.id}
+              date={created_at}
+              images={images}
+              caption={caption}
+              like_count={like_count}
+              isLiked={is_liked}
+              comment_count={comment_count}
+              handleComments={handleDisplayComments}
+              handleLike={handleLike}
+            />
+          ),
         )}
       </div>
 
@@ -120,5 +116,7 @@ export default function SnapzSection({ userId }: TSection) {
         </div>
       )}
     </section>
+  ) : (
+    <EmptyScreen />
   );
 }

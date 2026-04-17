@@ -59,57 +59,52 @@ export default function ScoopsSection({ userId }: TSection) {
     }
   };
 
-  return (
+  return isLoading ? (
+    <div className="w-full h-full grid cols-span-2">
+      <LoadingScreen />
+    </div>
+  ) : data && data.data.scoops.length > 0 ? (
     <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 lg:grid-cols-2">
       <div
         onScroll={(e) => {
           const currentScroll = e.currentTarget.scrollTop;
-          if (
-            (isSideOpen && currentScroll > previousScrollRef.current + 10) ||
-            (isSideOpen && currentScroll > previousScrollRef.current - 10)
-          ) {
+          if (isSideOpen && currentScroll > previousScrollRef.current + 10) {
             setIsSideOpen(false);
           }
           previousScrollRef.current = currentScroll;
         }}
         className="w-full flex flex-col items-center space-y-3 py-2 px-1 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
       >
-        {isLoading ? (
-          <LoadingScreen />
-        ) : data && data.data.scoops.length > 0 ? (
-          data?.data?.scoops.map(
-            ({
-              id,
-              author,
-              content,
-              is_liked,
-              like_count,
-              replies_count,
-              created_at,
-            }) => (
-              <ScoopCard
-                key={id}
-                id={id}
-                className={
-                  isSideOpen && repliesPayload.parent_id !== id
-                    ? "opacity-50"
-                    : ""
-                }
-                userId={author.id}
-                name={author.username}
-                content={content}
-                date={created_at}
-                image={"/public/assets/images/profile_pic.jpg"}
-                likeCount={like_count}
-                isLiked={is_liked}
-                repliesCount={replies_count}
-                handleReplies={handleDisplayReplies}
-                handleLike={handleLike}
-              />
-            ),
-          )
-        ) : (
-          <EmptyScreen />
+        {data?.data?.scoops.map(
+          ({
+            id,
+            author,
+            content,
+            is_liked,
+            like_count,
+            replies_count,
+            created_at,
+          }) => (
+            <ScoopCard
+              key={id}
+              id={id}
+              className={
+                isSideOpen && repliesPayload.parent_id !== id
+                  ? "opacity-50"
+                  : ""
+              }
+              userId={author.id}
+              name={author.username}
+              content={content}
+              date={created_at}
+              image={"/public/assets/images/profile_pic.jpg"}
+              likeCount={like_count}
+              isLiked={is_liked}
+              repliesCount={replies_count}
+              handleReplies={handleDisplayReplies}
+              handleLike={handleLike}
+            />
+          ),
         )}
       </div>
 
@@ -124,5 +119,7 @@ export default function ScoopsSection({ userId }: TSection) {
         </div>
       )}
     </section>
+  ) : (
+    <EmptyScreen />
   );
 }

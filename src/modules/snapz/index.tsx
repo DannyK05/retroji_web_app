@@ -83,21 +83,30 @@ export default function Snapz() {
           </div>
         </Button>
       </div>
-      <div className="w-full grid grid-cols-1 gap-x-4 py-2 lg:grid-cols-5">
-        <div
-          onScroll={(e) => {
-            const currentScroll = e.currentTarget.scrollTop;
-            if (isSideOpen && currentScroll > previousScrollRef.current + 17) {
-              setIsSideOpen(false);
-            }
-            previousScrollRef.current = currentScroll;
-          }}
-          className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
-        >
-          {isLoadingAllSnapz ? (
-            <LoadingScreen />
-          ) : snapz?.data ? (
-            snapz?.data.map(
+      {isLoadingAllSnapz ? (
+        <div className="h-[calc(100vh-125px)]">
+          <LoadingScreen />
+        </div>
+      ) : snapz && snapz.data.length === 0 ? (
+        <div className="h-[calc(100vh-125px)]">
+          <EmptyScreen />
+        </div>
+      ) : (
+        <div className="w-full grid grid-cols-1 gap-x-4 py-2 lg:grid-cols-5">
+          <div
+            onScroll={(e) => {
+              const currentScroll = e.currentTarget.scrollTop;
+              if (
+                isSideOpen &&
+                currentScroll > previousScrollRef.current + 17
+              ) {
+                setIsSideOpen(false);
+              }
+              previousScrollRef.current = currentScroll;
+            }}
+            className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
+          >
+            {snapz?.data.map(
               ({
                 id,
                 author,
@@ -128,20 +137,18 @@ export default function Snapz() {
                   handleLike={handleLike}
                 />
               ),
-            )
-          ) : (
-            <EmptyScreen />
+            )}
+          </div>
+
+          {isSideOpen && (
+            <CommentsSection
+              handleClose={handleisSideOpen}
+              commentPayload={commentPayload}
+              handleCommentPayload={handleCommentPayload}
+            />
           )}
         </div>
-
-        {isSideOpen && (
-          <CommentsSection
-            handleClose={handleisSideOpen}
-            commentPayload={commentPayload}
-            handleCommentPayload={handleCommentPayload}
-          />
-        )}
-      </div>
+      )}
 
       {isDialogOpen && (
         <Dialog handleClose={handleisDialogOpen} title="Post Snapz">

@@ -78,7 +78,7 @@ export default function SnapzCard({
         <Button
           className={twMerge(
             isLiked || clickLiked ? "text-[var(--retro-blue)]" : "",
-            "hover:text-white",
+            "lg:hover:text-white lg:hover:bg-[var(--retro-blue)]",
           )}
           onClick={(e) => {
             setClickedLiked((prev) => !prev);
