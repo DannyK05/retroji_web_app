@@ -10,6 +10,7 @@ import SignUp from "./modules/auth/signup/index.";
 import SignIn from "./modules/auth/signin/index.";
 import ResetPassword from "./modules/auth/reset-password/ResetPassword";
 import Profile from "./modules/profile";
+import Search from "./modules/search";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/snapz",
         element: <Snapz />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
       {
         path: "/profile/:id",

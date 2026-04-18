@@ -76,7 +76,7 @@ export default function Snapz() {
   return (
     <div className="w-full pt-2">
       <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
-        <h1 className="text-4xl">Snapz</h1>{" "}
+        <h1 className="ml-2 text-4xl">Snapz</h1>{" "}
         <Button onClick={handleisDialogOpen} className="w-auto h-10 lg:hidden">
           <div className="flex items-center space-x-2 text-2xl">
             <PlusSquare /> <p>Post Snapz</p>
@@ -92,7 +92,7 @@ export default function Snapz() {
           <EmptyScreen />
         </div>
       ) : (
-        <div className="w-full grid grid-cols-1 gap-x-4 py-2 lg:grid-cols-5">
+        <div className="w-full grid grid-cols-1 gap-x-2 py-2 px-1 lg:border lg:grid-cols-5">
           <div
             onScroll={(e) => {
               const currentScroll = e.currentTarget.scrollTop;

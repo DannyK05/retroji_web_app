@@ -1,0 +1,111 @@
+import { useRef, useState } from "react";
+import { useLikeSnapzMutation } from "../../../../store/api/snapz";
+import { TPostCommentDto } from "../../../../store/types/snapz";
+import EmptyScreen from "../../../common/empty-screen";
+import type { SnapzTabProps } from "../types";
+import { useHandleApiMessage } from "../../../common/message-banner/hooks";
+import { TErrorResponse } from "../../../../store/types/generic";
+import SnapzCard from "../../../../modules/snapz/components/SnapzCard";
+import CommentsSection from "../../comment_section";
+
+export default function SnapzTab({ data }: SnapzTabProps) {
+  const [like] = useLikeSnapzMutation();
+
+  const [commentPayload, setCommentPayload] = useState<TPostCommentDto>({
+    content: "",
+    snapz_id: "",
+  });
+  const [isSideOpen, setIsSideOpen] = useState(false);
+  const previousScrollRef = useRef(0);
+
+  const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
+
+  const handleCommentPayload = (content: string, snapz_id?: string) => {
+    setCommentPayload((prev) => ({
+      content: content !== undefined ? content : prev.content,
+      snapz_id: snapz_id ? snapz_id : prev.snapz_id,
+    }));
+  };
+
+  const handleisSideOpen = () => {
+    setIsSideOpen((prev) => !prev);
+  };
+
+  const handleLike = async (snapz_id: string, e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await like({ snapz_id });
+      if (response.data) {
+        handleApiMessage(response?.data);
+      }
+      //  refetchUserSnapz();
+    } catch (error) {
+      handleErrorMessage(error as TErrorResponse);
+    }
+  };
+
+  const handleDisplayComments = (snapz_id: string) => {
+    if (!isSideOpen) {
+      setIsSideOpen(true);
+      setCommentPayload({ content: "", snapz_id: snapz_id });
+    }
+  };
+
+  return data && data.length > 0 ? (
+    <section className="w-full h-full grid grid-cols-1 gap-2 py-2 px-3 overflow-hidden lg:grid-cols-2">
+      <div
+        onScroll={(e) => {
+          const currentScroll = e.currentTarget.scrollTop;
+          if (isSideOpen && currentScroll > previousScrollRef.current + 10) {
+            setIsSideOpen(false);
+          }
+          previousScrollRef.current = currentScroll;
+        }}
+        className="w-full flex flex-col items-center space-y-3 py-2 px-1 lg:max-h-[450px] lg:px-3 lg:overflow-y-auto"
+      >
+        {data?.map(
+          ({
+            id,
+            author,
+            created_at,
+            images,
+            caption,
+            like_count,
+            comment_count,
+            is_liked,
+          }) => (
+            <SnapzCard
+              key={id}
+              id={id}
+              className={
+                isSideOpen && commentPayload.snapz_id !== id ? "opacity-40" : ""
+              }
+              name={author.username}
+              userId={author.id}
+              date={created_at}
+              images={images}
+              caption={caption}
+              like_count={like_count}
+              isLiked={is_liked}
+              comment_count={comment_count}
+              handleComments={handleDisplayComments}
+              handleLike={handleLike}
+            />
+          ),
+        )}
+      </div>
+
+      <div className="w-full h-full flex items-center justify-center">
+        <CommentsSection
+          isOpen={isSideOpen}
+          handleClose={handleisSideOpen}
+          commentPayload={commentPayload}
+          handleCommentPayload={handleCommentPayload}
+          //  refetch={refetchUserSnapz}
+        />
+      </div>
+    </section>
+  ) : (
+    <EmptyScreen />
+  );
+}

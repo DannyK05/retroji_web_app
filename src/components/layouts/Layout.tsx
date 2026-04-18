@@ -7,7 +7,6 @@ import { removeCredentials } from "../../store/features/authSlice";
 import { useHandleApiMessage } from "../common/message-banner/hooks";
 import { getUserData } from "../../lib/helpers";
 
-import Button from "../common/button";
 import MessageBanner from "../common/message-banner";
 
 import type { TApiResponse } from "../../store/types/generic";
@@ -16,6 +15,7 @@ import { MenuIcon, XIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import RouteGuard from "./RouteGuard";
+import SearchSection from "../core/search-section";
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -24,6 +24,14 @@ export default function Layout() {
   const { handleApiMessage } = useHandleApiMessage();
   const user: TUser = getUserData();
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const nav = [
+    { name: "snapz", link: "/snapz" },
+    { name: "scoops", link: "/scoops" },
+    { name: "profile", link: `/profile/${user.id}` },
+    { name: "search", link: "/search" },
+  ];
 
   const handleLogout = async () => {
     const response = await logout();
@@ -54,13 +62,14 @@ export default function Layout() {
         </h1>
       </header>
 
-      <main className="px-4">
+      <main className="lg:px-4">
         <MessageBanner />
+
         <div className="grid grid-cols-6 w-full gap-x-4">
           <div
             className={twMerge(
-              !isNavOpen && "hidden",
-              "h-full z-50 fixed top-0 left-0 px-2 pt-3 bg-white border-r-1 lg:border-r-0 lg:static lg:block lg:z-10",
+              "h-full z-50 fixed top-0 -translate-x-full px-2 pt-3 bg-white border-r-1 transition-all duration-300 lg:border-r-0 lg:static lg:translate-x-0 lg:block lg:z-10",
+              isNavOpen && "translate-x-0",
             )}
           >
             <div className="flex flex-col space-y-2 col-span-1 lg:flex">
@@ -72,39 +81,37 @@ export default function Layout() {
               >
                 <XIcon className="size-10" />
               </button>
+
               <nav className="flex flex-col p-2 items-start text-orbitronio text-3xl border">
                 <p className="text-4xl w-full border-b-[1px]">getting around</p>
-                <NavLink
-                  className="text-retro-link hover:underline"
-                  to={"/snapz"}
-                >
-                  snapz
-                </NavLink>
-                <NavLink
-                  className="text-retro-link hover:underline"
-                  to={"/scoops/"}
-                >
-                  scoops
-                </NavLink>
-                <NavLink
-                  className="text-retro-link hover:underline"
-                  to={`/profile/${user.id}`}
-                >
-                  profile
-                </NavLink>
+                {nav.map(({ name, link }) => (
+                  <NavLink
+                    key={name}
+                    className={twMerge(
+                      name === "search" && "lg:hidden",
+                      "text-retro-link hover:underline",
+                    )}
+                    onClick={() => setSearch("")}
+                    to={link}
+                  >
+                    {name}
+                  </NavLink>
+                ))}
               </nav>
 
-              <div className="hidden border text-3xl flex flex-col items-start space-y-1 p-1 lg:block">
+              <div className="hidden border text-3xl p-1 lg:block">
                 <p className="font-semibold text-4xl">search</p>
 
                 <input
-                  className="border p-1 "
+                  className="border p-1 w-full"
                   title="Search"
                   placeholder="Dig it.."
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
                   type="search"
                 />
-
-                <Button>search</Button>
               </div>
 
               <div className="block border p-2 lg:hidden">
@@ -131,10 +138,14 @@ export default function Layout() {
             )}
           ></div>
 
-          <div className="px-4 col-span-6 overflow-hidden lg:col-start-2 lg:col-end-6">
-            <RouteGuard>
-              <Outlet />
-            </RouteGuard>
+          <div className="col-span-6 overflow-hidden lg:px-4 lg:col-start-2 lg:col-end-6">
+            {search === "" ? (
+              <RouteGuard>
+                <Outlet />
+              </RouteGuard>
+            ) : (
+              <SearchSection query={search} />
+            )}
           </div>
 
           <div className="hidden border fixed right-6 p-2 lg:block">

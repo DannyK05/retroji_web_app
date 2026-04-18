@@ -4,6 +4,7 @@ import { authApi } from "./api/auth";
 import { snapzApi } from "./api/snapz";
 import { scoopsApi } from "./api/scoops";
 import { profileApi } from "./api/profile";
+import { searchApi } from "./api/search";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     [snapzApi.reducerPath]: snapzApi.reducer,
     [scoopsApi.reducerPath]: scoopsApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+     [searchApi.reducerPath]: searchApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(
@@ -19,6 +21,7 @@ export const store = configureStore({
       snapzApi.middleware,
       scoopsApi.middleware,
       profileApi.middleware,
+      searchApi.middleware,
     );
   },
 });
