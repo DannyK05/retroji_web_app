@@ -1,8 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../helpers";
 import type {
+  TIsUsernameTakenResponse,
   TLoginDto,
   TLoginResponse,
+  TLogoutDto,
   TLogoutResponse,
   TSignupDto,
   TSignupResponse,
@@ -26,14 +28,27 @@ export const authApi = createApi({
         body: payload,
       }),
     }),
-    logout: builder.mutation<TLogoutResponse, void>({
-      query: () => ({
+    logout: builder.mutation<TLogoutResponse, TLogoutDto>({
+      query: (payload) => ({
         url: "/auth/logout/",
         method: "POST",
+        body: payload,
       }),
+    }),
+    isUsernameTaken: builder.query<boolean, string>({
+      query: (username) => ({
+        url: `/auth/username/${username}`,
+        method: "GET",
+      }),
+      transformResponse: (response: TIsUsernameTakenResponse) =>
+        response.data.is_taken,
     }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useSignupMutation,
+  useLogoutMutation,
+  useIsUsernameTakenQuery,
+} = authApi;

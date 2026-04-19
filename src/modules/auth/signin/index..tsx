@@ -10,7 +10,6 @@ import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TLoginDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
 
-
 export default function SignIn() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -25,12 +24,16 @@ export default function SignIn() {
     try {
       const response = await login(data).unwrap();
       if (response.data) {
-        dispatch(setCredentials(response.data.user));
+        dispatch(
+          setCredentials({
+            user: response.data.user,
+            tokens: response.tokens,
+          }),
+        );
         handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error: any) {
-      console.log(error);
       handleErrorMessage(error.data as TErrorResponse);
     }
   };
@@ -60,7 +63,7 @@ export default function SignIn() {
 
         <button
           type="submit"
-          className=" text-center flex items-center justify-center font-bold text-press border-[1px] p-1 w-full cursor-pointer"
+          className="text-center flex items-center justify-center font-bold text-press border p-1 w-full cursor-pointer"
           disabled={isLoading}
         >
           {isLoading ? "..." : "Sign in"}
@@ -68,10 +71,10 @@ export default function SignIn() {
       </form>
 
       <div className=" w-1/2 flex items-center justify-between  text-3xl">
-        <Link to="/signup" className="underline">
+        <Link to="/signup" className="text-retro-link hover:underline">
           signup
         </Link>{" "}
-        <Link to="/reset-password" className="underline">
+        <Link to="/reset-password" className="text-retro-link hover:underline">
           reset password
         </Link>
       </div>

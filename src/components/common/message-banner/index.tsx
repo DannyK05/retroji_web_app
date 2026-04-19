@@ -3,13 +3,13 @@ import { useHandleApiMessage } from "./hooks";
 
 export default function MessageBanner() {
   const { message, code, clearMessage } = useHandleApiMessage();
-  const isError = code && code >= 400;
+  const isError = code && code == 400;
   return (
     <div
       onClick={clearMessage}
       className={`${!message && "hidden"} ${
         isError ? "shadow-red-200" : "shadow-green-200"
-      } fixed top-0 right-0 flex items-center space-x-1 border px-1 shadow-lg cursor-pointer`}
+      } fixed top-0 right-0 z-100 flex items-center space-x-1 border px-1 shadow-lg bg-white cursor-pointer`}
     >
       {isError ? (
         <XIcon className="text-red-500" />

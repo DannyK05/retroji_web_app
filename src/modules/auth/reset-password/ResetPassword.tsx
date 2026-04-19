@@ -34,16 +34,16 @@ export default function ResetPassword() {
         </label>
         <button
           type="submit"
-          className=" text-center font-bold text-press border-[1px] p-1 w-full "
+          className=" text-center font-bold text-press border p-1 w-full "
         >
           Reset
         </button>
       </form>
       <div className=" w-1/2 flex items-center justify-between  text-3xl">
-        <Link to="/signup" className="underline">
+        <Link to="/signup" className="text-retro-link hover:underline">
           signup
         </Link>{" "}
-        <Link to="/" className="underline">
+        <Link to="/" className="text-retro-link hover:underline">
           signin
         </Link>
       </div>
