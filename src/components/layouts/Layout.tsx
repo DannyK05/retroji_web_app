@@ -91,7 +91,10 @@ export default function Layout() {
                       name === "search" && "lg:hidden",
                       "text-retro-link hover:underline",
                     )}
-                    onClick={() => setSearch("")}
+                    onClick={() => {
+                      setSearch("");
+                      handleIsNavOpen();
+                    }}
                     to={link}
                   >
                     {name}

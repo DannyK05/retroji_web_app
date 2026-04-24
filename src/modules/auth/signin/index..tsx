@@ -5,7 +5,10 @@ import PasswordInput from "../../../components/common/password-input";
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 import { useLoginMutation } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
-import { setCredentials } from "../../../store/features/authSlice";
+import {
+  removeCredentials,
+  setCredentials,
+} from "../../../store/features/authSlice";
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TLoginDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
@@ -22,6 +25,8 @@ export default function SignIn() {
 
   const onSubmit: SubmitHandler<TLoginDto> = async (data) => {
     try {
+      dispatch(removeCredentials());
+
       const response = await login(data).unwrap();
       if (response.data) {
         dispatch(

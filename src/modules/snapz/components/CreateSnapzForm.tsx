@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Loader } from "lucide-react";
 
@@ -7,7 +7,10 @@ import { usePostSnapzMutation } from "../../../store/api/snapz";
 
 import Button from "../../../components/common/button";
 import TextArea from "../../../components/common/text-area";
-import ImageInput from "../../../components/common/image-input";
+import {
+  ImageInput,
+  ImageInputRef,
+} from "../../../components/common/image-input";
 
 import type { TPostSnapzDto } from "../../../store/types/snapz";
 import type { TErrorResponse } from "../../../store/types/generic";
@@ -21,6 +24,8 @@ export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
   const [postSnapz, { isLoading: isPostingSnapz }] = usePostSnapzMutation();
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
+
+  const imageInputRef = useRef<ImageInputRef>(null);
 
   const handlePostSnapz = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +45,7 @@ export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
           caption: "",
           images: [],
         });
+        imageInputRef.current?.reset();
         handleClose();
       }
     } catch (error) {
@@ -77,6 +83,7 @@ export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
           />
 
           <ImageInput
+            ref={imageInputRef}
             name="snapz_image"
             handleRemoveImage={handleRemoveImage}
             handleImages={(files: File[]) => {
