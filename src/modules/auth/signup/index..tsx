@@ -9,7 +9,10 @@ import {
   useSignupMutation,
 } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
-import { setCredentials } from "../../../store/features/authSlice";
+import {
+  removeCredentials,
+  setCredentials,
+} from "../../../store/features/authSlice";
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TSignupDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
@@ -31,6 +34,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<TSignupDto> = async (data) => {
     try {
+      dispatch(removeCredentials());
       const response = await signup(data).unwrap();
 
       if (response.data) {
