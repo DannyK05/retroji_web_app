@@ -48,14 +48,14 @@ export default function Layout() {
 
   return (
     <>
-      <header className="flex items-center space-x-18 pl-8 pt-2 lg:pl-0 lg:space-x-0 lg:justify-center">
+      <header className="flex items-center space-x-18 pl-4 pt-2 lg:pl-0 lg:space-x-0 lg:justify-center">
         <button
           onClick={handleIsNavOpen}
           className="self-center justify-self-start lg:hidden"
           title="toggle"
           type="button"
         >
-          <MenuIcon className="size-8" />
+          <MenuIcon className="size-6" />
         </button>
         <h1 className="text-pacifico text-center text-retro-blue text-4xl">
           Retroji
