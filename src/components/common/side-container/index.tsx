@@ -14,7 +14,7 @@ export function SideContainer({
   return (
     <aside
       className={twMerge(
-        "absolute z-100 left-0 bottom-0 w-full h-screen flex flex-col items-start space-y-2 border shadow-md bg-white translate-y-full opacity-0 transition-all duration-300 lg:relative lg:h-auto",
+        "fixed inset-0 z-100 w-full h-[100dvh] flex flex-col items-start border shadow-md bg-white translate-y-full opacity-0 transition-all duration-300 lg:relative lg:h-auto",
         isOpen && "translate-y-0 opacity-100",
         className,
       )}
@@ -29,7 +29,9 @@ export function SideContainer({
         <h2 className="text-3xl">{title}</h2>
       </div>
 
-      <div className="w-full p-4">{children}</div>
+      <div className="w-full flex-1 flex flex-col min-h-0 px-1 py-2">
+        {children}
+      </div>
     </aside>
   );
 }

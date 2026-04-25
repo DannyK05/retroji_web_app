@@ -38,7 +38,7 @@ export default function RepliesSection({
 
   return (
     <SideContainer isOpen={isOpen} title="Replies" handleClose={handleClose}>
-      <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
+      <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
         {isLoadingAllReplies ? (
           <LoadingScreen />
         ) : replies?.data.length !== 0 ? (
