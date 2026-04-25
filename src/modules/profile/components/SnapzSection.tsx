@@ -71,7 +71,7 @@ export default function SnapzSection({ userId }: TSection) {
           }
           previousScrollRef.current = currentScroll;
         }}
-        className="w-full flex flex-col items-center space-y-3 py-2 px-1 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
+        className="w-full flex flex-col items-center space-y-3 pt-2 pb-5 px-3 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
       >
         {data?.data.snapz.map(
           ({
