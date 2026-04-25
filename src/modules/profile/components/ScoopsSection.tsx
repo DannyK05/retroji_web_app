@@ -97,7 +97,7 @@ export default function ScoopsSection({ userId }: TSection) {
               name={author.username}
               content={content}
               date={created_at}
-              image={"/public/assets/images/profile_pic.jpg"}
+              image={"/assets/images/profile_pic.jpg"}
               likeCount={like_count}
               isLiked={is_liked}
               repliesCount={replies_count}
