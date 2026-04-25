@@ -58,7 +58,7 @@ export default function Profile() {
 
       <div className="w-4/5 flex flex-col items-center -mt-10 border bg-white pt-11 px-2 lg:w-3/5 lg:-mt-10">
         <img
-          className="w-20 h-20 object-cover -mt-20 border-2  lg:w-30 lg:h-30 lg:-mt-20"
+          className="w-20 h-20 object-cover -mt-20 border-2 lg:w-30 lg:h-30 lg:-mt-20"
           src="/assets/images/profile_pic.jpg"
           alt="Profile Pic"
         />

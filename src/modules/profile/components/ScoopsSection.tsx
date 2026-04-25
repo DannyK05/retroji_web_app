@@ -64,7 +64,7 @@ export default function ScoopsSection({ userId }: TSection) {
       <LoadingScreen />
     </div>
   ) : data && data.data.scoops.length > 0 ? (
-    <section className="w-full h-full grid grid-cols-1 gap-2 pt-2 pb-5 px-3 overflow-hidden lg:grid-cols-2">
+    <section className="w-full h-full grid grid-cols-1 gap-2 pt-2 pb-5 px-3 lg:grid-cols-2">
       <div
         onScroll={(e) => {
           const currentScroll = e.currentTarget.scrollTop;
