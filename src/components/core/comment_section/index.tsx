@@ -26,7 +26,7 @@ export default function CommentsSection({
       title="Comments"
       handleClose={handleClose}
     >
-      <div className="w-full h-[calc(100vh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[340px]">
+      <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[340px]">
         {isLoadingAllComments || isFetchingAllComments ? (
           <LoadingScreen />
         ) : comments?.data.length !== 0 ? (

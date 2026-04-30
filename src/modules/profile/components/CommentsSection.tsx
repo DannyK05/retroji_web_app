@@ -7,7 +7,7 @@ import type { TSection } from "../types";
 export default function CommentsSection({ userId }: TSection) {
   const { data, isLoading } = useGetUserCommentsQuery(userId);
   return (
-    <section className="w-full flex flex-col items-center space-y-3 py-2 px-3">
+    <section className="w-full flex flex-col items-center space-y-3 pt-2 pb-5 px-3">
       {isLoading ? (
         <LoadingScreen />
       ) : data && data.data.comments.length > 0 ? (
