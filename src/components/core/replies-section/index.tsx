@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import ScoopCard from "../../../modules/scoops/components/ScoopCard";
 import {
   useGetAllScoopsByIdQuery,
@@ -18,8 +19,12 @@ export default function RepliesSection({
   isOpen,
   refetch,
 }: RepliesSectionProps) {
+  const [repliesIdStack, setRepliesIdStack] = useState([
+    repliesPayload.parent_id ?? "",
+  ]);
+
   const { data: replies, isLoading: isLoadingAllReplies } =
-    useGetAllScoopsByIdQuery(repliesPayload.parent_id ?? "");
+    useGetAllScoopsByIdQuery(repliesIdStack[0]);
 
   const [likeScoops] = useLikeScoopsMutation();
 
@@ -36,8 +41,30 @@ export default function RepliesSection({
     }
   };
 
+  const handleReplies = (parentId: string) => {
+    setRepliesIdStack((prev) => [parentId, ...prev]);
+  };
+
+  const handleCloseReplies = () => {
+    if (repliesIdStack.length === 1) {
+      handleClose();
+    } else {
+      const newRepliesIdStack = [...repliesIdStack];
+      newRepliesIdStack.shift();
+      setRepliesIdStack([...newRepliesIdStack]);
+    }
+  };
+
+  useEffect(() => {
+    setRepliesIdStack([repliesPayload.parent_id ?? ""]);
+  }, [repliesPayload.parent_id]);
+
   return (
-    <SideContainer isOpen={isOpen} title="Replies" handleClose={handleClose}>
+    <SideContainer
+      isOpen={isOpen}
+      title={`Replies to ${repliesIdStack[0]}`}
+      handleClose={handleCloseReplies}
+    >
       <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
         {isLoadingAllReplies ? (
           <LoadingScreen />
@@ -63,7 +90,7 @@ export default function RepliesSection({
                 likeCount={like_count}
                 isLiked={is_liked}
                 repliesCount={replies_count}
-                handleReplies={() => console.log("here")}
+                handleReplies={handleReplies}
                 handleLike={handleLike}
               />
             ),
@@ -74,7 +101,7 @@ export default function RepliesSection({
       </div>
 
       <PostRepliesForm
-        repliesPayload={repliesPayload}
+        repliesPayload={{ ...repliesPayload, parent_id: repliesIdStack[0] }}
         refetch={refetch}
         handleRepliesPayload={handleRepliesPayload}
       />

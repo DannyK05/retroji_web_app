@@ -66,12 +66,12 @@ export default function SnapzCard({
             <ImageSlider>
               {images.map((image, index) => (
                 <div
+                  key={image.image}
                   onClick={() => handleSelectedImages(images)}
                   className="aspect-[4/3]"
                 >
                   <img
                     className="w-full h-full object-cover"
-                    key={index}
                     src={image.image}
                     alt={`Snapz pic ${index}`}
                   />
@@ -117,10 +117,12 @@ export default function SnapzCard({
         ) : (
           <ImageSlider>
             {selectedImages.map((image, index) => (
-              <div className="bg-white flex items-center justify-center">
+              <div
+                key={image.image}
+                className="bg-white flex items-center justify-center"
+              >
                 <img
                   className="max-w-[510px] object-cover"
-                  key={index}
                   src={image.image}
                   alt={`Snapz pic ${index}`}
                 />

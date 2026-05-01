@@ -104,7 +104,7 @@ export default function Snapz() {
               }
               previousScrollRef.current = currentScroll;
             }}
-            className="w-full h-[calc(100vh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
+            className="w-full h-[calc(100dvh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
             {snapz?.data.map(
               ({

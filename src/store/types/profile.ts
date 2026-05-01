@@ -7,6 +7,7 @@ export type TProfile = {
   user: TUser;
   id: string;
   image: File;
+  bio: string;
   is_followed: boolean;
   created_at: Date;
   updated_at: Date;
