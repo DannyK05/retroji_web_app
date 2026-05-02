@@ -43,8 +43,8 @@ export default function Scoop() {
 
   const handleDisplayReplies = (parent_id: string) => {
     if (!isSideOpen) {
-      setIsSideOpen(true);
       setRepliesPayload({ content: "", parent_id: parent_id });
+      setIsSideOpen(true);
     }
   };
 
@@ -98,7 +98,7 @@ export default function Scoop() {
               }
               previousScrollRef.current = currentScroll;
             }}
-            className="w-full h-[calc(100vh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
+            className="w-full h-[calc(100dvh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
             {scoops?.data?.map(
               ({

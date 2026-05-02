@@ -1,11 +1,10 @@
-import type { TAuthApiResponse } from "./generic";
+import type { TApiResponse, TAuthApiResponse } from "./generic";
 
 export type TAuthState = { user: TUser | null; tokens: TToken | null };
 
 export type TUser = {
   id: number;
   username: string;
-  email: string;
   following: number;
   followers: number;
 };
@@ -24,3 +23,5 @@ export type TLogoutResponse = { message: string };
 export type TIsUsernameTakenResponse = TAuthApiResponse<{
   is_taken: boolean;
 }>;
+
+export type TDeleteUserResponse = TApiResponse<void>;

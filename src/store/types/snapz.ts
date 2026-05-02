@@ -19,6 +19,7 @@ export type TSnapz = {
 };
 
 export type TComment = {
+  id: string;
   author: TUser;
   content: string;
   snapz: string;
@@ -41,3 +42,9 @@ export type TPostCommentResponse = TApiResponse<TComment>;
 
 export type TLikeSnapzDto = { snapz_id: string };
 export type TLikeSnapzResponse = TApiResponse<void>;
+
+export type TDeleteSnapzDto = { snapz_id: string };
+export type TDeleteSnapzResponse = TApiResponse<void>;
+
+export type TDeleteCommentDto = { comment_id: string };
+export type TDeleteCommentResponse = TApiResponse<void>;

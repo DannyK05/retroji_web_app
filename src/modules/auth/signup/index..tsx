@@ -68,9 +68,9 @@ export default function SignUp() {
             {isCheckingUsername ? (
               <Loader />
             ) : isUsernameTaken ? (
-              <XSquareIcon className="text-[#C82432]" />
+              <XSquareIcon className="text-red-600" />
             ) : (
-              <CheckSquare2 className="text-[#0D9323]" />
+              <CheckSquare2 className="text-green-600" />
             )}
           </div>
         </label>

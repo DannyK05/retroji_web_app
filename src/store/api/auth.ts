@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../helpers";
 import type {
+  TDeleteUserResponse,
   TIsUsernameTakenResponse,
   TLoginDto,
   TLoginResponse,
@@ -43,6 +44,13 @@ export const authApi = createApi({
       transformResponse: (response: TIsUsernameTakenResponse) =>
         response.data.is_taken,
     }),
+    deleteUser: builder.mutation<TDeleteUserResponse, void>({
+      query: (body) => ({
+        url: "auth/delete/",
+        method: "DELETE",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -51,4 +59,5 @@ export const {
   useSignupMutation,
   useLogoutMutation,
   useIsUsernameTakenQuery,
+  useDeleteUserMutation,
 } = authApi;

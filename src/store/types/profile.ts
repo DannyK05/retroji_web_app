@@ -7,6 +7,7 @@ export type TProfile = {
   user: TUser;
   id: string;
   image: File;
+  bio: string;
   is_followed: boolean;
   created_at: Date;
   updated_at: Date;
@@ -23,9 +24,10 @@ export type TGetUserCommentsResponse = TApiResponse<{
 }>;
 
 export type TUpdateUserProfileDto = {
-  user_id: string;
-  username: string;
-  image: File;
+  user_id?: string;
+  username?: string;
+  bio?: string;
+  image?: File;
 };
 
 export type TFollowUserDto = { user_id: string };

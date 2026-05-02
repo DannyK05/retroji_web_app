@@ -12,6 +12,7 @@ import { TErrorResponse } from "../../../../store/types/generic";
 import CommentsSection from "../../comment_section";
 import RepliesSection from "../../replies-section";
 import EmptyScreen from "../../../common/empty-screen";
+import ProfileCard from "../../../../modules/search/components/ProfileCard";
 
 export default function AllTab({ data, handleNav }: AllTabProps) {
   const [likeSnapz] = useLikeSnapzMutation();
@@ -117,7 +118,14 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
             <p className="w-full px-2 mb-4 text-3xl border">Profile</p>
             <div className="flex flex-col items-start space-y-4">
               {previewProfiles.map(({ id, user }) => (
-                <div key={id}>{user.username}</div>
+                <ProfileCard
+                  imageUrl="/assets/images/profile_pic.jpg"
+                  key={id}
+                  userId={user.id}
+                  username={user.username}
+                  followers={user.followers}
+                  following={user.following}
+                />
               ))}
               <span
                 className="text-2xl cursor-pointer active:text-[var(--retro-blue)] active:underline lg:hover:underline lg:hover:text-[var(--retro-blue)]"

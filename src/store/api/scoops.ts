@@ -3,6 +3,8 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../helpers";
 
 import type {
+  TDeleteScoopsDto,
+  TDeleteScoopsResponse,
   TGetAllScoopsResponse,
   TLikeScoopsDto,
   TLikeScoopsResponse,
@@ -45,6 +47,14 @@ export const scoopsApi = createApi({
       }),
       invalidatesTags: ["getAllScoops", "getAllScoopsById"],
     }),
+    deleteScoops: builder.mutation<TDeleteScoopsResponse, TDeleteScoopsDto>({
+      query: (body) => ({
+        url: "scoops/delete/",
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["getAllScoops"],
+    }),
   }),
 });
 
@@ -53,4 +63,5 @@ export const {
   useGetAllScoopsByIdQuery,
   usePostScoopsMutation,
   useLikeScoopsMutation,
+  useDeleteScoopsMutation,
 } = scoopsApi;
