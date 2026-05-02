@@ -1,6 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../helpers";
 import type {
+  TDeleteCommentDto,
+  TDeleteCommentResponse,
+  TDeleteSnapzDto,
+  TDeleteSnapzResponse,
   TGetAllCommentsBySnapzIdDto,
   TGetAllCommentsBySnapzIdResponse,
   TGetAllSnapzResponse,
@@ -64,6 +68,22 @@ export const snapzApi = createApi({
       }),
       invalidatesTags: ["getAllSnapz"],
     }),
+    deleteSnapz: builder.mutation<TDeleteSnapzResponse, TDeleteSnapzDto>({
+      query: (body) => ({
+        url: "snapz/delete/",
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["getAllSnapz"],
+    }),
+    deleteComment: builder.mutation<TDeleteCommentResponse, TDeleteCommentDto>({
+      query: (body) => ({
+        url: "snapz/comment/delete/",
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["getAllComments"],
+    }),
   }),
 });
 
@@ -74,4 +94,6 @@ export const {
   usePostCommentMutation,
   useLikeSnapzMutation,
   usePostSnapzMutation,
+  useDeleteSnapzMutation,
+  useDeleteCommentMutation,
 } = snapzApi;

@@ -21,3 +21,6 @@ export type TPostScoopsResponse = TApiResponse<{ scoops: TScoops }>;
 
 export type TLikeScoopsDto = { scoop_id: string };
 export type TLikeScoopsResponse = TApiResponse<{ message: string }>;
+
+export type TDeleteScoopsDto = { scoops_id: string };
+export type TDeleteScoopsResponse = TApiResponse<void>;

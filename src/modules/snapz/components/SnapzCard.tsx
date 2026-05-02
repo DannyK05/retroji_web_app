@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { DiamondIcon, ThumbsUpIcon } from "lucide-react";
+import { DiamondIcon, ThumbsUpIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
 import { twMerge } from "tailwind-merge";
 
-import Button from "../../../components/common/button";
+import { getRelativeTime, getUserData } from "../../../lib/helpers";
 
-import type { SnapzProps } from "../types";
-import { getRelativeTime } from "../../../lib/helpers";
+import { useDeleteSnapzMutation } from "../../../store/api/snapz";
+
+import Button from "../../../components/common/button";
 import ImageSlider from "../../../components/common/image-slider";
 import { PopupDialog } from "../../../components/common/dialog";
-import { TSnapzImage } from "../../../store/types/snapz";
+import ConfirmationDialog from "../../../components/core/confirmation-dialog";
+
+import type { TUser } from "../../../store/types/auth";
+import type { TSnapzImage } from "../../../store/types/snapz";
+import type { SnapzProps } from "../types";
 
 export default function SnapzCard({
   id,
@@ -25,15 +30,31 @@ export default function SnapzCard({
   handleComments,
   handleLike,
 }: SnapzProps) {
+  const [deleteSnapz, { isLoading }] = useDeleteSnapzMutation();
+
+  const user: TUser = getUserData();
+  const isUserSnapz = user.id === userId;
+
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [isPopupDialogOpen, setIsPopupDialogOpen] = useState(false);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
+
   const [selectedImages, setSelectedImages] = useState<TSnapzImage[]>([]);
 
-  const handleIsDialogOpen = () => setIsDialogOpen((prev) => !prev);
+  const handleIsPopupDialogOpen = () => setIsPopupDialogOpen((prev) => !prev);
+
+  const handleIsConfirmationDialogOpen = () =>
+    setIsConfirmationDialogOpen((prev) => !prev);
+
+  const handleDeleteSnapz = async () => {
+    await deleteSnapz({ snapz_id: id });
+  };
 
   const handleSelectedImages = (images: TSnapzImage[]) => {
     setSelectedImages(images);
-    setIsDialogOpen((prev) => !prev);
+    setIsPopupDialogOpen((prev) => !prev);
   };
   return (
     <>
@@ -52,8 +73,23 @@ export default function SnapzCard({
               {name}
             </Link>
           </p>
-          <span>{getRelativeTime(date)}</span>
+
+          <div className="flex items-center space-x-2">
+            <span>{getRelativeTime(date)}</span>
+
+            {isUserSnapz && (
+              <button
+                onClick={handleIsConfirmationDialogOpen}
+                className="cursor-pointer lg:hover:text-red-500 active:text-red-500"
+                title="More"
+                type="button"
+              >
+                <Trash2Icon className="size-4" />
+              </button>
+            )}
+          </div>
         </div>
+
         <div className="w-full px-2 flex-1 min-h-0">
           {images.length <= 1 ? (
             <img
@@ -80,6 +116,7 @@ export default function SnapzCard({
             </ImageSlider>
           )}
         </div>
+
         <p className="w-full p-1 text-3xl border-t mt-1">{caption}</p>
 
         <div className="w-full grid grid-cols-2 gap-1">
@@ -96,6 +133,7 @@ export default function SnapzCard({
             <ThumbsUpIcon className="text-inherit" />
             <span className="text-2xl">{like_count}</span>
           </Button>
+
           <Button onClick={() => handleComments(id)}>
             <DiamondIcon /> <span className="text-2xl">{comment_count}</span>
           </Button>
@@ -105,8 +143,8 @@ export default function SnapzCard({
       <PopupDialog
         className="lg:w-4/5 lg:h-3/5"
         title="Image"
-        isOpen={isDialogOpen}
-        handleClose={handleIsDialogOpen}
+        isOpen={isPopupDialogOpen}
+        handleClose={handleIsPopupDialogOpen}
       >
         {selectedImages.length <= 1 ? (
           <img
@@ -131,6 +169,14 @@ export default function SnapzCard({
           </ImageSlider>
         )}
       </PopupDialog>
+
+      <ConfirmationDialog
+        message="Are you sure you want to delete this snapz ?"
+        isOpen={isConfirmationDialogOpen}
+        handleClose={handleIsConfirmationDialogOpen}
+        handleAction={handleDeleteSnapz}
+        isLoading={isLoading}
+      />
     </>
   );
 }

@@ -3,7 +3,7 @@ import BlazeSlider, { BlazeConfig } from "blaze-slider";
 import "blaze-slider/dist/blaze.css";
 
 export function useBlazeSlider(config: BlazeConfig, deps?: React.ReactNode) {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<BlazeSlider | null>(null);
   const elRef = useRef(null);
 
   useEffect(() => {
