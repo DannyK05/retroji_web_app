@@ -24,9 +24,10 @@ export type TGetUserCommentsResponse = TApiResponse<{
 }>;
 
 export type TUpdateUserProfileDto = {
-  user_id: string;
-  username: string;
-  image: File;
+  user_id?: string;
+  username?: string;
+  bio?: string;
+  image?: File;
 };
 
 export type TFollowUserDto = { user_id: string };

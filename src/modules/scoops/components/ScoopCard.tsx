@@ -36,7 +36,7 @@ export default function ScoopCard({
 
   const handleIsDialogOpen = () => setIsDialogOpen((prev) => !prev);
   const handleDeleteScoops = async () => {
-    await deleteScoops({ scoops_id: id });
+    await deleteScoops({ scoop_id: id });
   };
 
   return (
