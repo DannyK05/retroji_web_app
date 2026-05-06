@@ -15,24 +15,29 @@ import ScoopsSection from "./components/ScoopsSection";
 import CommentsSection from "./components/CommentsSection";
 
 import { TErrorResponse } from "../../store/types/generic";
+import Dialog from "../../components/common/dialog";
+import UpdateProfileForm from "./components/UpdateProfileForm";
 
 export default function Profile() {
   const [follow] = useFollowUserMutation();
   const user: TUser = getUserData();
   const params = useParams();
   const id = params.id ?? "";
-
-  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
-
   const nav: TNav[] = ["snapz", "scoops", "comments"];
 
   const [currentNav, setCurrentNav] = useState<TNav>("snapz");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { data: profile } = useGetUserProfileQuery(id);
+  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
   const handleCurrentNav = (nav: TNav) => {
     setCurrentNav(nav);
   };
 
-  const { data: profile } = useGetUserProfileQuery(id);
+  const handleisDialogOpen = () => {
+    setIsDialogOpen((prev) => !prev);
+  };
 
   const followUser = async () => {
     try {
@@ -49,88 +54,110 @@ export default function Profile() {
   };
 
   return (
-    <section className="w-full h-[calc(100vh-70px)] flex flex-col items-center mt-5 pb-2 overflow-y-auto lg:border lg:h-[calc(100vh-70px)]">
-      <img
-        className="w-full h-40 object-cover lg:h-60"
-        src="/assets/images/scoop_4.webp"
-        alt="Cover Image"
-      />
-
-      <div className="w-4/5 flex flex-col items-center -mt-10 border bg-white pt-11 px-2 lg:w-3/5 lg:-mt-10">
+    <>
+      <section className="w-full h-[calc(100vh-70px)] flex flex-col items-center mt-5 pb-2 overflow-y-auto lg:border lg:h-[calc(100vh-70px)]">
         <img
-          className="w-20 h-20 object-cover -mt-20 border-2 lg:w-30 lg:h-30 lg:-mt-20"
-          src="/assets/images/profile_pic.jpg"
-          alt="Profile Pic"
+          className="w-full h-40 object-cover lg:h-60"
+          src="/assets/images/scoop_4.webp"
+          alt="Cover Image"
         />
 
-        <div className="flex flex-col items-center">
-          <h2 className="text-3xl">
-            {profile?.data.profile.user?.username ?? "retroji_user"}
-          </h2>
-          <div className="flex items-center space-x-4 text-2xl">
-            <p>
-              <span className="text-retro-blue font-semibold">
-                {profile?.data.profile.user?.following ?? 0}
-              </span>{" "}
-              following
-            </p>
+        <div className="w-4/5 flex flex-col items-center -mt-10 border bg-white pt-11 px-2 lg:w-3/5 lg:-mt-10">
+          <img
+            className="w-20 h-20 object-cover -mt-20 border-2 lg:w-30 lg:h-30 lg:-mt-20"
+            src={
+              profile?.data.profile.image ?? "/assets/images/profile_pic.jpg"
+            }
+            alt="Profile Pic"
+          />
 
-            <span>.</span>
+          <div className="flex flex-col items-center">
+            <h2 className="text-3xl">
+              {profile?.data.profile.user?.username ?? "retroji_user"}
+            </h2>
+            <div className="flex items-center space-x-4 text-2xl">
+              <p>
+                <span className="text-retro-blue font-semibold">
+                  {profile?.data.profile.user?.following ?? 0}
+                </span>{" "}
+                following
+              </p>
 
-            <p>
-              <span className="text-retro-blue font-semibold">
-                {profile?.data.profile.user?.followers ?? 0}
-              </span>{" "}
-              followers
-            </p>
+              <span>.</span>
+
+              <p>
+                <span className="text-retro-blue font-semibold">
+                  {profile?.data.profile.user?.followers ?? 0}
+                </span>{" "}
+                followers
+              </p>
+            </div>
+
+            {user.id?.toString() === params.id && (
+              <Button className="w-full" onClick={handleisDialogOpen}>
+                Edit Profile
+              </Button>
+            )}
+
+            {user.id?.toString() !== params.id && (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  followUser();
+                }}
+              >
+                {profile?.data.profile.is_followed ? "Following" : "Follow"}
+              </Button>
+            )}
           </div>
 
-          {user.id?.toString() !== params.id && (
-            <Button
-              className="w-full"
-              onClick={() => {
-                followUser();
-              }}
-            >
-              {profile?.data.profile.is_followed ? "Following" : "Follow"}
-            </Button>
-          )}
+          <div className="w-full flex flex-col items-start">
+            <p className="w-full text-2xl mb-[1px] border-b">Bio:</p>
+            <p className="text-2xl">
+              {profile?.data.profile.bio === ""
+                ? "Just trying to survive"
+                : profile?.data.profile.bio}
+            </p>
+          </div>
         </div>
 
-        <div className="w-full flex flex-col items-start">
-          <p className="w-full text-2xl mb-[1px] border-b">Bio:</p>
-          <p className="text-2xl">Just trying to survive</p>
+        <div className="w-full flex flex-col items-center px-3">
+          <div className="w-4/5 h-7 flex items-center justify-between p-2 text-3xl border mt-4 lg:w-3/5">
+            {nav.map((nav, index) => (
+              <span
+                key={index}
+                onClick={() => handleCurrentNav(nav)}
+                className={twJoin(
+                  "text-retro-blue cursor-pointer active:underline lg:hover:underline",
+                  currentNav == nav && "underline",
+                )}
+              >
+                {nav}
+              </span>
+            ))}
+          </div>
+
+          <h2 className="w-full text-left text-3xl">{currentNav}</h2>
+
+          {currentNav === "snapz"
+            ? profile && <SnapzSection userId={profile.data.profile.user?.id} />
+            : currentNav === "scoops"
+              ? profile && (
+                  <ScoopsSection userId={profile.data.profile.user?.id} />
+                )
+              : profile && (
+                  <CommentsSection userId={profile.data.profile.user?.id} />
+                )}
         </div>
-      </div>
+      </section>
 
-      <div className="w-full flex flex-col items-center px-3">
-        <div className="w-4/5 h-7 flex items-center justify-between p-2 text-3xl border mt-4 lg:w-3/5">
-          {nav.map((nav, index) => (
-            <span
-              key={index}
-              onClick={() => handleCurrentNav(nav)}
-              className={twJoin(
-                "text-retro-blue cursor-pointer active:underline lg:hover:underline",
-                currentNav == nav && "underline",
-              )}
-            >
-              {nav}
-            </span>
-          ))}
-        </div>
-
-        <h2 className="w-full text-left text-3xl">{currentNav}</h2>
-
-        {currentNav === "snapz"
-          ? profile && <SnapzSection userId={profile.data.profile.user?.id} />
-          : currentNav === "scoops"
-            ? profile && (
-                <ScoopsSection userId={profile.data.profile.user?.id} />
-              )
-            : profile && (
-                <CommentsSection userId={profile.data.profile.user?.id} />
-              )}
-      </div>
-    </section>
+      <Dialog
+        isOpen={isDialogOpen}
+        handleClose={handleisDialogOpen}
+        title="Update Profile"
+      >
+        <UpdateProfileForm handleClose={handleisDialogOpen} />
+      </Dialog>
+    </>
   );
 }

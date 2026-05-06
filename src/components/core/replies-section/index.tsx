@@ -86,7 +86,7 @@ export default function RepliesSection({
                 name={author.username}
                 content={content}
                 date={created_at}
-                image={"/assets/images/profile_pic.jpg"}
+                image={author.image}
                 likeCount={like_count}
                 isLiked={is_liked}
                 repliesCount={replies_count}

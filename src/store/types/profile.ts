@@ -6,7 +6,7 @@ import type { TComment, TSnapz } from "./snapz";
 export type TProfile = {
   user: TUser;
   id: string;
-  image: File;
+  image: string;
   bio: string;
   is_followed: boolean;
   created_at: Date;
@@ -24,7 +24,6 @@ export type TGetUserCommentsResponse = TApiResponse<{
 }>;
 
 export type TUpdateUserProfileDto = {
-  user_id?: string;
   username?: string;
   bio?: string;
   image?: File;

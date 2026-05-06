@@ -16,8 +16,8 @@ export default function ScoopCard({
   id,
   userId,
   className,
-  image,
   name,
+  image,
   date,
   content,
   likeCount,
@@ -48,7 +48,7 @@ export default function ScoopCard({
         )}
       >
         <div className="h-23 flex flex-col items-center border border-r-0">
-          <img className="h-19 object-cover" src={image} alt={name} />
+          <img className="h-19 object-cover" src={image ?? "/assets/images/profile_pic.jpg" } alt={name} />
           <span className="w-full flex-1 text-center text-lg text-white bg-black">
             Scoop
           </span>
