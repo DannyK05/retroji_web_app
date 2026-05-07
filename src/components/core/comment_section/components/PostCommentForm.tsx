@@ -1,4 +1,4 @@
-import { Loader, SendHorizontal } from "lucide-react";
+import {SendHorizontal } from "lucide-react";
 
 import { useHandleApiMessage } from "../../../common/message-banner/hooks";
 
@@ -48,10 +48,11 @@ export default function PostCommentForm({
         />
         <Button
           type="submit"
+          isLoading={isPostingComment}
           disabled={isPostingComment || commentPayload.content === ""}
           className="w-10 h-10"
         >
-          {isPostingComment ? <Loader /> : <SendHorizontal />}
+          <SendHorizontal />
         </Button>
       </div>
     </form>

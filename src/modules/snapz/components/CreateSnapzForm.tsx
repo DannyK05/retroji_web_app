@@ -1,7 +1,5 @@
 import { useRef, useState } from "react";
 
-import { Loader } from "lucide-react";
-
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 import { usePostSnapzMutation } from "../../../store/api/snapz";
 
@@ -93,10 +91,11 @@ export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
 
           <Button
             type="submit"
+            isLoading={isPostingSnapz}
             disabled={isPostingSnapz || snapzPayload.caption === ""}
             className="w-35 h-10 p-2"
           >
-            {isPostingSnapz ? <Loader /> : <p>Post</p>}
+           <p>Post</p>
           </Button>
         </div>
       </form>

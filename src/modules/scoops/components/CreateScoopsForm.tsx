@@ -4,7 +4,6 @@ import TextArea from "../../../components/common/text-area";
 import { usePostScoopsMutation } from "../../../store/api/scoops";
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 import { TErrorResponse } from "../../../store/types/generic";
-import { Loader } from "lucide-react";
 import { CreateScoopsFormProps } from "../types";
 
 export default function CreateScoopsForm({
@@ -51,10 +50,11 @@ export default function CreateScoopsForm({
 
           <Button
             type="submit"
+            isLoading={isPostingScoops}
             disabled={isPostingScoops || scoopPayload.content === ""}
             className="w-35 h-10 p-2"
           >
-            {isPostingScoops ? <Loader /> : "Post"}
+            Post
           </Button>
         </div>
       </form>

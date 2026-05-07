@@ -119,7 +119,7 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
             <div className="flex flex-col items-start space-y-4">
               {previewProfiles.map(({ id, user }) => (
                 <ProfileCard
-                  imageUrl="/assets/images/profile_pic.jpg"
+                  imageUrl="/assets/images/profile_pic.png"
                   key={id}
                   userId={user.id}
                   username={user.username}
@@ -209,7 +209,7 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
                     name={author.username}
                     content={content}
                     date={created_at}
-                    image={"/public/assets/images/profile_pic.jpg"}
+                    image={"/public/assets/images/profile_pic.png"}
                     likeCount={like_count}
                     isLiked={is_liked}
                     repliesCount={replies_count}

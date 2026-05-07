@@ -8,7 +8,7 @@ export default function ProfileTab({ data }: ProfileTabProps) {
       {data && data.length > 0 ? (
         data.map(({ id, user }) => (
           <ProfileCard
-            imageUrl="/assets/images/profile_pic.jpg"
+            imageUrl="/assets/images/profile_pic.png"
             key={id}
             userId={user.id}
             username={user.username}

@@ -5,6 +5,7 @@ export type TAuthState = { user: TUser | null; tokens: TToken | null };
 export type TUser = {
   id: number;
   username: string;
+  image: string;
   following: number;
   followers: number;
 };

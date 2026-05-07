@@ -6,7 +6,6 @@ import type {
   TGetUserProfileResponse,
   TGetUserScoopsResponse,
   TGetUserSnapzResponse,
-  TUpdateUserProfileDto,
 } from "../types/profile";
 
 export const profileApi = createApi({
@@ -19,10 +18,7 @@ export const profileApi = createApi({
       providesTags: ["getUserProfile"],
     }),
 
-    updateUserProfile: builder.mutation<
-      TGetUserProfileResponse,
-      TUpdateUserProfileDto
-    >({
+    updateUserProfile: builder.mutation<TGetUserProfileResponse, FormData>({
       query: (payload) => ({
         url: `/profile/update/`,
         method: "PUT",

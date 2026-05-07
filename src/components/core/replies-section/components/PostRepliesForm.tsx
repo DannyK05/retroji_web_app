@@ -47,6 +47,7 @@ export default function PostRepliesForm({
           placeholder="What's on your mind ?"
         />
         <Button
+        isLoading={isPostingReplies}
           type="submit"
           disabled={isPostingReplies || repliesPayload.content === ""}
           className="flex-1 h-10"

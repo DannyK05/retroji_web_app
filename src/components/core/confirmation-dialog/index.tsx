@@ -1,4 +1,3 @@
-import { Loader } from "lucide-react";
 import Button from "../../common/button";
 import Dialog from "../../common/dialog";
 
@@ -21,22 +20,29 @@ export default function ConfirmationDialog({
     <Dialog
       isOpen={isOpen}
       handleClose={handleClose}
-      className="max-h-40 w-80"
-      title={message + "\n (This action is irreversible)"}
+      className="w-80 lg:h-50"
+      title={message}
     >
-      <div className="flex items-center space-x-8 py-5">
-        <Button className="w-40" onClick={handleClose}>
-          No
-        </Button>
-        <Button
-          className="w-40 lg:hover:bg-red-500"
-          onClick={() => {
-            handleAction();
-            handleClose();
-          }}
-        >
-          {isLoading ? <Loader /> : "Yes"}
-        </Button>
+      <div className="w-full flex flex-col items-center">
+        <p className="text-red-500 text-2xl">
+          {"[This action is irreversible]"}
+        </p>
+
+        <div className="flex items-center space-x-4 py-5 lg:space-x-8">
+          <Button className="w-30 lg:w-40" onClick={handleClose}>
+            No
+          </Button>
+          <Button
+            isLoading={isLoading}
+            className="w-30 lg:w-40 lg:hover:bg-red-500"
+            onClick={() => {
+              handleAction();
+              handleClose();
+            }}
+          >
+            Yes
+          </Button>
+        </div>
       </div>
     </Dialog>
   );
