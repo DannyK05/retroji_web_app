@@ -45,8 +45,8 @@ export default function UpdateProfileForm({
         handleApiMessage(response);
         handleClose();
       }
-    } catch (error: any) {
-      handleErrorMessage(error.data as TErrorResponse);
+    } catch (error) {
+      handleErrorMessage(error as TErrorResponse);
     }
   };
 

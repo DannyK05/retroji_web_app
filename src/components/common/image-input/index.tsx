@@ -76,7 +76,7 @@ export const ImageInput = forwardRef<ImageInputRef, ImageInputProps>(
           )}
           htmlFor={name}
         >
-          <div className="flex flex-col items-center space-y-2 cursor-pointer">
+          <div className="flex min-w-50 flex-col items-center space-y-2 cursor-pointer">
             <ImagesIcon />
             <p>Browse Images</p>
             <span>{shortenString(imageDisplayName, 50)}</span>

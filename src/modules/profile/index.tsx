@@ -48,8 +48,8 @@ export default function Profile() {
       if (response.data) {
         handleApiMessage(response);
       }
-    } catch (error: any) {
-      handleErrorMessage(error.data as TErrorResponse);
+    } catch (error) {
+      handleErrorMessage(error as TErrorResponse);
     }
   };
 
@@ -66,7 +66,7 @@ export default function Profile() {
           <img
             className="w-20 h-20 object-cover -mt-20 border-2 lg:w-30 lg:h-30 lg:-mt-20"
             src={
-              profile?.data.profile.image ?? "/assets/images/profile_pic.jpg"
+              profile?.data.profile.image ?? "/assets/images/profile_pic.png"
             }
             alt="Profile Pic"
           />
@@ -115,7 +115,7 @@ export default function Profile() {
             <p className="w-full text-2xl mb-[1px] border-b">Bio:</p>
             <p className="text-2xl">
               {profile?.data.profile.bio === ""
-                ? "Just trying to survive"
+                ? "Welcome"
                 : profile?.data.profile.bio}
             </p>
           </div>

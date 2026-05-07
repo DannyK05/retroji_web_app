@@ -85,7 +85,7 @@ export default function ScoopsTab({ data }: ScoopsTabProps) {
               name={author.username}
               content={content}
               date={created_at}
-              image={"/public/assets/images/profile_pic.jpg"}
+              image={"/public/assets/images/profile_pic.png"}
               likeCount={like_count}
               isLiked={is_liked}
               repliesCount={replies_count}

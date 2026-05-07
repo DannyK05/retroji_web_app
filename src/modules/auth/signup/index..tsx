@@ -17,6 +17,7 @@ import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TSignupDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
 import { CheckSquare2, Loader, XSquareIcon } from "lucide-react";
+import Button from "../../../components/common/button";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -47,8 +48,8 @@ export default function SignUp() {
         handleApiMessage(response);
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
-    } catch (error: any) {
-      handleErrorMessage(error.data as TErrorResponse);
+    } catch (error) {
+      handleErrorMessage(error as TErrorResponse);
     }
   };
 
@@ -102,13 +103,13 @@ export default function SignUp() {
           />
         </label>
 
-        <button
+        <Button
+          isLoading={isLoading}
           type="submit"
-          className="text-center flex items-center justify-center font-bold text-press border p-1 w-full cursor-pointer"
           disabled={isLoading || isUsernameTaken}
         >
-          {!isLoading ? "Sign up" : "..."}
-        </button>
+          Sign Up
+        </Button>
       </form>
       <div className=" w-1/2 text-3xl text-center">
         <Link to="/" className="text-retro-link hover:underline">
