@@ -82,7 +82,7 @@ export default function SnapzCard({
               <button
                 onClick={handleIsConfirmationDialogOpen}
                 className="cursor-pointer lg:hover:text-red-500 active:text-red-500"
-                title="More"
+                title="Delete"
                 type="button"
               >
                 <Trash2Icon className="size-4" />
@@ -95,7 +95,7 @@ export default function SnapzCard({
           {images.length <= 1 ? (
             <img
               onClick={() => handleSelectedImages(images[0]?.image)}
-              className="w-full max-h-[500px] object-fit"
+              className="w-full max-h-[500px] object-fit cursor-pointer"
               src={images[0]?.image}
               alt="Scoop pic"
             />
@@ -107,7 +107,7 @@ export default function SnapzCard({
                   onClick={() => handleSelectedImages(image.image)}
                 >
                   <img
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-pointer"
                     src={image.image}
                     alt={`Snapz pic ${index}`}
                   />

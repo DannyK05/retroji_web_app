@@ -12,6 +12,8 @@ import ConfirmationDialog from "../../../components/core/confirmation-dialog";
 import type { TUser } from "../../../store/types/auth";
 import type { ScoopCardProps } from "../types";
 
+const user: TUser = getUserData();
+
 export default function ScoopCard({
   id,
   userId,
@@ -28,7 +30,6 @@ export default function ScoopCard({
 }: ScoopCardProps) {
   const [deleteScoops, { isLoading }] = useDeleteScoopsMutation();
 
-  const user: TUser = getUserData();
   const isUserScoops = user.id === userId;
 
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);

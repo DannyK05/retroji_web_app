@@ -12,6 +12,7 @@ import { getUserData } from "../../../lib/helpers";
 import LoadingScreen from "../../../components/common/loading-screen";
 import { useState } from "react";
 import { UpdateProfileFormProps } from "../types";
+import Button from "../../../components/common/button";
 
 export default function UpdateProfileForm({
   handleClose,
@@ -108,13 +109,9 @@ export default function UpdateProfileForm({
           />
         </label>
 
-        <button
-          type="submit"
-          className="text-center flex items-center justify-center font-bold text-press border p-1 w-full cursor-pointer"
-          disabled={isUpdating}
-        >
+        <Button type="submit" disabled={isUpdating}>
           {isUpdating ? "..." : "Update"}
-        </button>
+        </Button>
       </form>
     </div>
   );
