@@ -1,45 +1,25 @@
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import { useBlazeSlider } from "./hooks/useBlazeSlider";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 type ImageSliderProps = { children: React.ReactNode };
 
 export default function ImageSlider({ children }: ImageSliderProps) {
-  const ref = useBlazeSlider(
-    {
-      all: {
-        slidesToShow: 1,
-        loop: true,
-      },
-    },
-    children,
-  );
   return (
-    <div ref={ref} className="blaze-slider">
-      <div className="blaze-container relative">
-        <div className="blaze-track-container">
-          <div className="blaze-track">{children}</div>
-        </div>
-
-        <div className="controls w-full -translate-y-40 flex items-center justify-between px-2">
-          <button
-            type="button"
-            className="blaze-prev flex items-center justify-center size-10 text-white bg-white/60 cursor-pointer lg:opacity-40 lg:hover:opacity-100 active:scale-110"
-            aria-label="Previous slide"
-          >
-            <ArrowBigLeft />
-          </button>
-
-          <div className="blaze-pagination translate-y-30"></div>
-
-          <button
-            type="button"
-            className="blaze-next flex items-center justify-center size-10 text-white bg-white/60 cursor-pointer lg:opacity-40 lg:hover:opacity-100 active:scale-110"
-            aria-label="Next slide"
-          >
-            <ArrowBigRight />
-          </button>
-        </div>
-      </div>
+    <div className="relative w-full [&_.swiper-button-next]:text-[var(--retro-blue)] [&_.swiper-button-prev]:text-[var(--retro-blue)] [&_.swiper-pagination-bullet-active]:bg-[var(--retro-blue)] [&_.swiper-scrollbar-drag]:bg-[var(--retro-blue)]">
+      <Swiper
+        autoHeight
+        modules={[Navigation, Pagination]}
+        spaceBetween={10}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+      >
+        {children}
+      </Swiper>
     </div>
   );
 }
