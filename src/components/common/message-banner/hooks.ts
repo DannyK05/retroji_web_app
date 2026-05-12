@@ -6,7 +6,7 @@ export function useHandleApiMessage() {
 
   if (!context) {
     throw new Error(
-      "useHandleApiMessage must be called in its provider (ApiMessageProvider)"
+      "useHandleApiMessage must be called in its provider (ApiMessageProvider)",
     );
   }
 

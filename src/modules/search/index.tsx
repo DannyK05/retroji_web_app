@@ -7,7 +7,7 @@ export default function Search() {
     <div className="w-full flex flex-col items-center space-y-1">
       {" "}
       <input
-        className="border p-1 w-full text-2xl"
+        className="border p-1 w-full text-4xl"
         title="Search"
         placeholder="Dig it.."
         value={search}

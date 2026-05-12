@@ -13,6 +13,7 @@ export default function CommentsSection({
   isOpen,
   refetch,
 }: CommentSectionProps) {
+  
   const {
     data: comments,
     isLoading: isLoadingAllComments,

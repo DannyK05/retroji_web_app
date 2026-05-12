@@ -115,11 +115,13 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
       <div className="w-full h-[calc(100vh-190px)] col-span-2 flex flex-col items-center space-y-2 overflow-y-auto lg:col-span-1 lg:h-[450px]">
         {previewProfiles.length !== 0 && (
           <>
-            <p className="w-full px-2 mb-4 text-3xl border">Profile</p>
-            <div className="flex flex-col items-start space-y-4">
+            <p className="w-full px-2 mb-4 border bg-[var(--retro-blue)] text-white text-3xl">
+              Profile
+            </p>
+            <div className="w-full flex flex-col items-start space-y-4">
               {previewProfiles.map(({ id, user }) => (
                 <ProfileCard
-                  imageUrl="/assets/images/profile_pic.png"
+                  imageUrl={user.image}
                   key={id}
                   userId={user.id}
                   username={user.username}
@@ -139,8 +141,10 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
 
         {previewSnapz.length !== 0 && (
           <>
-            <p className="w-full px-2 mb-4 text-3xl border">Snapz</p>
-            <div className="flex flex-col items-start space-y-4">
+            <p className="w-full px-2 mb-4 border bg-[var(--retro-blue)] text-white text-3xl">
+              Snapz
+            </p>
+            <div className="w-full flex flex-col items-center space-y-3 py-2 px-1 lg:px-3">
               {previewSnapz.map(
                 ({
                   id,
@@ -185,7 +189,9 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
 
         {previewScoops.length !== 0 && (
           <>
-            <p className="w-full px-2 mb-4 text-3xl border">Scoops</p>
+            <p className="w-full px-2 mb-4 border bg-[var(--retro-blue)] text-white text-3xl">
+              Scoops
+            </p>
             <div className="w-full flex flex-col items-start space-y-4">
               {previewScoops.map(
                 ({
@@ -230,16 +236,21 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
 
         {previewComments.length !== 0 && (
           <>
-            <p className="w-full px-2 mb-4 text-3xl border">Comments</p>
+            <p className="w-full px-2 mb-4 border bg-[var(--retro-blue)] text-white text-3xl">
+              Comments
+            </p>
             <div className="w-full flex flex-col items-start space-y-4">
-              {previewComments.map(({ content, author, created_at }, index) => (
-                <CommentCard
-                  key={index}
-                  content={content}
-                  author={author}
-                  createdAt={created_at}
-                />
-              ))}
+              {previewComments.map(
+                ({ id, content, author, created_at }, index) => (
+                  <CommentCard
+                    id={id}
+                    key={index}
+                    content={content}
+                    author={author}
+                    createdAt={created_at}
+                  />
+                ),
+              )}
               <span
                 className="w-full text-2xl text-center cursor-pointer active:text-[var(--retro-blue)] active:underline lg:hover:underline lg:hover:text-[var(--retro-blue)]"
                 onClick={() => handleNav("comments")}

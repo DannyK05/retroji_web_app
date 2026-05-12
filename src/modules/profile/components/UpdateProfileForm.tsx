@@ -14,10 +14,11 @@ import { useState } from "react";
 import { UpdateProfileFormProps } from "../types";
 import Button from "../../../components/common/button";
 
+const user: TUser = getUserData();
+
 export default function UpdateProfileForm({
   handleClose,
 }: UpdateProfileFormProps) {
-  const user: TUser = getUserData();
   const { data, isLoading } = useGetUserProfileQuery(`${user.id}`);
   const [update, { isLoading: isUpdating }] = useUpdateUserProfileMutation();
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
