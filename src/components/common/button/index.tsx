@@ -18,7 +18,7 @@ export default function Button({
       type="button"
       {...rest}
       className={twMerge(
-        `w-full flex items-center justify-center space-x-1 bg-grey-400 px-3 py-2 shadow-lg border text-2xl bg-white cursor-pointer active:shadow-sm active:border-3 lg:hover:bg-[var(--retro-blue)] lg:hover:text-white disabled:cursor-disabled`,
+        `w-full flex items-center justify-center space-x-1 bg-grey-400 px-3 py-2 shadow-lg border text-3xl font-bold bg-white cursor-pointer active:shadow-sm active:border-3 lg:hover:bg-[var(--retro-blue)] lg:hover:text-white disabled:cursor-not-allowed`,
         className,
       )}
     >

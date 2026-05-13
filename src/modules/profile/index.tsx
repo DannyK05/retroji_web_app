@@ -18,9 +18,11 @@ import { TErrorResponse } from "../../store/types/generic";
 import Dialog from "../../components/common/dialog";
 import UpdateProfileForm from "./components/UpdateProfileForm";
 
+  const user: TUser = getUserData();
+  
 export default function Profile() {
   const [follow] = useFollowUserMutation();
-  const user: TUser = getUserData();
+
   const params = useParams();
   const id = params.id ?? "";
   const nav: TNav[] = ["snapz", "scoops", "comments"];

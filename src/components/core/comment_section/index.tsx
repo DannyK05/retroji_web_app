@@ -13,6 +13,7 @@ export default function CommentsSection({
   isOpen,
   refetch,
 }: CommentSectionProps) {
+  
   const {
     data: comments,
     isLoading: isLoadingAllComments,
@@ -30,8 +31,9 @@ export default function CommentsSection({
         {isLoadingAllComments || isFetchingAllComments ? (
           <LoadingScreen />
         ) : comments?.data.length !== 0 ? (
-          comments?.data.map(({ content, author, created_at }, index) => (
+          comments?.data.map(({ id, content, author, created_at }, index) => (
             <CommentCard
+              id={id}
               key={index}
               content={content}
               author={author}

@@ -13,8 +13,10 @@ import { PopupDialog } from "../../../components/common/dialog";
 import ConfirmationDialog from "../../../components/core/confirmation-dialog";
 
 import type { TUser } from "../../../store/types/auth";
-import type { TSnapzImage } from "../../../store/types/snapz";
 import type { SnapzProps } from "../types";
+import { SwiperSlide } from "swiper/react";
+
+const user: TUser = getUserData();
 
 export default function SnapzCard({
   id,
@@ -32,7 +34,6 @@ export default function SnapzCard({
 }: SnapzProps) {
   const [deleteSnapz, { isLoading }] = useDeleteSnapzMutation();
 
-  const user: TUser = getUserData();
   const isUserSnapz = user.id === userId;
 
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
@@ -41,7 +42,7 @@ export default function SnapzCard({
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
     useState(false);
 
-  const [selectedImages, setSelectedImages] = useState<TSnapzImage[]>([]);
+  const [selectedImages, setSelectedImages] = useState<string>();
 
   const handleIsPopupDialogOpen = () => setIsPopupDialogOpen((prev) => !prev);
 
@@ -52,8 +53,8 @@ export default function SnapzCard({
     await deleteSnapz({ snapz_id: id });
   };
 
-  const handleSelectedImages = (images: TSnapzImage[]) => {
-    setSelectedImages(images);
+  const handleSelectedImages = (image: string) => {
+    setSelectedImages(image);
     setIsPopupDialogOpen((prev) => !prev);
   };
   return (
@@ -81,7 +82,7 @@ export default function SnapzCard({
               <button
                 onClick={handleIsConfirmationDialogOpen}
                 className="cursor-pointer lg:hover:text-red-500 active:text-red-500"
-                title="More"
+                title="Delete"
                 type="button"
               >
                 <Trash2Icon className="size-4" />
@@ -93,25 +94,24 @@ export default function SnapzCard({
         <div className="w-full px-2 flex-1 min-h-0">
           {images.length <= 1 ? (
             <img
-              onClick={() => handleSelectedImages(images)}
-              className="w-full max-h-[500px] object-fit"
+              onClick={() => handleSelectedImages(images[0]?.image)}
+              className="w-full max-h-[400px] object-fit cursor-pointer"
               src={images[0]?.image}
               alt="Scoop pic"
             />
           ) : (
             <ImageSlider>
               {images.map((image, index) => (
-                <div
+                <SwiperSlide
                   key={image.image}
-                  onClick={() => handleSelectedImages(images)}
-                  className="aspect-[4/3]"
+                  onClick={() => handleSelectedImages(image.image)}
                 >
                   <img
-                    className="w-full h-full object-cover"
+                    className="w-full max-h-[400px] object-cover cursor-pointer"
                     src={image.image}
                     alt={`Snapz pic ${index}`}
                   />
-                </div>
+                </SwiperSlide>
               ))}
             </ImageSlider>
           )}
@@ -146,27 +146,12 @@ export default function SnapzCard({
         isOpen={isPopupDialogOpen}
         handleClose={handleIsPopupDialogOpen}
       >
-        {selectedImages.length <= 1 ? (
+        {selectedImages && (
           <img
             className="max-h-[560px] object-fit"
-            src={selectedImages[0]?.image}
+            src={selectedImages}
             alt="Scoop pic"
           />
-        ) : (
-          <ImageSlider>
-            {selectedImages.map((image, index) => (
-              <div
-                key={image.image}
-                className="bg-white flex items-center justify-center"
-              >
-                <img
-                  className="max-w-[510px] object-cover"
-                  src={image.image}
-                  alt={`Snapz pic ${index}`}
-                />
-              </div>
-            ))}
-          </ImageSlider>
         )}
       </PopupDialog>
 

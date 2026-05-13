@@ -12,6 +12,8 @@ import ConfirmationDialog from "../../../components/core/confirmation-dialog";
 import type { TUser } from "../../../store/types/auth";
 import type { ScoopCardProps } from "../types";
 
+const user: TUser = getUserData();
+
 export default function ScoopCard({
   id,
   userId,
@@ -28,7 +30,6 @@ export default function ScoopCard({
 }: ScoopCardProps) {
   const [deleteScoops, { isLoading }] = useDeleteScoopsMutation();
 
-  const user: TUser = getUserData();
   const isUserScoops = user.id === userId;
 
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
@@ -49,7 +50,7 @@ export default function ScoopCard({
       >
         <div className="h-23 flex flex-col items-center border border-r-0">
           <img
-            className="h-19 object-cover"
+            className="h-19 w-20 object-cover"
             src={image ?? "/assets/images/profile_pic.png"}
             alt={name}
           />

@@ -10,7 +10,7 @@ type ConfirmationDialogProps = {
 };
 
 export default function ConfirmationDialog({
-  message = "Please confirm this Action",
+  message = "Please confirm this action",
   isOpen,
   isLoading,
   handleClose,

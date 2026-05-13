@@ -12,11 +12,13 @@ import { getUserData } from "../../../lib/helpers";
 import LoadingScreen from "../../../components/common/loading-screen";
 import { useState } from "react";
 import { UpdateProfileFormProps } from "../types";
+import Button from "../../../components/common/button";
+
+const user: TUser = getUserData();
 
 export default function UpdateProfileForm({
   handleClose,
 }: UpdateProfileFormProps) {
-  const user: TUser = getUserData();
   const { data, isLoading } = useGetUserProfileQuery(`${user.id}`);
   const [update, { isLoading: isUpdating }] = useUpdateUserProfileMutation();
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
@@ -50,10 +52,10 @@ export default function UpdateProfileForm({
     }
   };
 
-  const handleRemoveImage = () => {
+  const handleRemoveImage = (name: string) => {
     const removedImage = updatePayload.image;
 
-    if (removedImage) {
+    if (removedImage && removedImage.name == name) {
       const image_payload = [updatePayload.image];
       image_payload.pop();
       setUpdatePayload((prev) => ({ ...prev, image: image_payload[0] }));
@@ -66,7 +68,7 @@ export default function UpdateProfileForm({
   ) : (
     <div className="w-full flex flex-col items-center">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <label className="flex flex-row items-center space-x-4">
+        <div className="flex flex-row items-center space-x-4">
           <span className="text-4xl">profile picture:</span>
           <ImageInput
             name="image"
@@ -76,7 +78,7 @@ export default function UpdateProfileForm({
             }}
             uploadLimit={1}
           />
-        </label>
+        </div>
 
         <label className="flex flex-row items-center space-x-4">
           <span className="text-4xl">user name:</span>
@@ -108,13 +110,9 @@ export default function UpdateProfileForm({
           />
         </label>
 
-        <button
-          type="submit"
-          className="text-center flex items-center justify-center font-bold text-press border p-1 w-full cursor-pointer"
-          disabled={isUpdating}
-        >
-          {isUpdating ? "..." : "Update"}
-        </button>
+        <Button isLoading={isUpdating} type="submit" disabled={isUpdating}>
+          Update
+        </Button>
       </form>
     </div>
   );

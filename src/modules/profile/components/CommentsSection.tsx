@@ -11,14 +11,17 @@ export default function CommentsSection({ userId }: TSection) {
       {isLoading ? (
         <LoadingScreen />
       ) : data && data.data.comments.length > 0 ? (
-        data?.data.comments.map(({ content, author, created_at }, index) => (
-          <CommentCard
-            key={index}
-            content={content}
-            author={author}
-            createdAt={created_at}
-          />
-        ))
+        data?.data.comments.map(
+          ({ id, content, author, created_at }, index) => (
+            <CommentCard
+              id={id}
+              key={index}
+              content={content}
+              author={author}
+              createdAt={created_at}
+            />
+          ),
+        )
       ) : (
         <EmptyScreen />
       )}

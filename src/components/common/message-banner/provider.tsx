@@ -1,13 +1,9 @@
-import { createContext, useState, ReactNode } from "react";
+import { useState, ReactNode } from "react";
+import { ApiMessageContext } from "./context";
 import type {
   TApiResponse,
   TErrorResponse,
 } from "../../../store/types/generic";
-import type { TApiMessageContextType } from "./types";
-
-export const ApiMessageContext = createContext<
-  TApiMessageContextType | undefined
->(undefined);
 
 export function ApiMessageProvider({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState<string | null>(null);

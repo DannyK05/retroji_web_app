@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router";
+import { NavLink, Outlet, useNavigate, useSearchParams } from "react-router";
 
 import { useLogoutMutation } from "../../store/api/auth";
 import { useAppDispatch } from "../../store/hooks";
@@ -17,14 +17,16 @@ import { useState } from "react";
 import RouteGuard from "./RouteGuard";
 import SearchSection from "../core/search-section";
 
+const user: TUser = getUserData();
+
 export default function Layout() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
   const { handleApiMessage } = useHandleApiMessage();
-  const user: TUser = getUserData();
+
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const nav = [
     { name: "snapz", link: "/snapz" },
@@ -44,6 +46,10 @@ export default function Layout() {
 
   const handleIsNavOpen = () => {
     setIsNavOpen((prev) => !prev);
+  };
+
+  const handleSearchQuery = (query: string) => {
+    setSearchParams({ query });
   };
 
   return (
@@ -92,7 +98,6 @@ export default function Layout() {
                       "text-retro-link hover:underline",
                     )}
                     onClick={() => {
-                      setSearch("");
                       handleIsNavOpen();
                     }}
                     to={link}
@@ -109,9 +114,9 @@ export default function Layout() {
                   className="border p-1 w-full"
                   title="Search"
                   placeholder="Dig it.."
-                  value={search}
+                  value={searchParams.get("query") ?? ""}
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    handleSearchQuery(e.target.value);
                   }}
                   type="search"
                 />
@@ -142,12 +147,13 @@ export default function Layout() {
           ></div>
 
           <div className="col-span-6 overflow-hidden lg:px-4 lg:col-start-2 lg:col-end-6">
-            {search === "" ? (
+            {searchParams.get("query") === null ||
+            searchParams.get("query") === "" ? (
               <RouteGuard>
                 <Outlet />
               </RouteGuard>
             ) : (
-              <SearchSection query={search} />
+              <SearchSection query={searchParams.get("query") ?? ""} />
             )}
           </div>
 

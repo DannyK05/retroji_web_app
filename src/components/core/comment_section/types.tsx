@@ -10,6 +10,7 @@ export type CommentSectionProps = {
 };
 
 export type CommentCardProps = {
+  id: string;
   author: TUser;
   content: string;
   createdAt: Date;

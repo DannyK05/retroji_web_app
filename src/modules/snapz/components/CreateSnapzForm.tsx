@@ -7,12 +7,12 @@ import Button from "../../../components/common/button";
 import TextArea from "../../../components/common/text-area";
 import {
   ImageInput,
-  ImageInputRef,
 } from "../../../components/common/image-input";
 
 import type { TPostSnapzDto } from "../../../store/types/snapz";
 import type { TErrorResponse } from "../../../store/types/generic";
 import type { CreateSnapzFormProps } from "../types";
+import type { ImageInputRef } from "../../../components/common/image-input/types";
 
 export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
   const [snapzPayload, setSnapzPayload] = useState<TPostSnapzDto>({

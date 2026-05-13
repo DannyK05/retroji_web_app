@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { ApiMessageProvider } from "./components/common/message-banner/context";
+import { ApiMessageProvider } from "./components/common/message-banner/provider";
 import StoreProvider from "./store/provider";
 import AuthLayout from "./components/layouts/AuthLayout";
 import Chat from "./modules/chat";
