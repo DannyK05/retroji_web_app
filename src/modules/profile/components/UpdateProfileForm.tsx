@@ -52,10 +52,10 @@ export default function UpdateProfileForm({
     }
   };
 
-  const handleRemoveImage = () => {
+  const handleRemoveImage = (name: string) => {
     const removedImage = updatePayload.image;
 
-    if (removedImage) {
+    if (removedImage && removedImage.name == name) {
       const image_payload = [updatePayload.image];
       image_payload.pop();
       setUpdatePayload((prev) => ({ ...prev, image: image_payload[0] }));
@@ -68,7 +68,7 @@ export default function UpdateProfileForm({
   ) : (
     <div className="w-full flex flex-col items-center">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <label className="flex flex-row items-center space-x-4">
+        <div className="flex flex-row items-center space-x-4">
           <span className="text-4xl">profile picture:</span>
           <ImageInput
             name="image"
@@ -78,7 +78,7 @@ export default function UpdateProfileForm({
             }}
             uploadLimit={1}
           />
-        </label>
+        </div>
 
         <label className="flex flex-row items-center space-x-4">
           <span className="text-4xl">user name:</span>
@@ -110,8 +110,8 @@ export default function UpdateProfileForm({
           />
         </label>
 
-        <Button type="submit" disabled={isUpdating}>
-          {isUpdating ? "..." : "Update"}
+        <Button isLoading={isUpdating} type="submit" disabled={isUpdating}>
+          Update
         </Button>
       </form>
     </div>

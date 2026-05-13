@@ -50,7 +50,7 @@ export default function ScoopCard({
       >
         <div className="h-23 flex flex-col items-center border border-r-0">
           <img
-            className="h-19 object-cover"
+            className="h-19 w-20 object-cover"
             src={image ?? "/assets/images/profile_pic.png"}
             alt={name}
           />
