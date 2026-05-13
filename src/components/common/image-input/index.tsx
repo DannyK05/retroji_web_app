@@ -1,9 +1,9 @@
 import {
-  InputHTMLAttributes,
   useEffect,
   useState,
   forwardRef,
   useImperativeHandle,
+  useRef,
 } from "react";
 
 import { ImagesIcon, XSquareIcon } from "lucide-react";
@@ -11,20 +11,7 @@ import { twMerge } from "tailwind-merge";
 
 import { shortenString } from "../../../lib/helpers";
 
-import type { TPreview } from "./types";
-
-export type ImageInputRef = {
-  reset: () => void;
-};
-
-type ImageInputProps = InputHTMLAttributes<HTMLInputElement> & {
-  name: string;
-  className?: string;
-  uploadLimit?: number;
-  handleImages: (selectedFiles: File[]) => void;
-  multiple?: boolean;
-  handleRemoveImage: (name: string) => string | undefined;
-};
+import type { ImageInputProps, ImageInputRef, TPreview } from "./types";
 
 export const ImageInput = forwardRef<ImageInputRef, ImageInputProps>(
   (
@@ -39,11 +26,12 @@ export const ImageInput = forwardRef<ImageInputRef, ImageInputProps>(
     },
     ref,
   ) => {
+    const imageInputRef = useRef<HTMLInputElement>(null);
+
+    const [previews, setPreviews] = useState<TPreview[]>([]);
     const [imageDisplayName, setImageDisplayName] = useState(
       "No images have been selected",
     );
-
-    const [previews, setPreviews] = useState<TPreview[]>([]);
 
     const handleImagePreviews = (selectedFiles: File[]) => {
       const newPreviews = Array.from(selectedFiles).map((file) => ({
@@ -53,11 +41,70 @@ export const ImageInput = forwardRef<ImageInputRef, ImageInputProps>(
       setPreviews(newPreviews);
     };
 
+    // This handles updating newly added images and  previews (Might comeback to clean it up when i learn new stuffs)
+    const handleImageFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (previews.length > 0) {
+        previews.forEach((preview) => URL.revokeObjectURL(preview.url));
+      }
+
+      if (e.target.files) {
+        const selectedFiles = Array.from(e.target.files);
+
+        if (selectedFiles) {
+          if (selectedFiles.length > uploadLimit) {
+            const excess = selectedFiles.length - uploadLimit;
+            for (let i = 0; i < excess; ++i) {
+              selectedFiles.pop();
+            }
+            alert(`Maximum of ${uploadLimit} images are allowed`);
+          }
+          handleImages(selectedFiles);
+        }
+
+        if (selectedFiles) {
+          handleImagePreviews(selectedFiles);
+          setImageDisplayName(
+            selectedFiles.length > 0
+              ? selectedFiles.map((f) => f.name).join(", ")
+              : "No images have been selected",
+          );
+        }
+      }
+    };
+
+    //This handles removing images files (Might comeback to clean it up when i learn new stuffs)
+    const handleRemoveImageFiles = (name: string) => {
+      const removedImage = handleRemoveImage(name);
+
+      if (removedImage) {
+        const removedPreview = previews.find((image) => image.name == name);
+
+        if (removedPreview) {
+          URL.revokeObjectURL(removedPreview.url);
+
+          const updatedPreviews = previews.filter(
+            (image) => image.name !== name,
+          );
+          setPreviews(updatedPreviews);
+
+          setImageDisplayName(
+            updatedPreviews.length > 0
+              ? updatedPreviews.map((p) => p.name).join(", ")
+              : "No images have been selected",
+          );
+        }
+      }
+
+      if (imageInputRef.current) imageInputRef.current.value = ""; // to preview images that where reselected
+    };
+
+    // Allows parent to reset the images on submit
     useImperativeHandle(ref, () => ({
       reset: () => {
         previews.forEach((preview) => URL.revokeObjectURL(preview.url));
         setPreviews([]);
         setImageDisplayName("No images have been selected");
+        if (imageInputRef.current) imageInputRef.current.value = "";
       },
     }));
 
@@ -86,38 +133,13 @@ export const ImageInput = forwardRef<ImageInputRef, ImageInputProps>(
           <input
             {...rest}
             id={name}
+            ref={imageInputRef}
             name={name}
             multiple={multiple}
             className="absolute opacity-0"
             type="file"
             accept="image/png, image/jpeg"
-            onChange={(e) => {
-              if (previews.length > 0) {
-                previews.forEach((preview) => URL.revokeObjectURL(preview.url));
-              }
-              if (e.target.files) {
-                const selectedFiles = Array.from(e.target.files);
-
-                if (selectedFiles) {
-                  if (selectedFiles.length > uploadLimit) {
-                    const excess = selectedFiles.length - uploadLimit;
-                    for (let i = 0; i < excess; ++i) {
-                      selectedFiles.pop();
-                    }
-                    alert(`Maximum of ${uploadLimit} images are allowed`);
-                  }
-                  handleImages(selectedFiles);
-                }
-                if (selectedFiles) {
-                  handleImagePreviews(selectedFiles);
-                  setImageDisplayName(
-                    selectedFiles.length > 0
-                      ? selectedFiles.map((f) => f.name).join(", ")
-                      : "No images have been selected",
-                  );
-                }
-              }
-            }}
+            onChange={(e) => handleImageFilesChange(e)}
           />
         </label>
 
@@ -128,28 +150,9 @@ export const ImageInput = forwardRef<ImageInputRef, ImageInputProps>(
               {previews.map(({ name, url }, index) => (
                 <div
                   key={name}
-                  onClick={() => {
-                    const removedImage = handleRemoveImage(name);
-
-                    if (removedImage) {
-                      const removedPreview = previews.find(
-                        (image) => image.name == name,
-                      );
-                      if (removedPreview) {
-                        URL.revokeObjectURL(removedPreview.url);
-
-                        const updatedPreviews = previews.filter(
-                          (image) => image.name !== name,
-                        );
-                        setPreviews(updatedPreviews);
-
-                        setImageDisplayName(
-                          updatedPreviews.length > 0
-                            ? updatedPreviews.map((p) => p.name).join(", ")
-                            : "No images have been selected",
-                        );
-                      }
-                    }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveImageFiles(name);
                   }}
                   className="group relative border overflow-hidden"
                 >
