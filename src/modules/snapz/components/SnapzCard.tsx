@@ -95,7 +95,7 @@ export default function SnapzCard({
           {images.length <= 1 ? (
             <img
               onClick={() => handleSelectedImages(images[0]?.image)}
-              className="w-full max-h-[500px] object-fit cursor-pointer"
+              className="w-full max-h-[400px] object-fit cursor-pointer"
               src={images[0]?.image}
               alt="Scoop pic"
             />
@@ -107,7 +107,7 @@ export default function SnapzCard({
                   onClick={() => handleSelectedImages(image.image)}
                 >
                   <img
-                    className="w-full h-full object-cover cursor-pointer"
+                    className="w-full max-h-[400px] object-cover cursor-pointer"
                     src={image.image}
                     alt={`Snapz pic ${index}`}
                   />
