@@ -1,4 +1,7 @@
+import { useMemo, useState } from "react";
 import { NavLink, Outlet, useNavigate, useSearchParams } from "react-router";
+import { twMerge } from "tailwind-merge";
+import { MenuIcon, XIcon } from "lucide-react";
 
 import { useLogoutMutation } from "../../store/api/auth";
 import { useAppDispatch } from "../../store/hooks";
@@ -8,32 +11,30 @@ import { useHandleApiMessage } from "../common/message-banner/hooks";
 import { getUserData } from "../../lib/helpers";
 
 import MessageBanner from "../common/message-banner";
-
-import type { TApiResponse } from "../../store/types/generic";
-import type { TUser } from "../../store/types/auth";
-import { MenuIcon, XIcon } from "lucide-react";
-import { twMerge } from "tailwind-merge";
-import { useState } from "react";
 import RouteGuard from "./RouteGuard";
 import SearchSection from "../core/search-section";
 
-const user: TUser = getUserData();
+import type { TApiResponse } from "../../store/types/generic";
+import type { TUser } from "../../store/types/auth";
 
 export default function Layout() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [logout] = useLogoutMutation();
-  const { handleApiMessage } = useHandleApiMessage();
-
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const user: TUser = useMemo(() => getUserData(), []);
   const nav = [
     { name: "snapz", link: "/snapz" },
     { name: "scoops", link: "/scoops" },
     { name: "profile", link: `/profile/${user.id}` },
     { name: "search", link: "/search" },
   ];
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [logout] = useLogoutMutation();
+
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
+  const { handleApiMessage } = useHandleApiMessage();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleLogout = async () => {
     const response = await logout();

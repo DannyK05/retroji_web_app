@@ -1,36 +1,38 @@
-import { useState } from "react";
-import type { TNav } from "./types";
-import { twJoin } from "tailwind-merge";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router";
+import { twJoin } from "tailwind-merge";
+
+import { getUserData } from "../../lib/helpers";
+import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
 import {
   useFollowUserMutation,
   useGetUserProfileQuery,
 } from "../../store/api/profile";
-import { TUser } from "../../store/types/auth";
-import { getUserData } from "../../lib/helpers";
-import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
+
 import Button from "../../components/common/button";
+import Dialog from "../../components/common/dialog";
+import UpdateProfileForm from "./components/UpdateProfileForm";
 import SnapzSection from "./components/SnapzSection";
 import ScoopsSection from "./components/ScoopsSection";
 import CommentsSection from "./components/CommentsSection";
 
-import { TErrorResponse } from "../../store/types/generic";
-import Dialog from "../../components/common/dialog";
-import UpdateProfileForm from "./components/UpdateProfileForm";
+import type { TErrorResponse } from "../../store/types/generic";
+import type { TNav } from "./types";
+import type { TUser } from "../../store/types/auth";
 
-  const user: TUser = getUserData();
-  
 export default function Profile() {
-  const [follow] = useFollowUserMutation();
-
   const params = useParams();
   const id = params.id ?? "";
+
+  const [follow] = useFollowUserMutation();
+  const { data: profile } = useGetUserProfileQuery(id);
+
+  const user: TUser = useMemo(() => getUserData(), []);
   const nav: TNav[] = ["snapz", "scoops", "comments"];
 
   const [currentNav, setCurrentNav] = useState<TNav>("snapz");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: profile } = useGetUserProfileQuery(id);
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
   const handleCurrentNav = (nav: TNav) => {

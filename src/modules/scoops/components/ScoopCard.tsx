@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router";
 import { Diamond, HeartIcon, Trash2Icon } from "lucide-react";
 import { twJoin, twMerge } from "tailwind-merge";
@@ -11,8 +11,6 @@ import ConfirmationDialog from "../../../components/core/confirmation-dialog";
 
 import type { TUser } from "../../../store/types/auth";
 import type { ScoopCardProps } from "../types";
-
-const user: TUser = getUserData();
 
 export default function ScoopCard({
   id,
@@ -30,6 +28,7 @@ export default function ScoopCard({
 }: ScoopCardProps) {
   const [deleteScoops, { isLoading }] = useDeleteScoopsMutation();
 
+  const user: TUser = useMemo(() => getUserData(), []);
   const isUserScoops = user.id === userId;
 
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);

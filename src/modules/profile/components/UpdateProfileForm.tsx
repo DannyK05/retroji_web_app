@@ -1,24 +1,27 @@
-import Input from "../../../components/common/input";
+import { useMemo, useState } from "react";
+
 import {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
 } from "../../../store/api/profile";
-import { TUpdateUserProfileDto } from "../../../store/types/profile";
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
-import { ImageInput } from "../../../components/common/image-input";
-import { TErrorResponse } from "../../../store/types/generic";
-import { TUser } from "../../../store/types/auth";
 import { getUserData } from "../../../lib/helpers";
-import LoadingScreen from "../../../components/common/loading-screen";
-import { useState } from "react";
-import { UpdateProfileFormProps } from "../types";
-import Button from "../../../components/common/button";
 
-const user: TUser = getUserData();
+import { ImageInput } from "../../../components/common/image-input";
+import Input from "../../../components/common/input";
+import Button from "../../../components/common/button";
+import LoadingScreen from "../../../components/common/loading-screen";
+
+import type { TErrorResponse } from "../../../store/types/generic";
+import type { TUser } from "../../../store/types/auth";
+import type { TUpdateUserProfileDto } from "../../../store/types/profile";
+import type { UpdateProfileFormProps } from "../types";
 
 export default function UpdateProfileForm({
   handleClose,
 }: UpdateProfileFormProps) {
+  const user: TUser = useMemo(() => getUserData(), []);
+
   const { data, isLoading } = useGetUserProfileQuery(`${user.id}`);
   const [update, { isLoading: isUpdating }] = useUpdateUserProfileMutation();
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();

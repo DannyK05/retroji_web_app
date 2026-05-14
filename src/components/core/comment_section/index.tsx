@@ -1,10 +1,12 @@
 import { useGetAllCommentsBySnapzIdQuery } from "../../../store/api/snapz";
+
+import { SideContainer } from "../../common/side-container";
 import EmptyScreen from "../../common/empty-screen";
 import LoadingScreen from "../../common/loading-screen";
-import { SideContainer } from "../../common/side-container";
 import CommentCard from "./components/CommentCard";
 import PostCommentForm from "./components/PostCommentForm";
-import { CommentSectionProps } from "./types";
+
+import type { CommentSectionProps } from "./types";
 
 export default function CommentsSection({
   commentPayload,
@@ -13,12 +15,13 @@ export default function CommentsSection({
   isOpen,
   refetch,
 }: CommentSectionProps) {
-  
   const {
     data: comments,
     isLoading: isLoadingAllComments,
     isFetching: isFetchingAllComments,
-  } = useGetAllCommentsBySnapzIdQuery({ snapz_id: commentPayload.snapz_id });
+  } = useGetAllCommentsBySnapzIdQuery({
+    snapz_id: commentPayload.snapz_id ?? "",
+  });
 
   return (
     <SideContainer

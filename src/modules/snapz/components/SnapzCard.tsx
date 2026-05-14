@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DiamondIcon, ThumbsUpIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
 import { twMerge } from "tailwind-merge";
@@ -16,8 +16,6 @@ import type { TUser } from "../../../store/types/auth";
 import type { SnapzProps } from "../types";
 import { SwiperSlide } from "swiper/react";
 
-const user: TUser = getUserData();
-
 export default function SnapzCard({
   id,
   userId,
@@ -32,6 +30,8 @@ export default function SnapzCard({
   handleComments,
   handleLike,
 }: SnapzProps) {
+  const user: TUser = useMemo(() => getUserData(), []);
+
   const [deleteSnapz, { isLoading }] = useDeleteSnapzMutation();
 
   const isUserSnapz = user.id === userId;
@@ -148,7 +148,7 @@ export default function SnapzCard({
       >
         {selectedImages && (
           <img
-            className="max-h-[560px] object-fit"
+            className="max-h-[450px] object-fit lg:max-h-[560px]"
             src={selectedImages}
             alt="Scoop pic"
           />

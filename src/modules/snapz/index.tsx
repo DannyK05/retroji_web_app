@@ -9,19 +9,16 @@ import {
   useLikeSnapzMutation,
 } from "../../store/api/snapz";
 
-import SnapzCard from "./components/SnapzCard";
-
 import Button from "../../components/common/button";
+import Dialog from "../../components/common/dialog";
+import SnapzCard from "./components/SnapzCard";
+import CreateSnapzForm from "./components/CreateSnapzForm";
+import LoadingScreen from "../../components/common/loading-screen";
+import EmptyScreen from "../../components/common/empty-screen";
+import CommentsSection from "../../components/core/comment_section";
 
 import type { TErrorResponse } from "../../store/types/generic";
 import type { TPostCommentDto } from "../../store/types/snapz";
-import Dialog from "../../components/common/dialog";
-import CreateSnapzForm from "./components/CreateSnapzForm";
-
-import LoadingScreen from "../../components/common/loading-screen";
-import EmptyScreen from "../../components/common/empty-screen";
-
-import CommentsSection from "../../components/core/comment_section";
 
 export default function Snapz() {
   const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
