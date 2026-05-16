@@ -93,11 +93,9 @@ export default function ScoopsSection({ userId }: TSection) {
                   ? "opacity-50"
                   : ""
               }
-              userId={author.id}
-              name={author.username}
+              author={author}
               content={content}
               date={created_at}
-              image={author.image}
               likeCount={like_count}
               isLiked={is_liked}
               repliesCount={replies_count}
@@ -108,7 +106,7 @@ export default function ScoopsSection({ userId }: TSection) {
         )}
       </div>
 
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-start justify-center">
         <RepliesSection
           isOpen={isSideOpen}
           handleClose={handleisSideOpen}
