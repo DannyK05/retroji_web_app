@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router";
 import { Diamond, HeartIcon, Trash2Icon } from "lucide-react";
 import { twJoin, twMerge } from "tailwind-merge";
@@ -12,14 +12,10 @@ import ConfirmationDialog from "../../../components/core/confirmation-dialog";
 import type { TUser } from "../../../store/types/auth";
 import type { ScoopCardProps } from "../types";
 
-const user: TUser = getUserData();
-
 export default function ScoopCard({
   id,
-  userId,
+  author,
   className,
-  name,
-  image,
   date,
   content,
   likeCount,
@@ -30,7 +26,8 @@ export default function ScoopCard({
 }: ScoopCardProps) {
   const [deleteScoops, { isLoading }] = useDeleteScoopsMutation();
 
-  const isUserScoops = user.id === userId;
+  const user: TUser = useMemo(() => getUserData(), []);
+  const isUserScoops = user?.id === author?.id;
 
   const [clickLiked, setClickedLiked] = useState(isLiked ?? false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,15 +45,12 @@ export default function ScoopCard({
           className,
         )}
       >
-        <div className="h-23 flex flex-col items-center border border-r-0">
+        <div className="flex flex-col items-center border">
           <img
-            className="h-19 w-20 object-cover"
-            src={image ?? "/assets/images/profile_pic.png"}
-            alt={name}
+            className="h-20 w-20 object-cover"
+            src={author?.image ?? "/assets/images/profile_pic.png"}
+            alt={author?.username}
           />
-          <span className="w-full flex-1 text-center text-lg text-white bg-black">
-            Scoop
-          </span>
         </div>
 
         <div className="w-full flex min-h-23 flex-col items-start space-y-1 border">
@@ -64,9 +58,9 @@ export default function ScoopCard({
             <p>
               <Link
                 className="text-white hover:underline"
-                to={`/profile/${userId}`}
+                to={`/profile/${author?.id}`}
               >
-                {name}
+                {author?.username}
               </Link>
             </p>
 
@@ -104,8 +98,11 @@ export default function ScoopCard({
             </span>
 
             <span
-              onClick={() => handleReplies(id)}
-              className="flex items-center space-x-1 cursor-pointer lg:hover:text-[var(--retro-blue)] active:text-[var(--retro-blue)] active:scale-110"
+              onClick={() => handleReplies?.(id)}
+              className={twJoin(
+                !handleReplies && "opacity-40",
+                `flex items-center space-x-1 cursor-pointer lg:hover:text-[var(--retro-blue)] active:text-[var(--retro-blue)] active:scale-110`,
+              )}
             >
               <Diamond className="size-5" />
               <span className="text-lg">{repliesCount}</span>

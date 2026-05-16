@@ -1,15 +1,15 @@
+import type { TUser } from "../../store/types/auth";
+
 export type ScoopCardProps = {
   id: string;
-  userId: number;
+  author: TUser;
   className?: string;
-  name: string;
-  image: string;
   date: Date;
   content: string;
   likeCount: number;
   repliesCount: number;
   isLiked: boolean;
-  handleReplies: (parentId: string) => void;
+  handleReplies?: (parentId: string) => void;
   handleLike: (id: string) => void;
 };
 

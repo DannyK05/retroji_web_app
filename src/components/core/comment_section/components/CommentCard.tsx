@@ -1,10 +1,11 @@
+import { useMemo } from "react";
 import { Loader, Trash2Icon } from "lucide-react";
+
 import { getRelativeTime, getUserData } from "../../../../lib/helpers";
 import { useDeleteCommentMutation } from "../../../../store/api/snapz";
-import { TUser } from "../../../../store/types/auth";
-import { CommentCardProps } from "../types";
 
-const user: TUser = getUserData();
+import type { TUser } from "../../../../store/types/auth";
+import type { CommentCardProps } from "../types";
 
 export default function CommentCard({
   id,
@@ -12,15 +13,10 @@ export default function CommentCard({
   createdAt,
   content,
 }: CommentCardProps) {
+  const user: TUser = useMemo(() => getUserData(), []);
   const isUserSnapz = user.id === author.id;
 
   const [deleteComment, { isLoading }] = useDeleteCommentMutation();
-
-  // const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
-  //   useState(false);
-
-  // const handleIsConfirmationDialogOpen = () =>
-  //   setIsConfirmationDialogOpen((prev) => !prev);
 
   const handleDeleteComment = async () => {
     await deleteComment({ comment_id: id });

@@ -19,7 +19,7 @@ export default function ProfileCard({
   return (
     <div
       onClick={() => navigate(`/profile/${userId}`)}
-      className="w-full flex items-center space-x-3 border-y px-1 lg:min-w-60"
+      className="w-full flex items-center space-x-3 border-y px-1 cursor-pointer lg:min-w-60"
     >
       <img
         className="max-h-16 object-cover border"

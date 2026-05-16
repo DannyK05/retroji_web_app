@@ -118,11 +118,9 @@ export default function Scoop() {
                   }
                   key={id}
                   id={id}
-                  userId={author.id}
-                  name={author.username}
+                  author={author}
                   content={content}
                   date={created_at}
-                  image={author.image}
                   likeCount={like_count}
                   isLiked={is_liked}
                   repliesCount={replies_count}

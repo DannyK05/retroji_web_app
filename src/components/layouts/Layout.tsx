@@ -1,4 +1,7 @@
+import { useMemo, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate, useSearchParams } from "react-router";
+import { twMerge } from "tailwind-merge";
+import { MenuIcon, XIcon } from "lucide-react";
 
 import { useLogoutMutation } from "../../store/api/auth";
 import { useAppDispatch } from "../../store/hooks";
@@ -8,32 +11,34 @@ import { useHandleApiMessage } from "../common/message-banner/hooks";
 import { getUserData } from "../../lib/helpers";
 
 import MessageBanner from "../common/message-banner";
-
-import type { TApiResponse } from "../../store/types/generic";
-import type { TUser } from "../../store/types/auth";
-import { MenuIcon, XIcon } from "lucide-react";
-import { twMerge } from "tailwind-merge";
-import { useState } from "react";
 import RouteGuard from "./RouteGuard";
 import SearchSection from "../core/search-section";
 
-const user: TUser = getUserData();
+import type { TApiResponse } from "../../store/types/generic";
+import type { TUser } from "../../store/types/auth";
 
 export default function Layout() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [logout] = useLogoutMutation();
-  const { handleApiMessage } = useHandleApiMessage();
-
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const user: TUser = useMemo(() => getUserData(), []);
   const nav = [
     { name: "snapz", link: "/snapz" },
     { name: "scoops", link: "/scoops" },
     { name: "profile", link: `/profile/${user.id}` },
     { name: "search", link: "/search" },
   ];
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [logout] = useLogoutMutation();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get("query") ?? "",
+  );
+  const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const { handleApiMessage } = useHandleApiMessage();
 
   const handleLogout = async () => {
     const response = await logout();
@@ -49,7 +54,9 @@ export default function Layout() {
   };
 
   const handleSearchQuery = (query: string) => {
-    setSearchParams({ query });
+    setSearchInput(query);
+    clearTimeout(timeout.current);
+    timeout.current = setTimeout(() => setSearchParams({ query }), 500);
   };
 
   return (
@@ -114,7 +121,7 @@ export default function Layout() {
                   className="border p-1 w-full"
                   title="Search"
                   placeholder="Dig it.."
-                  value={searchParams.get("query") ?? ""}
+                  value={searchInput}
                   onChange={(e) => {
                     handleSearchQuery(e.target.value);
                   }}
