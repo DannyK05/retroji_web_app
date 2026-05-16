@@ -1,18 +1,21 @@
 import { useMemo, useState } from "react";
-import SnapzCard from "../../../../modules/snapz/components/SnapzCard";
-import { AllTabProps } from "../types";
-import ScoopCard from "../../../../modules/scoops/components/ScoopCard";
-import CommentCard from "../../comment_section/components/CommentCard";
-import { TPostScoopsDto } from "../../../../store/types/scoops";
-import { TPostCommentDto } from "../../../../store/types/snapz";
+
 import { useLikeSnapzMutation } from "../../../../store/api/snapz";
 import { useLikeScoopsMutation } from "../../../../store/api/scoops";
 import { useHandleApiMessage } from "../../../common/message-banner/hooks";
-import { TErrorResponse } from "../../../../store/types/generic";
+
+import SnapzCard from "../../../../modules/snapz/components/SnapzCard";
+import ScoopCard from "../../../../modules/scoops/components/ScoopCard";
+import CommentCard from "../../comment_section/components/CommentCard";
 import CommentsSection from "../../comment_section";
 import RepliesSection from "../../replies-section";
 import EmptyScreen from "../../../common/empty-screen";
 import ProfileCard from "../../../../modules/search/components/ProfileCard";
+
+import type { AllTabProps } from "../types";
+import type { TPostScoopsDto } from "../../../../store/types/scoops";
+import type { TPostCommentDto } from "../../../../store/types/snapz";
+import type { TErrorResponse } from "../../../../store/types/generic";
 
 export default function AllTab({ data, handleNav }: AllTabProps) {
   const [likeSnapz] = useLikeSnapzMutation();
@@ -211,11 +214,9 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
                         ? "opacity-50"
                         : ""
                     }
-                    userId={author.id}
-                    name={author.username}
+                    author={author}
                     content={content}
                     date={created_at}
-                    image={"/public/assets/images/profile_pic.png"}
                     likeCount={like_count}
                     isLiked={is_liked}
                     repliesCount={replies_count}

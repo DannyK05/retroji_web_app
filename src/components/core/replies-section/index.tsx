@@ -66,8 +66,6 @@ export default function RepliesSection({
     }
   };
 
-  console.log(repliesIdStack);
-
   useEffect(() => {
     setRepliesIdStack([repliesPayload.parent_id ?? ""]);
   }, [repliesPayload.parent_id]);

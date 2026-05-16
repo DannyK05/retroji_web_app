@@ -1,23 +1,27 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Input from "../../../components/common/input";
-import PasswordInput from "../../../components/common/password-input";
-import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+import { CheckSquare2, Loader, XSquareIcon } from "lucide-react";
 
-import {
-  useIsUsernameTakenQuery,
-  useSignupMutation,
-} from "../../../store/api/auth";
-import { useAppDispatch } from "../../../store/hooks";
+import { DEFAULT_PAGE_URL } from "../../../lib/constants";
+
 import {
   removeCredentials,
   setCredentials,
 } from "../../../store/features/authSlice";
-import { DEFAULT_PAGE_URL } from "../../../lib/constants";
+import {
+  useLazyIsUsernameTakenQuery,
+  useSignupMutation,
+} from "../../../store/api/auth";
+import { useAppDispatch } from "../../../store/hooks";
+import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+
+import Input from "../../../components/common/input";
+import PasswordInput from "../../../components/common/password-input";
+import Button from "../../../components/common/button";
+
 import type { TSignupDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
-import { CheckSquare2, Loader, XSquareIcon } from "lucide-react";
-import Button from "../../../components/common/button";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,8 +32,10 @@ export default function SignUp() {
 
   const [signup, { isLoading }] = useSignupMutation();
 
-  const { data: isUsernameTaken, isLoading: isCheckingUsername } =
-    useIsUsernameTakenQuery(username);
+  const [
+    checkUsername,
+    { data: isUsernameTaken, isLoading: isCheckingUsername },
+  ] = useLazyIsUsernameTakenQuery();
 
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
@@ -52,6 +58,14 @@ export default function SignUp() {
       handleErrorMessage(error as TErrorResponse);
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      checkUsername(username);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [username]);
 
   return (
     <div className="w-full flex flex-col items-center">

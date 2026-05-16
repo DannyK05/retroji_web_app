@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate, useSearchParams } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { MenuIcon, XIcon } from "lucide-react";
@@ -30,11 +30,15 @@ export default function Layout() {
 
   const [logout] = useLogoutMutation();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get("query") ?? "",
+  );
+  const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const { handleApiMessage } = useHandleApiMessage();
-
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleLogout = async () => {
     const response = await logout();
@@ -50,7 +54,9 @@ export default function Layout() {
   };
 
   const handleSearchQuery = (query: string) => {
-    setSearchParams({ query });
+    setSearchInput(query);
+    clearTimeout(timeout.current);
+    timeout.current = setTimeout(() => setSearchParams({ query }), 500);
   };
 
   return (
@@ -115,7 +121,7 @@ export default function Layout() {
                   className="border p-1 w-full"
                   title="Search"
                   placeholder="Dig it.."
-                  value={searchParams.get("query") ?? ""}
+                  value={searchInput}
                   onChange={(e) => {
                     handleSearchQuery(e.target.value);
                   }}

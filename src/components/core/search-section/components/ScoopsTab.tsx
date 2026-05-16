@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
-import ScoopCard from "../../../../modules/scoops/components/ScoopCard";
-import { useLikeScoopsMutation } from "../../../../store/api/scoops";
-import { TPostScoopsDto } from "../../../../store/types/scoops";
-import EmptyScreen from "../../../common/empty-screen";
+
 import { useHandleApiMessage } from "../../../common/message-banner/hooks";
+import { useLikeScoopsMutation } from "../../../../store/api/scoops";
+
+import EmptyScreen from "../../../common/empty-screen";
+import ScoopCard from "../../../../modules/scoops/components/ScoopCard";
 import RepliesSection from "../../replies-section";
-import { ScoopsTabProps } from "../types";
-import { TErrorResponse } from "../../../../store/types/generic";
+
+import type { TPostScoopsDto } from "../../../../store/types/scoops";
+import type { ScoopsTabProps } from "../types";
+import type { TErrorResponse } from "../../../../store/types/generic";
 
 export default function ScoopsTab({ data }: ScoopsTabProps) {
   const [likeScoops] = useLikeScoopsMutation();
@@ -81,11 +84,9 @@ export default function ScoopsTab({ data }: ScoopsTabProps) {
                   ? "opacity-50"
                   : ""
               }
-              userId={author.id}
-              name={author.username}
+              author={author}
               content={content}
               date={created_at}
-              image={"/public/assets/images/profile_pic.png"}
               likeCount={like_count}
               isLiked={is_liked}
               repliesCount={replies_count}

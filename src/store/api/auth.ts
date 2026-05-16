@@ -58,6 +58,6 @@ export const {
   useLoginMutation,
   useSignupMutation,
   useLogoutMutation,
-  useIsUsernameTakenQuery,
+  useLazyIsUsernameTakenQuery,
   useDeleteUserMutation,
 } = authApi;
