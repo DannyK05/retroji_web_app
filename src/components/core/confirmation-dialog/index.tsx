@@ -20,10 +20,11 @@ export default function ConfirmationDialog({
     <Dialog
       isOpen={isOpen}
       handleClose={handleClose}
-      className="w-80 lg:h-50"
+      className="lg:min-w-[100px]"
+      containerClassName="lg:h-1/3"
       title={message}
     >
-      <div className="w-full flex flex-col items-center">
+      <div className="w-auto flex flex-col items-center">
         <p className="text-red-500 text-2xl">
           {"[This action is irreversible]"}
         </p>
