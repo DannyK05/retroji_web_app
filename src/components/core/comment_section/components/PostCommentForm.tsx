@@ -1,4 +1,4 @@
-import {SendHorizontal } from "lucide-react";
+import { SendHorizontal } from "lucide-react";
 
 import { useHandleApiMessage } from "../../../common/message-banner/hooks";
 
@@ -35,7 +35,7 @@ export default function PostCommentForm({
   };
   return (
     <form onSubmit={handlePostComment}>
-      <div className="w-full absolute bottom-0 left-0 flex items-end">
+      <div className="w-full flex items-end">
         <Input
           name="Comment"
           className="w-9/10 h-10"

@@ -29,7 +29,7 @@ export function SideContainer({
         <h2 className="text-3xl">{title}</h2>
       </div>
 
-      <div className="w-full flex-1 flex flex-col min-h-0 px-1 py-2">
+      <div className="w-full min-h-0 flex-1 flex flex-col px-1 py-2">
         {children}
       </div>
     </aside>
