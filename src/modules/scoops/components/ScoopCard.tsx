@@ -80,7 +80,7 @@ export default function ScoopCard({
             </div>
           </div>
 
-          <p className="text-2xl px-2">{content}</p>
+          <p className="text-2xl px-2 break-all whitespace-normal">{content}</p>
 
           <div className="w-full flex items-center space-x-4 px-4 border-t">
             <span

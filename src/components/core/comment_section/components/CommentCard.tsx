@@ -23,7 +23,7 @@ export default function CommentCard({
   };
   return (
     <>
-      <div className="w-full flex flex-col items-start p-1 border">
+      <div className="w-full h-auto flex flex-col items-start p-1 border">
         <div className="w-full flex items-center justify-between text-2xl border-b">
           <p>{author.username} says</p>
 
@@ -46,7 +46,7 @@ export default function CommentCard({
             )}
           </div>
         </div>
-        <p className="text-3xl pt-2">{content}</p>
+        <p className="text-3xl pt-2 break-all whitespace-normal">{content}</p>
       </div>
     </>
   );
