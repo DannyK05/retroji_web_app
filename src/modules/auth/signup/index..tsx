@@ -22,6 +22,7 @@ import Button from "../../../components/common/button";
 
 import type { TSignupDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
+import { freeServerMessage } from "../data";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -47,9 +48,14 @@ export default function SignUp() {
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
   const onSubmit: SubmitHandler<TSignupDto> = async (data) => {
+    const timeout = setTimeout(
+      () => handleErrorMessage(freeServerMessage),
+      10000,
+    );
     try {
       dispatch(removeCredentials());
       const response = await signup(data).unwrap();
+      clearTimeout(timeout);
 
       if (response.data) {
         dispatch(
@@ -62,7 +68,7 @@ export default function SignUp() {
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error) {
-      console.log(error);
+      clearTimeout(timeout);
       handleErrorMessage(error as TErrorResponse);
     }
   };
