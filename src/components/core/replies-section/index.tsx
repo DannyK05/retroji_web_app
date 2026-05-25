@@ -80,67 +80,72 @@ export default function RepliesSection({
       }
       handleClose={handleCloseReplies}
     >
-      <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[320px]">
-        {repliesScoopStack.length > 0 && (
-          <>
-            {" "}
-            <div className="w-full py-2 border-b-2">
+      <div className="w-full h-full flex flex-col justify-between">
+        <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[320px]">
+          {repliesScoopStack.length > 0 && (
+            <>
+              {" "}
+              <div className="w-full py-2 border-b-2">
+                <ScoopCard
+                  key={repliesScoopStack[repliesScoopStack.length - 1].id}
+                  id={repliesScoopStack[repliesScoopStack.length - 1].id}
+                  author={
+                    repliesScoopStack[repliesScoopStack.length - 1].author
+                  }
+                  content={
+                    repliesScoopStack[repliesScoopStack.length - 1].content
+                  }
+                  date={
+                    repliesScoopStack[repliesScoopStack.length - 1].created_at
+                  }
+                  likeCount={
+                    repliesScoopStack[repliesScoopStack.length - 1].like_count
+                  }
+                  isLiked={
+                    repliesScoopStack[repliesScoopStack.length - 1].is_liked
+                  }
+                  repliesCount={
+                    repliesScoopStack[repliesScoopStack.length - 1]
+                      .replies_count
+                  }
+                  handleLike={handleLike}
+                />
+              </div>
+              <p className="text-2xl text-grey-600">Replies</p>
+            </>
+          )}
+
+          {isLoadingAllReplies ? (
+            <LoadingScreen />
+          ) : replies?.data.length !== 0 ? (
+            replies?.data.map((scoop: TScoops) => (
               <ScoopCard
-                key={repliesScoopStack[repliesScoopStack.length - 1].id}
-                id={repliesScoopStack[repliesScoopStack.length - 1].id}
-                author={repliesScoopStack[repliesScoopStack.length - 1].author}
-                content={
-                  repliesScoopStack[repliesScoopStack.length - 1].content
-                }
-                date={
-                  repliesScoopStack[repliesScoopStack.length - 1].created_at
-                }
-                likeCount={
-                  repliesScoopStack[repliesScoopStack.length - 1].like_count
-                }
-                isLiked={
-                  repliesScoopStack[repliesScoopStack.length - 1].is_liked
-                }
-                repliesCount={
-                  repliesScoopStack[repliesScoopStack.length - 1].replies_count
-                }
+                key={scoop.id}
+                id={scoop.id}
+                author={scoop.author}
+                content={scoop.content}
+                date={scoop.created_at}
+                likeCount={scoop.like_count}
+                isLiked={scoop.is_liked}
+                repliesCount={scoop.replies_count}
+                handleReplies={() => handleReplies(scoop)}
                 handleLike={handleLike}
               />
-            </div>
-            <p className="text-2xl text-grey-600">Replies</p>
-          </>
-        )}
+            ))
+          ) : (
+            <EmptyScreen />
+          )}
+        </div>
 
-        {isLoadingAllReplies ? (
-          <LoadingScreen />
-        ) : replies?.data.length !== 0 ? (
-          replies?.data.map((scoop: TScoops) => (
-            <ScoopCard
-              key={scoop.id}
-              id={scoop.id}
-              author={scoop.author}
-              content={scoop.content}
-              date={scoop.created_at}
-              likeCount={scoop.like_count}
-              isLiked={scoop.is_liked}
-              repliesCount={scoop.replies_count}
-              handleReplies={() => handleReplies(scoop)}
-              handleLike={handleLike}
-            />
-          ))
-        ) : (
-          <EmptyScreen />
-        )}
+        <PostRepliesForm
+          repliesPayload={{
+            ...repliesPayload,
+            parent_id: repliesIdStack[0],
+          }}
+          refetch={refetch}
+          handleRepliesPayload={handleRepliesPayload}
+        />
       </div>
-
-      <PostRepliesForm
-        repliesPayload={{
-          ...repliesPayload,
-          parent_id: repliesIdStack[0],
-        }}
-        refetch={refetch}
-        handleRepliesPayload={handleRepliesPayload}
-      />
     </SideContainer>
   );
 }

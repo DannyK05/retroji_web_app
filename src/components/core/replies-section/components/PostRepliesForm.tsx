@@ -38,7 +38,7 @@ export default function PostRepliesForm({
       <div className="w-full flex items-end bg-white">
         <Input
           name="Replies"
-          className="w-9/10 h-10"
+          className="w-4/5 h-10"
           type="text"
           value={repliesPayload.content}
           onChange={(e) => {

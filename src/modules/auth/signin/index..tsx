@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Input from "../../../components/common/input";
-import PasswordInput from "../../../components/common/password-input";
+
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 import { useLoginMutation } from "../../../store/api/auth";
 import { useAppDispatch } from "../../../store/hooks";
@@ -9,10 +8,15 @@ import {
   removeCredentials,
   setCredentials,
 } from "../../../store/features/authSlice";
+
+import Input from "../../../components/common/input";
+import PasswordInput from "../../../components/common/password-input";
+import Button from "../../../components/common/button";
+
 import { DEFAULT_PAGE_URL } from "../../../lib/constants";
 import type { TLoginDto } from "../../../store/types/auth";
 import type { TErrorResponse } from "../../../store/types/generic";
-import Button from "../../../components/common/button";
+import { freeServerMessage } from "../data";
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
@@ -30,10 +34,17 @@ export default function SignIn() {
   } = useForm<TLoginDto>();
 
   const onSubmit: SubmitHandler<TLoginDto> = async (data) => {
+    const timeout = setTimeout(
+      () => handleErrorMessage(freeServerMessage),
+      10000,
+    );
+
     try {
       dispatch(removeCredentials());
 
       const response = await login(data).unwrap();
+      clearTimeout(timeout);
+      
       if (response.data) {
         dispatch(
           setCredentials({
@@ -45,7 +56,7 @@ export default function SignIn() {
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error) {
-      console.log(error);
+      clearTimeout(timeout);
       handleErrorMessage(error as TErrorResponse);
     }
   };

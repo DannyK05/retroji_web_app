@@ -30,29 +30,31 @@ export default function CommentsSection({
       title="Comments"
       handleClose={handleClose}
     >
-      <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[320px]">
-        {isLoadingAllComments || isFetchingAllComments ? (
-          <LoadingScreen />
-        ) : comments?.data.length !== 0 ? (
-          comments?.data.map(({ id, content, author, created_at }, index) => (
-            <CommentCard
-              id={id}
-              key={index}
-              content={content}
-              author={author}
-              createdAt={created_at}
-            />
-          ))
-        ) : (
-          <EmptyScreen />
-        )}
-      </div>
+      <div className="w-full h-full flex flex-col justify-between">
+        <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[320px]">
+          {isLoadingAllComments || isFetchingAllComments ? (
+            <LoadingScreen />
+          ) : comments?.data.length !== 0 ? (
+            comments?.data.map(({ id, content, author, created_at }, index) => (
+              <CommentCard
+                id={id}
+                key={index}
+                content={content}
+                author={author}
+                createdAt={created_at}
+              />
+            ))
+          ) : (
+            <EmptyScreen />
+          )}
+        </div>
 
-      <PostCommentForm
-        commentPayload={commentPayload}
-        handleCommentPayload={handleCommentPayload}
-        refetch={refetch}
-      />
+        <PostCommentForm
+          commentPayload={commentPayload}
+          handleCommentPayload={handleCommentPayload}
+          refetch={refetch}
+        />
+      </div>
     </SideContainer>
   );
 }
