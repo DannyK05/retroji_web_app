@@ -35,7 +35,7 @@ export default function PostRepliesForm({
 
   return (
     <form onSubmit={handlePostReplies}>
-      <div className="w-full absolute bottom-0 left-0 flex items-end bg-white">
+      <div className="w-full flex items-end bg-white">
         <Input
           name="Replies"
           className="w-9/10 h-10"
@@ -47,7 +47,7 @@ export default function PostRepliesForm({
           placeholder="What's on your mind ?"
         />
         <Button
-        isLoading={isPostingReplies}
+          isLoading={isPostingReplies}
           type="submit"
           disabled={isPostingReplies || repliesPayload.content === ""}
           className="flex-1 h-10"

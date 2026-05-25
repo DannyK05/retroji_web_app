@@ -26,9 +26,16 @@ import type { TErrorResponse } from "../../../store/types/generic";
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { register, watch, handleSubmit } = useForm<TSignupDto>();
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+    clearErrors,
+  } = useForm<TSignupDto & { confirmPassword: string }>();
 
   const username = watch("username");
+  const password = watch("password");
 
   const [signup, { isLoading }] = useSignupMutation();
 
@@ -55,6 +62,7 @@ export default function SignUp() {
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error) {
+      console.log(error);
       handleErrorMessage(error as TErrorResponse);
     }
   };
@@ -71,14 +79,22 @@ export default function SignUp() {
     <div className="w-full flex flex-col items-center">
       <h1 className="text-6xl text-center">Sign up</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         <label className="flex flex-row items-center space-x-4">
           <span className="text-4xl">user name:</span>
           <div className="flex items-center space-x-2">
             <Input
               title="User Name"
-              {...register("username")}
+              {...register("username", {
+                required: "Username is required",
+                max: {
+                  value: 12,
+                  message: "Password can't be more than 12 characters",
+                },
+              })}
+              onChange={() => clearErrors()}
               placeholder="User Name"
+              error={errors.username?.message}
             />
             {isCheckingUsername ? (
               <Loader />
@@ -94,8 +110,16 @@ export default function SignUp() {
           <span className="text-4xl">email address:</span>
           <Input
             title="Email Address"
-            {...register("email")}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                message: "This is not a vaild email address",
+              },
+            })}
+            onChange={() => clearErrors()}
             placeholder="Email Address"
+            error={errors.email?.message}
           />
         </label>
 
@@ -103,8 +127,16 @@ export default function SignUp() {
           <span className="text-4xl">password:</span>
           <PasswordInput
             title="User Password"
-            {...register("password")}
+            {...register("password", {
+              required: "Password is required",
+              min: {
+                value: 5,
+                message: "Password can't be less than 5 characters",
+              },
+            })}
+            onChange={() => clearErrors()}
             placeholder="Password"
+            error={errors.password?.message}
           />
         </label>
 
@@ -112,8 +144,14 @@ export default function SignUp() {
           <span className="text-4xl">confirm password:</span>
           <PasswordInput
             title="User Password"
-            name="confirmPassword"
+            {...register("confirmPassword", {
+              required: "Please confirm your password",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            })}
+            onChange={() => clearErrors()}
             placeholder="Confirm Password"
+            error={errors.confirmPassword?.message}
           />
         </label>
 

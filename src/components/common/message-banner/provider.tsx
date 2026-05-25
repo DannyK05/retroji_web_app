@@ -20,8 +20,8 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
   };
 
   const handleErrorMessage = (err: TErrorResponse) => {
-    if (err.message) {
-      setMessage(err.message);
+    if (err.data.message) {
+      setMessage(err.data.message);
     } else {
       setMessage("An error occurred");
     }

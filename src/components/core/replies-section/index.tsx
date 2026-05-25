@@ -80,7 +80,7 @@ export default function RepliesSection({
       }
       handleClose={handleCloseReplies}
     >
-      <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[350px]">
+      <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[320px]">
         {repliesScoopStack.length > 0 && (
           <>
             {" "}

@@ -264,19 +264,22 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
       </div>
 
       <div>
-        <CommentsSection
-          isOpen={isCommentsOpen}
-          handleClose={() => setIsCommentsOpen(false)}
-          commentPayload={commentPayload}
-          handleCommentPayload={handleCommentPayload}
-        />
-
-        <RepliesSection
-          isOpen={isRepliesOpen}
-          handleClose={() => setIsRepliesOpen(false)}
-          repliesPayload={repliesPayload}
-          handleRepliesPayload={handleRepliesPayload}
-        />
+        {isRepliesOpen && (
+          <RepliesSection
+            isOpen={isRepliesOpen}
+            handleClose={() => setIsRepliesOpen(false)}
+            repliesPayload={repliesPayload}
+            handleRepliesPayload={handleRepliesPayload}
+          />
+        )}
+        {isCommentsOpen && (
+          <CommentsSection
+            isOpen={isCommentsOpen}
+            handleClose={() => setIsCommentsOpen(false)}
+            commentPayload={commentPayload}
+            handleCommentPayload={handleCommentPayload}
+          />
+        )}
       </div>
     </div>
   );
