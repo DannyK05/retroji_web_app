@@ -24,7 +24,7 @@ export default function Dialog({
       <div
         onClick={(e) => e.stopPropagation()}
         className={twMerge(
-          "max-h-3/5 flex flex-col items-start bg-white border lg:w-auto lg:h-4/5",
+          "max-h-3/5 flex flex-col items-center bg-white border lg:w-auto lg:h-4/5",
           containerClassName,
         )}
       >
@@ -38,7 +38,7 @@ export default function Dialog({
 
         <div
           className={twMerge(
-            "min-w-[350px] flex items-start justify-center p-2 overflow-y-auto lg:min-w-[500px]",
+            "min-w-[350px] flex items-center justify-center p-2 overflow-y-auto lg:min-w-[500px]",
             className,
           )}
         >

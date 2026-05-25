@@ -1,8 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Loader, Trash2Icon } from "lucide-react";
 
 import { getRelativeTime, getUserData } from "../../../../lib/helpers";
 import { useDeleteCommentMutation } from "../../../../store/api/snapz";
+
+import ConfirmationDialog from "../../confirmation-dialog";
 
 import type { TUser } from "../../../../store/types/auth";
 import type { CommentCardProps } from "../types";
@@ -16,8 +18,11 @@ export default function CommentCard({
   const user: TUser = useMemo(() => getUserData(), []);
   const isUserSnapz = user.id === author.id;
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const [deleteComment, { isLoading }] = useDeleteCommentMutation();
 
+  const handleIsDialogOpen = () => setIsDialogOpen((prev) => !prev);
   const handleDeleteComment = async () => {
     await deleteComment({ comment_id: id });
   };
@@ -32,7 +37,7 @@ export default function CommentCard({
 
             {isUserSnapz && (
               <button
-                onClick={handleDeleteComment}
+                onClick={handleIsDialogOpen}
                 className="cursor-pointer lg:hover:text-red-500 active:text-red-500"
                 title="Delete"
                 type="button"
@@ -48,6 +53,14 @@ export default function CommentCard({
         </div>
         <p className="text-3xl pt-2 break-all whitespace-normal">{content}</p>
       </div>
+
+      <ConfirmationDialog
+        message="Are you sure you want to delete this comment ?"
+        isOpen={isDialogOpen}
+        handleClose={handleIsDialogOpen}
+        handleAction={handleDeleteComment}
+        isLoading={isLoading}
+      />
     </>
   );
 }
