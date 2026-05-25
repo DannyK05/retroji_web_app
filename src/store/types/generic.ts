@@ -1,4 +1,4 @@
-export type TApiResponse<T> = { message: string; data: T;};
+export type TApiResponse<T> = { message: string; data: T };
 
 export type TAuthApiResponse<T> = {
   message: string;
@@ -6,4 +6,4 @@ export type TAuthApiResponse<T> = {
   tokens: { access: string };
 };
 
-export type TErrorResponse = { message: string; status: number };
+export type TErrorResponse = { data: { message: string }; status: number };

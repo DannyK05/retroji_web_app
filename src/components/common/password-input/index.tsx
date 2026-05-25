@@ -1,8 +1,10 @@
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
 import { InputHTMLAttributes, useState } from "react";
-type PasswordInputProps = InputHTMLAttributes<HTMLInputElement>;
+type PasswordInputProps = InputHTMLAttributes<HTMLInputElement> & {
+  error?: string;
+};
 
-export default function PasswordInput({ ...rest }: PasswordInputProps) {
+export default function PasswordInput({ error, ...rest }: PasswordInputProps) {
   const [inputType, setInputType] = useState<"password" | "text">("password");
 
   const handlePasswordVisibility = () => {
@@ -13,14 +15,22 @@ export default function PasswordInput({ ...rest }: PasswordInputProps) {
     }
   };
   return (
-    <div className="flex items-center border space-x-1 pr-1">
-      <input className="outline-none p-1 text-3xl" {...rest} type={inputType} />
-      <span
-        className="border cursor-pointer"
-        onClick={handlePasswordVisibility}
-      >
-        {inputType == "text" ? <EyeIcon /> : <EyeClosedIcon />}
-      </span>
+    <div className="w-auto flex flex-col items-start">
+      <div className="flex items-center border space-x-1 pr-1">
+        <input
+          className="outline-none p-1 text-3xl"
+          {...rest}
+          type={inputType}
+        />
+        <span
+          className="border cursor-pointer"
+          onClick={handlePasswordVisibility}
+        >
+          {inputType == "text" ? <EyeIcon /> : <EyeClosedIcon />}
+        </span>
+      </div>
+
+      {error && <span className="text-red-600 text-xl">{error}</span>}
     </div>
   );
 }

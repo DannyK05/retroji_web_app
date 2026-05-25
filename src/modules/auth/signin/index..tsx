@@ -22,7 +22,12 @@ export default function SignIn() {
 
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
-  const { register, handleSubmit } = useForm<TLoginDto>();
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    formState: { errors },
+  } = useForm<TLoginDto>();
 
   const onSubmit: SubmitHandler<TLoginDto> = async (data) => {
     try {
@@ -40,6 +45,7 @@ export default function SignIn() {
         setTimeout(() => navigate(DEFAULT_PAGE_URL), 1000);
       }
     } catch (error) {
+      console.log(error);
       handleErrorMessage(error as TErrorResponse);
     }
   };
@@ -48,22 +54,27 @@ export default function SignIn() {
     <div className="w-full flex flex-col items-center">
       <h1 className="text-6xl text-center">Sign in</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
         <label className="flex flex-row items-center space-x-4">
           <span className="text-4xl">user name:</span>
           <Input
             title="User Name"
-            {...register("username")}
+            {...register("username", { required: "Username is required" })}
+            onChange={() => clearErrors()}
             placeholder="User Name"
+            error={errors.username?.message}
           />
         </label>
 
         <label className="flex items-center space-x-4">
           <span className="text-4xl">password:</span>
+
           <PasswordInput
             title="Password"
-            {...register("password")}
+            {...register("password", { required: "Password is required" })}
+            onChange={() => clearErrors()}
             placeholder="Password"
+            error={errors.password?.message}
           />
         </label>
 
