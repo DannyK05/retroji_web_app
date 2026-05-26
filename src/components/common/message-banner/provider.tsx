@@ -16,7 +16,7 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       setMessage(null);
       setCode(null);
-    }, 3000);
+    }, 5000);
   };
 
   const handleErrorMessage = (err: TErrorResponse) => {
@@ -26,12 +26,23 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
       setMessage("An error occurred");
     }
 
-    setCode(400);
+    setCode(err.status);
 
     setTimeout(() => {
       setMessage(null);
       setCode(null);
-    }, 3000);
+    }, 5000);
+  };
+
+  const handleMessage = (message: string) => {
+    setMessage(message);
+
+    setCode(0);
+
+    setTimeout(() => {
+      setMessage(null);
+      setCode(null);
+    }, 5000);
   };
 
   const clearMessage = () => setMessage(null);
@@ -42,6 +53,7 @@ export function ApiMessageProvider({ children }: { children: ReactNode }) {
         message,
         handleApiMessage,
         handleErrorMessage,
+        handleMessage,
         clearMessage,
         code,
       }}
