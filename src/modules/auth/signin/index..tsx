@@ -24,7 +24,7 @@ export default function SignIn() {
 
   const [login, { isLoading }] = useLoginMutation();
 
-  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
+  const { handleApiMessage, handleErrorMessage, handleMessage } = useHandleApiMessage();
 
   const {
     register,
@@ -35,7 +35,7 @@ export default function SignIn() {
 
   const onSubmit: SubmitHandler<TLoginDto> = async (data) => {
     const timeout = setTimeout(
-      () => handleErrorMessage(freeServerMessage),
+      () => handleMessage(freeServerMessage),
       10000,
     );
 

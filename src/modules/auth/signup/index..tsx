@@ -45,11 +45,11 @@ export default function SignUp() {
     { data: isUsernameTaken, isLoading: isCheckingUsername },
   ] = useLazyIsUsernameTakenQuery();
 
-  const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
+  const { handleApiMessage, handleErrorMessage, handleMessage } = useHandleApiMessage();
 
   const onSubmit: SubmitHandler<TSignupDto> = async (data) => {
     const timeout = setTimeout(
-      () => handleErrorMessage(freeServerMessage),
+      () => handleMessage(freeServerMessage),
       10000,
     );
     try {

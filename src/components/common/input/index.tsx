@@ -13,9 +13,9 @@ export default function Input({
   ...rest
 }: InputProps) {
   return (
-    <div className={twMerge("w-45 flex flex-col items-start", className)}>
+    <div className={twMerge("w-45 flex flex-col items-start ", className)}>
       <input
-        className="w-full h-full outline-1 border p-1 text-3xl"
+        className="w-full h-full border p-1 text-3xl outline-black active:outline-1 focus:outline-1"
         {...rest}
         type={type}
       />{" "}
