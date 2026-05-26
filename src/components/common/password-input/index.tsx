@@ -16,13 +16,14 @@ export default function PasswordInput({ error, ...rest }: PasswordInputProps) {
   };
   return (
     <div className="w-auto flex flex-col items-start">
-      <div className="flex items-center border space-x-1 pr-1">
+      <div className="flex items-center border space-x-1 pr-1 outline-black focus-within:outline-1">
         <input
           className="outline-none p-1 text-3xl"
           {...rest}
           type={inputType}
         />
         <span
+          tabIndex={0}
           className="border cursor-pointer"
           onClick={handlePasswordVisibility}
         >
