@@ -38,7 +38,7 @@ export default function Dialog({
 
         <div
           className={twMerge(
-            "min-w-[350px] flex items-center justify-center p-2 overflow-y-auto lg:min-w-[500px]",
+            "min-w-[350px] flex items-start p-2 overflow-y-auto lg:min-w-[500px] lg:h-[300px]",
             className,
           )}
         >

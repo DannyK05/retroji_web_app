@@ -5,9 +5,7 @@ import { usePostSnapzMutation } from "../../../store/api/snapz";
 
 import Button from "../../../components/common/button";
 import TextArea from "../../../components/common/text-area";
-import {
-  ImageInput,
-} from "../../../components/common/image-input";
+import { ImageInput } from "../../../components/common/image-input";
 
 import type { TPostSnapzDto } from "../../../store/types/snapz";
 import type { TErrorResponse } from "../../../store/types/generic";
@@ -95,7 +93,7 @@ export default function CreateSnapzForm({ handleClose }: CreateSnapzFormProps) {
             disabled={isPostingSnapz || snapzPayload.caption === ""}
             className="w-35 h-10 p-2"
           >
-           <p>Post</p>
+            <p>Post</p>
           </Button>
         </div>
       </form>
