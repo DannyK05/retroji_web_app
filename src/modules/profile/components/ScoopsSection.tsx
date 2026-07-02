@@ -63,7 +63,7 @@ export default function ScoopsSection({ userId }: TSection) {
     <div className="w-full h-full grid cols-span-2">
       <LoadingScreen />
     </div>
-  ) : data && data.data.scoops.length > 0 ? (
+  ) : data && data.data.data.length > 0 ? (
     <section className="w-full h-auto grid grid-cols-1 gap-2 px-3 overflow-y-hidden lg:grid-cols-2">
       <div
         onScroll={(e) => {
@@ -75,7 +75,7 @@ export default function ScoopsSection({ userId }: TSection) {
         }}
         className="w-full h-[500px] flex flex-col items-start space-y-3 py-2 px-1 overflow-y-auto lg:px-3"
       >
-        {data?.data?.scoops.map(
+        {data?.data?.data.map(
           ({
             id,
             author,

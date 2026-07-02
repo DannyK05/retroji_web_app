@@ -34,8 +34,8 @@ export default function CommentsSection({
         <div className="w-full h-[calc(100dvh-150px)] flex flex-col items-center space-y-2 overflow-y-auto lg:h-[320px]">
           {isLoadingAllComments || isFetchingAllComments ? (
             <LoadingScreen />
-          ) : comments?.data.length !== 0 ? (
-            comments?.data.map(({ id, content, author, created_at }, index) => (
+          ) : comments?.data.data.length !== 0 ? (
+            comments?.data.data.map(({ id, content, author, created_at }, index) => (
               <CommentCard
                 id={id}
                 key={index}

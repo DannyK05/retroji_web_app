@@ -68,7 +68,7 @@ export default function Scoop() {
 
   return (
     <div className="w-full pt-2">
-      <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
+      <div className="w-full flex items-center justify-between border-b py-1 px-3 lg:border-b-0">
         <h1 className="ml-2 text-4xl">Scoops</h1>{" "}
         <Button onClick={handleisDialogOpen} className="w-auto h-10 lg:hidden">
           <div className="flex items-center space-x-2 text-2xl">
@@ -81,7 +81,7 @@ export default function Scoop() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : scoops && scoops.data.length === 0 ? (
+      ) : scoops && scoops.data.data.length === 0 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -100,7 +100,7 @@ export default function Scoop() {
             }}
             className="w-full h-[calc(100dvh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {scoops?.data?.map(
+            {scoops?.data?.data.map(
               ({
                 id,
                 author,

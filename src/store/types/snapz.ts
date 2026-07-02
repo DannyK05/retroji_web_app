@@ -1,5 +1,5 @@
 import { TUser } from "./auth";
-import { TApiResponse } from "./generic";
+import { TApiResponse, TPaginatedApiResponse } from "./generic";
 
 export type TSnapzImage = {
   snapz: string;
@@ -26,7 +26,7 @@ export type TComment = {
   created_at: Date;
 };
 
-export type TGetAllSnapzResponse = TApiResponse<TSnapz[]>;
+export type TGetAllSnapzResponse = TPaginatedApiResponse<TSnapz[]>;
 
 export type TPostSnapzDto = { caption: string; images: File[] };
 export type TPostSnapzResponse = TApiResponse<TSnapz>;
@@ -35,7 +35,9 @@ export type TGetSnapzByIdDto = { snapz_id: string };
 export type TGetSnapzByIdResponse = TApiResponse<TSnapz>;
 
 export type TGetAllCommentsBySnapzIdDto = { snapz_id: string };
-export type TGetAllCommentsBySnapzIdResponse = TApiResponse<TComment[]>;
+export type TGetAllCommentsBySnapzIdResponse = TPaginatedApiResponse<
+  TComment[]
+>;
 
 export type TPostCommentDto = { content: string; snapz_id: string };
 export type TPostCommentResponse = TApiResponse<TComment>;

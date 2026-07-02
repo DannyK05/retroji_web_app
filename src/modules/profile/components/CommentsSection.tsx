@@ -10,18 +10,16 @@ export default function CommentsSection({ userId }: TSection) {
     <section className="w-full flex flex-col items-center space-y-3 pt-2 pb-5 px-3">
       {isLoading ? (
         <LoadingScreen />
-      ) : data && data.data.comments.length > 0 ? (
-        data?.data.comments.map(
-          ({ id, content, author, created_at }, index) => (
-            <CommentCard
-              id={id}
-              key={index}
-              content={content}
-              author={author}
-              createdAt={created_at}
-            />
-          ),
-        )
+      ) : data && data.data.data.length > 0 ? (
+        data?.data.data.map(({ id, content, author, created_at }, index) => (
+          <CommentCard
+            id={id}
+            key={index}
+            content={content}
+            author={author}
+            createdAt={created_at}
+          />
+        ))
       ) : (
         <EmptyScreen />
       )}

@@ -72,7 +72,7 @@ export default function Snapz() {
 
   return (
     <div className="w-full pt-2">
-      <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
+      <div className="w-full flex items-center justify-between border-b py-1 px-3 lg:border-b-0">
         <h1 className="ml-2 text-4xl">Snapz</h1>{" "}
         <Button onClick={handleisDialogOpen} className="w-auto h-10 lg:hidden">
           <div className="flex items-center space-x-2 text-2xl">
@@ -84,7 +84,7 @@ export default function Snapz() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : snapz && snapz.data.length === 0 ? (
+      ) : snapz && snapz.data.data.length === 0 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -103,7 +103,7 @@ export default function Snapz() {
             }}
             className="w-full h-[calc(100dvh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {snapz?.data.map(
+            {snapz?.data.data.map(
               ({
                 id,
                 author,

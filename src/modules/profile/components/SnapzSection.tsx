@@ -61,7 +61,7 @@ export default function SnapzSection({ userId }: TSection) {
 
   return isLoading ? (
     <LoadingScreen />
-  ) : data && data.data.snapz.length > 0 ? (
+  ) : data && data.data.data.length > 0 ? (
     <section className="w-full h-full grid grid-cols-1 items-start gap-2 py-2 px-3 overflow-hidden lg:grid-cols-2">
       <div
         onScroll={(e) => {
@@ -73,7 +73,7 @@ export default function SnapzSection({ userId }: TSection) {
         }}
         className="w-full flex flex-col items-start space-y-3 pt-2 pb-5 px-3 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
       >
-        {data?.data.snapz.map(
+        {data?.data.data.map(
           ({
             id,
             author,
