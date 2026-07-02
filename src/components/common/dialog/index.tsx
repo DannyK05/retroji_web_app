@@ -68,9 +68,6 @@ export function PopupDialog({
         onClick={(e) => e.stopPropagation()}
         className="w-auto flex flex-col items-end justify-center p-2"
       >
-        <Button onClick={handleClose} className="w-10 py-1">
-          <XIcon />
-        </Button>
         {children}
       </div>
     </div>

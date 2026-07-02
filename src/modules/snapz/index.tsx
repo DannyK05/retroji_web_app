@@ -72,7 +72,7 @@ export default function Snapz() {
 
   return (
     <div className="w-full pt-2">
-      <div className="w-full flex items-center justify-between border-b py-1 lg:border-b-0">
+      <div className="w-full flex items-center justify-between border-b py-1 px-3 lg:border-b-0">
         <h1 className="ml-2 text-4xl">Snapz</h1>{" "}
         <Button onClick={handleisDialogOpen} className="w-auto h-10 lg:hidden">
           <div className="flex items-center space-x-2 text-2xl">

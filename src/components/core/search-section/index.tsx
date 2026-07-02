@@ -41,7 +41,7 @@ export default function SearchSection({ query }: SearchSectionProps) {
               </span>
             ))}
           </div>
-          <div className="w-full mt-2 border-t p-1">
+          <div className="w-full h-full mt-2 border-t p-1">
             {currentNav === "all" ? (
               <AllTab data={data.data} handleNav={handleCurrentNav} />
             ) : currentNav === "snapz" ? (
