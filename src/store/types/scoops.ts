@@ -1,5 +1,5 @@
 import type { TUser } from "./auth";
-import type { TApiResponse } from "./generic";
+import type { TApiResponse, TPaginatedApiResponse } from "./generic";
 
 export type TScoops = {
   id: string;
@@ -14,7 +14,7 @@ export type TScoops = {
   updated_at: Date;
 };
 
-export type TGetAllScoopsResponse = TApiResponse<TScoops[]>;
+export type TGetAllScoopsResponse = TPaginatedApiResponse<TScoops[]>;
 
 export type TPostScoopsDto = { content: string; parent_id?: string };
 export type TPostScoopsResponse = TApiResponse<{ scoops: TScoops }>;

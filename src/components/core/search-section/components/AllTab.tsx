@@ -24,19 +24,19 @@ export default function AllTab({ data, handleNav }: AllTabProps) {
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
 
   const previewSnapz = useMemo(() => {
-    return data.snapz.slice(0, 3);
+    return data.snapz.data.slice(0, 3);
   }, [data.snapz]);
 
   const previewScoops = useMemo(() => {
-    return data.scoops.slice(0, 3);
+    return data.scoops.data.slice(0, 3);
   }, [data.scoops]);
 
   const previewProfiles = useMemo(() => {
-    return data.profiles.slice(0, 3);
+    return data.profiles.data.slice(0, 3);
   }, [data.profiles]);
 
   const previewComments = useMemo(() => {
-    return data.comments.slice(0, 3);
+    return data.comments.data.slice(0, 3);
   }, [data.comments]);
 
   const isEmpty =

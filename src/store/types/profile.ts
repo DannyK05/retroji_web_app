@@ -1,5 +1,5 @@
 import type { TUser } from "./auth";
-import type { TApiResponse } from "./generic";
+import type { TApiResponse, TPaginatedApiResponse } from "./generic";
 import type { TScoops } from "./scoops";
 import type { TComment, TSnapz } from "./snapz";
 
@@ -13,15 +13,13 @@ export type TProfile = {
   updated_at: Date;
 };
 
-export type TGetUserProfileResponse = TApiResponse<{ profile: TProfile }>;
+export type TGetUserProfileResponse = TApiResponse<TProfile>;
 
-export type TGetUserSnapzResponse = TApiResponse<{ snapz: TSnapz[] }>;
+export type TGetUserSnapzResponse = TPaginatedApiResponse<TSnapz[]>;
 
-export type TGetUserScoopsResponse = TApiResponse<{ scoops: TScoops[] }>;
+export type TGetUserScoopsResponse = TPaginatedApiResponse<TScoops[]>;
 
-export type TGetUserCommentsResponse = TApiResponse<{
-  comments: TComment[];
-}>;
+export type TGetUserCommentsResponse = TPaginatedApiResponse<TComment[]>;
 
 export type TUpdateUserProfileDto = {
   username?: string;

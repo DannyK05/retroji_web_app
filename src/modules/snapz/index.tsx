@@ -84,7 +84,7 @@ export default function Snapz() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : snapz && snapz.data.length === 0 ? (
+      ) : snapz && snapz.data.data.length === 0 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -103,7 +103,7 @@ export default function Snapz() {
             }}
             className="w-full h-[calc(100dvh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {snapz?.data.map(
+            {snapz?.data.data.map(
               ({
                 id,
                 author,

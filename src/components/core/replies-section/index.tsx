@@ -117,8 +117,8 @@ export default function RepliesSection({
 
           {isLoadingAllReplies ? (
             <LoadingScreen />
-          ) : replies?.data.length !== 0 ? (
-            replies?.data.map((scoop: TScoops) => (
+          ) : repliesIdStack[0] !== "" && replies?.data.data.length !== 0 ? (//added the repliesIdStack check to fix previous scoops preview
+            replies?.data.data.map((scoop: TScoops) => (
               <ScoopCard
                 key={scoop.id}
                 id={scoop.id}

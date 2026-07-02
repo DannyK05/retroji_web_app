@@ -27,8 +27,8 @@ export default function UpdateProfileForm({
   const { handleApiMessage, handleErrorMessage } = useHandleApiMessage();
 
   const [updatePayload, setUpdatePayload] = useState<TUpdateUserProfileDto>({
-    username: data?.data.profile.user.username ?? "",
-    bio: data?.data.profile.bio ?? "",
+    username: data?.data.user.username ?? "",
+    bio: data?.data.bio ?? "",
     image: undefined,
   });
 

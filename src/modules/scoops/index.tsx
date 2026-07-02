@@ -81,7 +81,7 @@ export default function Scoop() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : scoops && scoops.data.length === 0 ? (
+      ) : scoops && scoops.data.data.length === 0 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -100,7 +100,7 @@ export default function Scoop() {
             }}
             className="w-full h-[calc(100dvh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {scoops?.data?.map(
+            {scoops?.data?.data.map(
               ({
                 id,
                 author,

@@ -46,7 +46,7 @@ export default function Profile() {
   const followUser = async () => {
     try {
       const data = {
-        user_id: profile?.data.profile.user.id?.toString() ?? "",
+        user_id: profile?.data.user.id?.toString() ?? "",
       };
       const response = await follow(data);
       if (response.data) {
@@ -70,19 +70,19 @@ export default function Profile() {
           <img
             className="w-30 h-30 object-cover -mt-20 border-2 lg:w-40 lg:h-40 lg:-mt-20"
             src={
-              profile?.data.profile.image ?? "/assets/images/profile_pic.png"
+              profile?.data.image ?? "/assets/images/profile_pic.png"
             }
             alt="Profile Pic"
           />
 
           <div className="flex flex-col items-center">
             <h2 className="text-3xl">
-              {profile?.data.profile.user?.username ?? "retroji_user"}
+              {profile?.data.user?.username ?? "retroji_user"}
             </h2>
             <div className="flex items-center space-x-4 text-2xl">
               <p>
                 <span className="text-retro-blue font-semibold">
-                  {profile?.data.profile.user?.following ?? 0}
+                  {profile?.data.user?.following ?? 0}
                 </span>{" "}
                 following
               </p>
@@ -91,7 +91,7 @@ export default function Profile() {
 
               <p>
                 <span className="text-retro-blue font-semibold">
-                  {profile?.data.profile.user?.followers ?? 0}
+                  {profile?.data.user?.followers ?? 0}
                 </span>{" "}
                 followers
               </p>
@@ -110,7 +110,7 @@ export default function Profile() {
                   followUser();
                 }}
               >
-                {profile?.data.profile.is_followed ? "Following" : "Follow"}
+                {profile?.data.is_followed ? "Following" : "Follow"}
               </Button>
             )}
           </div>
@@ -118,9 +118,9 @@ export default function Profile() {
           <div className="w-full flex flex-col items-start">
             <p className="w-full text-2xl mb-[1px] border-b">Bio:</p>
             <p className="text-2xl">
-              {profile?.data.profile.bio === ""
+              {profile?.data.bio === ""
                 ? "Welcome"
-                : profile?.data.profile.bio}
+                : profile?.data.bio}
             </p>
           </div>
         </div>
@@ -144,13 +144,13 @@ export default function Profile() {
           <h2 className="w-full text-left text-3xl">{currentNav}</h2>
 
           {currentNav === "snapz"
-            ? profile && <SnapzSection userId={profile.data.profile.user?.id} />
+            ? profile && <SnapzSection userId={profile.data.user?.id} />
             : currentNav === "scoops"
               ? profile && (
-                  <ScoopsSection userId={profile.data.profile.user?.id} />
+                  <ScoopsSection userId={profile.data.user?.id} />
                 )
               : profile && (
-                  <CommentsSection userId={profile.data.profile.user?.id} />
+                  <CommentsSection userId={profile.data.user?.id} />
                 )}
         </div>
       </section>
