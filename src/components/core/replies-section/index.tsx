@@ -28,10 +28,13 @@ export default function RepliesSection({
   ]);
   const [repliesScoopStack, setRepliesScoopStack] = useState<TScoops[]>([]);
 
-  const { data: replies, isLoading: isLoadingAllReplies } =
-    useGetAllScoopsByIdQuery(repliesIdStack[0], {
-      skip: !repliesIdStack[0],
-    });
+  const {
+    data: replies,
+    isLoading: isLoadingAllReplies,
+    isFetching: isFetchingAllReplies,
+  } = useGetAllScoopsByIdQuery(repliesIdStack[0], {
+    skip: !repliesIdStack[0],
+  });
 
   const [likeScoops] = useLikeScoopsMutation();
 
@@ -117,7 +120,7 @@ export default function RepliesSection({
             </>
           )}
 
-          {isLoadingAllReplies ? (
+          {isLoadingAllReplies || isFetchingAllReplies ? (
             <LoadingScreen />
           ) : repliesIdStack[0] !== "" && replies?.data.data.length !== 0 ? ( //added the repliesIdStack check to fix previous scoops preview
             replies?.data.data.map((scoop: TScoops) => (
