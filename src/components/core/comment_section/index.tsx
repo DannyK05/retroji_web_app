@@ -19,9 +19,14 @@ export default function CommentsSection({
     data: comments,
     isLoading: isLoadingAllComments,
     isFetching: isFetchingAllComments,
-  } = useGetAllCommentsBySnapzIdQuery({
-    snapz_id: commentPayload.snapz_id ?? "",
-  });
+  } = useGetAllCommentsBySnapzIdQuery(
+    {
+      snapz_id: commentPayload.snapz_id,
+    },
+    {
+      skip: !commentPayload.snapz_id,
+    },
+  );
 
   return (
     <SideContainer
@@ -35,15 +40,17 @@ export default function CommentsSection({
           {isLoadingAllComments || isFetchingAllComments ? (
             <LoadingScreen />
           ) : comments?.data.data.length !== 0 ? (
-            comments?.data.data.map(({ id, content, author, created_at }, index) => (
-              <CommentCard
-                id={id}
-                key={index}
-                content={content}
-                author={author}
-                createdAt={created_at}
-              />
-            ))
+            comments?.data.data.map(
+              ({ id, content, author, created_at }, index) => (
+                <CommentCard
+                  id={id}
+                  key={index}
+                  content={content}
+                  author={author}
+                  createdAt={created_at}
+                />
+              ),
+            )
           ) : (
             <EmptyScreen />
           )}
