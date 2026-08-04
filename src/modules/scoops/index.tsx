@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Edit } from "lucide-react";
 
 import Button from "../../components/common/button";
@@ -7,18 +8,22 @@ import CreateScoopsForm from "./components/CreateScoopsForm";
 import ScoopCard from "./components/ScoopCard";
 
 import {
-  useGetAllScoopsQuery,
+  useLazyGetAllScoopsQuery,
   useLikeScoopsMutation,
 } from "../../store/api/scoops";
 import LoadingScreen from "../../components/common/loading-screen";
 import EmptyScreen from "../../components/common/empty-screen";
 import RepliesSection from "../../components/core/replies-section";
 import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
-import { TPostScoopsDto } from "../../store/types/scoops";
+import {
+  TGetAllScoopsResponse,
+  TPostScoopsDto,
+} from "../../store/types/scoops";
 import { TErrorResponse } from "../../store/types/generic";
 
 export default function Scoop() {
-  const { data: scoops, isLoading: isLoadingScoops } = useGetAllScoopsQuery();
+  const [getScoops, { isLoading: isLoadingScoops }] =
+    useLazyGetAllScoopsQuery();
 
   const [likeScoops] = useLikeScoopsMutation();
 
@@ -28,6 +33,12 @@ export default function Scoop() {
     content: "",
     parent_id: "",
   });
+
+  const [scoops, setScoops] = useState<TGetAllScoopsResponse["data"]["data"]>(
+    [],
+  );
+  const [moreScoops, setMoreScoops] = useState<boolean>(false);
+  const [page, setPage] = useState(1);
 
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -39,6 +50,21 @@ export default function Scoop() {
 
   const handleisDialogOpen = () => {
     setIsDialogOpen((prev) => !prev);
+  };
+
+  const fetchScoops = async () => {
+    const result = await getScoops({ page: page });
+
+    if (result.data?.data.data) {
+      setScoops((prev) => [...prev, ...result.data.data.data]);
+
+      if (result.data.data.next) {
+        setPage((prev) => prev + 1);
+        setMoreScoops(true);
+      } else {
+        setMoreScoops(false);
+      }
+    }
   };
 
   const handleDisplayReplies = (parent_id: string) => {
@@ -66,6 +92,10 @@ export default function Scoop() {
     }
   };
 
+  useEffect(() => {
+    fetchScoops();
+  }, []);
+
   return (
     <div className="w-full pt-2">
       <div className="w-full flex items-center justify-between border-b py-1 px-3 lg:border-b-0">
@@ -81,7 +111,7 @@ export default function Scoop() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : scoops && scoops.data.data.length === 0 ? (
+      ) : scoops && scoops.length === 0 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -100,35 +130,45 @@ export default function Scoop() {
             }}
             className="w-full h-[calc(100dvh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {scoops?.data?.data.map(
-              ({
-                id,
-                author,
-                content,
-                is_liked,
-                like_count,
-                replies_count,
-                created_at,
-              }) => (
-                <ScoopCard
-                  className={
-                    isSideOpen && repliesPayload.parent_id !== id
-                      ? "opacity-40"
-                      : ""
-                  }
-                  key={id}
-                  id={id}
-                  author={author}
-                  content={content}
-                  date={created_at}
-                  likeCount={like_count}
-                  isLiked={is_liked}
-                  repliesCount={replies_count}
-                  handleReplies={handleDisplayReplies}
-                  handleLike={handleLike}
-                />
-              ),
-            )}
+            <InfiniteScroll
+              dataLength={scoops.length}
+              next={fetchScoops}
+              hasMore={moreScoops}
+              loader={<p>Loading...</p>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>All items loaded.</p>
+              }
+            >
+              {scoops?.map(
+                ({
+                  id,
+                  author,
+                  content,
+                  is_liked,
+                  like_count,
+                  replies_count,
+                  created_at,
+                }) => (
+                  <ScoopCard
+                    className={
+                      isSideOpen && repliesPayload.parent_id !== id
+                        ? "opacity-40"
+                        : ""
+                    }
+                    key={id}
+                    id={id}
+                    author={author}
+                    content={content}
+                    date={created_at}
+                    likeCount={like_count}
+                    isLiked={is_liked}
+                    repliesCount={replies_count}
+                    handleReplies={handleDisplayReplies}
+                    handleLike={handleLike}
+                  />
+                ),
+              )}
+            </InfiniteScroll>
           </div>
 
           <RepliesSection

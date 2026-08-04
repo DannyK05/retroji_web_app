@@ -11,22 +11,23 @@ import type {
   TPostScoopsDto,
   TPostScoopsResponse,
 } from "../types/scoops";
+import { TPaginationParams } from "../types/generic";
 
 export const scoopsApi = createApi({
   reducerPath: "scoopsApi",
   tagTypes: ["getAllScoops", "getAllScoopsById"],
   baseQuery: baseQuery,
   endpoints: (builder) => ({
-    getAllScoops: builder.query<TGetAllScoopsResponse, void>({
-      query: () => ({
-        url: "/scoops/",
+    getAllScoops: builder.query<TGetAllScoopsResponse, TPaginationParams>({
+      query: ({ page }) => ({
+        url: `/scoops/?page=${page}`,
         method: "GET",
       }),
       providesTags: ["getAllScoops"],
     }),
     getAllScoopsById: builder.query<TGetAllScoopsResponse, string>({
       query: (parent_id) => ({
-        url: `/scoops/${parent_id}`,
+        url: `/scoops/${parent_id}/`,
         method: "GET",
       }),
       providesTags: ["getAllScoopsById"],
@@ -59,7 +60,7 @@ export const scoopsApi = createApi({
 });
 
 export const {
-  useGetAllScoopsQuery,
+  useLazyGetAllScoopsQuery,
   useGetAllScoopsByIdQuery,
   usePostScoopsMutation,
   useLikeScoopsMutation,
