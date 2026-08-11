@@ -1,21 +1,25 @@
 import { useRef, useState } from "react";
+import { useGetUserScoopsInfiniteQuery } from "../../../store/api/profile";
+import { useLikeScoopsMutation } from "../../../store/api/scoops";
+import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+import { InfiniteScrollContainer } from "../../../components/common/infinite-scroll";
 import EmptyScreen from "../../../components/common/empty-screen";
 import LoadingScreen from "../../../components/common/loading-screen";
 import RepliesSection from "../../../components/core/replies-section";
-import { useGetUserScoopsQuery } from "../../../store/api/profile";
 import ScoopCard from "../../scoops/components/ScoopCard";
 import type { TSection } from "../types";
-import { TPostScoopsDto } from "../../../store/types/scoops";
-import { useLikeScoopsMutation } from "../../../store/api/scoops";
-import { TErrorResponse } from "../../../store/types/generic";
-import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
+import type { TPostScoopsDto } from "../../../store/types/scoops";
+import type { TErrorResponse } from "../../../store/types/generic";
 
 export default function ScoopsSection({ userId }: TSection) {
   const {
-    data,
+    data: scoops,
     isLoading,
+    isFetching,
     refetch: refetchUserScoops,
-  } = useGetUserScoopsQuery(userId);
+    hasNextPage,
+    fetchNextPage,
+  } = useGetUserScoopsInfiniteQuery(userId);
 
   const [likeScoops] = useLikeScoopsMutation();
 
@@ -26,6 +30,7 @@ export default function ScoopsSection({ userId }: TSection) {
     parent_id: "",
   });
 
+  const infiniteScoops = scoops?.pages.flatMap((data) => data.data) ?? [];
   const [isSideOpen, setIsSideOpen] = useState(false);
   const previousScrollRef = useRef(0);
 
@@ -63,7 +68,7 @@ export default function ScoopsSection({ userId }: TSection) {
     <div className="w-full h-full grid cols-span-2">
       <LoadingScreen />
     </div>
-  ) : data && data.data.data.length > 0 ? (
+  ) : infiniteScoops && infiniteScoops.length > 0 ? (
     <section className="w-full h-auto grid grid-cols-1 gap-2 px-3 overflow-y-hidden lg:grid-cols-2">
       <div
         onScroll={(e) => {
@@ -73,37 +78,44 @@ export default function ScoopsSection({ userId }: TSection) {
           }
           previousScrollRef.current = currentScroll;
         }}
-        className="w-full h-[500px] flex flex-col items-start space-y-3 py-2 px-1 overflow-y-auto lg:px-3"
+        className="w-full h-[500px] py-2 px-1 overflow-y-auto lg:px-3"
       >
-        {data?.data?.data.map(
-          ({
-            id,
-            author,
-            content,
-            is_liked,
-            like_count,
-            replies_count,
-            created_at,
-          }) => (
-            <ScoopCard
-              key={id}
-              id={id}
-              className={
-                isSideOpen && repliesPayload.parent_id !== id
-                  ? "opacity-50"
-                  : ""
-              }
-              author={author}
-              content={content}
-              date={created_at}
-              likeCount={like_count}
-              isLiked={is_liked}
-              repliesCount={replies_count}
-              handleReplies={handleDisplayReplies}
-              handleLike={handleLike}
-            />
-          ),
-        )}
+        <InfiniteScrollContainer
+          className="flex flex-col items-start space-y-3"
+          dataLength={infiniteScoops.length}
+          hasMore={hasNextPage}
+          handleNext={() => !isFetching && fetchNextPage()}
+        >
+          {infiniteScoops.map(
+            ({
+              id,
+              author,
+              content,
+              is_liked,
+              like_count,
+              replies_count,
+              created_at,
+            }) => (
+              <ScoopCard
+                key={id}
+                id={id}
+                className={
+                  isSideOpen && repliesPayload.parent_id !== id
+                    ? "opacity-50"
+                    : ""
+                }
+                author={author}
+                content={content}
+                date={created_at}
+                likeCount={like_count}
+                isLiked={is_liked}
+                repliesCount={replies_count}
+                handleReplies={handleDisplayReplies}
+                handleLike={handleLike}
+              />
+            ),
+          )}
+        </InfiniteScrollContainer>
       </div>
 
       <div className="w-full h-full flex items-start justify-center lg:pt-2">

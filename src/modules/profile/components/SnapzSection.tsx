@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import EmptyScreen from "../../../components/common/empty-screen";
 import LoadingScreen from "../../../components/common/loading-screen";
 import CommentsSection from "../../../components/core/comment_section";
-import { useGetUserSnapzQuery } from "../../../store/api/profile";
+import { useGetUserSnapzInfiniteQuery } from "../../../store/api/profile";
 import { useLikeSnapzMutation } from "../../../store/api/snapz";
 import { TPostCommentDto } from "../../../store/types/snapz";
 
@@ -10,13 +10,17 @@ import SnapzCard from "../../snapz/components/SnapzCard";
 import type { TSection } from "../types";
 import { useHandleApiMessage } from "../../../components/common/message-banner/hooks";
 import { TErrorResponse } from "../../../store/types/generic";
+import { InfiniteScrollContainer } from "../../../components/common/infinite-scroll";
 
 export default function SnapzSection({ userId }: TSection) {
   const {
-    data,
+    data: snapz,
+    isFetching,
     isLoading,
+    hasNextPage,
+    fetchNextPage,
     refetch: refetchUserSnapz,
-  } = useGetUserSnapzQuery(userId);
+  } = useGetUserSnapzInfiniteQuery(userId);
   const [like] = useLikeSnapzMutation();
 
   const [commentPayload, setCommentPayload] = useState<TPostCommentDto>({
@@ -24,6 +28,7 @@ export default function SnapzSection({ userId }: TSection) {
     snapz_id: "",
   });
   const [isSideOpen, setIsSideOpen] = useState(false);
+  const infiniteSnapz = snapz?.pages.flatMap((data) => data.data) ?? [];
   const previousScrollRef = useRef(0);
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
@@ -61,7 +66,7 @@ export default function SnapzSection({ userId }: TSection) {
 
   return isLoading ? (
     <LoadingScreen />
-  ) : data && data.data.data.length > 0 ? (
+  ) : infiniteSnapz && infiniteSnapz.length > 0 ? (
     <section className="w-full h-full grid grid-cols-1 items-start gap-2 py-2 px-3 overflow-hidden lg:grid-cols-2">
       <div
         onScroll={(e) => {
@@ -71,38 +76,47 @@ export default function SnapzSection({ userId }: TSection) {
           }
           previousScrollRef.current = currentScroll;
         }}
-        className="w-full flex flex-col items-start space-y-3 pt-2 pb-5 px-3 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
+        className="w-full pt-2 pb-5 px-3 lg:max-h-[500px] lg:px-3 lg:overflow-y-auto"
       >
-        {data?.data.data.map(
-          ({
-            id,
-            author,
-            created_at,
-            images,
-            caption,
-            like_count,
-            comment_count,
-            is_liked,
-          }) => (
-            <SnapzCard
-              key={id}
-              id={id}
-              className={
-                isSideOpen && commentPayload.snapz_id !== id ? "opacity-40" : ""
-              }
-              name={author.username}
-              userId={author.id}
-              date={created_at}
-              images={images}
-              caption={caption}
-              like_count={like_count}
-              isLiked={is_liked}
-              comment_count={comment_count}
-              handleComments={handleDisplayComments}
-              handleLike={handleLike}
-            />
-          ),
-        )}
+        <InfiniteScrollContainer
+          className="flex flex-col items-start space-y-3"
+          dataLength={infiniteSnapz.length}
+          hasMore={hasNextPage}
+          handleNext={() => !isFetching && fetchNextPage()}
+        >
+          {infiniteSnapz.map(
+            ({
+              id,
+              author,
+              created_at,
+              images,
+              caption,
+              like_count,
+              comment_count,
+              is_liked,
+            }) => (
+              <SnapzCard
+                key={id}
+                id={id}
+                className={
+                  isSideOpen && commentPayload.snapz_id !== id
+                    ? "opacity-40"
+                    : ""
+                }
+                name={author.username}
+                userId={author.id}
+                date={created_at}
+                images={images}
+                caption={caption}
+                like_count={like_count}
+                isLiked={is_liked}
+                comment_count={comment_count}
+                handleComments={handleDisplayComments}
+                handleLike={handleLike}
+              />
+            ),
+          )}
+        </InfiniteScrollContainer>
       </div>
 
       <div className="w-full h-full flex items-start justify-center lg:pt-2">

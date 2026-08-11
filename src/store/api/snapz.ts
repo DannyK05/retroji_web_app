@@ -15,17 +15,35 @@ import type {
   TPostCommentResponse,
   TPostSnapzResponse,
 } from "../types/snapz";
+import type { TPaginationParams } from "../types/generic";
 
 export const snapzApi = createApi({
   reducerPath: "snapzApi",
   baseQuery: baseQuery,
   tagTypes: ["getAllSnapz", "getAllComments"],
   endpoints: (builder) => ({
-    getAllSnapz: builder.query<TGetAllSnapzResponse, void>({
-      query: () => ({
-        url: "snapz/",
-        method: "GET",
-      }),
+    getAllSnapz: builder.infiniteQuery<
+      TGetAllSnapzResponse["data"],
+      void,
+      TPaginationParams["page"]
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam(
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ pageParam }) => `snapz/?page=${pageParam}`,
+      transformResponse: (response: TGetAllSnapzResponse) => response.data,
       providesTags: ["getAllSnapz"],
     }),
     postSnapz: builder.mutation<TPostSnapzResponse, FormData>({
@@ -42,14 +60,30 @@ export const snapzApi = createApi({
         method: "GET",
       }),
     }),
-    getAllCommentsBySnapzId: builder.query<
-      TGetAllCommentsBySnapzIdResponse,
-      TGetAllCommentsBySnapzIdDto
+    getAllCommentsBySnapzId: builder.infiniteQuery<
+      TGetAllCommentsBySnapzIdResponse["data"],
+      TGetAllCommentsBySnapzIdDto,
+      TPaginationParams["page"]
     >({
-      query: ({ snapz_id }) => ({
-        url: `snapz/${snapz_id}/comments/`,
-        method: "GET",
-      }),
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam(
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ queryArg, pageParam }) =>
+        `snapz/${queryArg.snapz_id}/comments/?page=${pageParam}`,
+      transformResponse: (response: TGetAllCommentsBySnapzIdResponse) =>
+        response.data,
       providesTags: ["getAllComments"],
     }),
     postComment: builder.mutation<TPostCommentResponse, TPostCommentDto>({
@@ -88,8 +122,8 @@ export const snapzApi = createApi({
 });
 
 export const {
-  useGetAllSnapzQuery,
-  useGetAllCommentsBySnapzIdQuery,
+  useGetAllSnapzInfiniteQuery,
+  useGetAllCommentsBySnapzIdInfiniteQuery,
   useGetSnapzByIdQuery,
   usePostCommentMutation,
   useLikeSnapzMutation,

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useHandleApiMessage } from "../../common/message-banner/hooks";
 import {
-  useGetAllScoopsByIdQuery,
+  useGetAllScoopsByIdInfiniteQuery,
   useLikeScoopsMutation,
 } from "../../../store/api/scoops";
 
@@ -15,6 +15,7 @@ import ScoopCard from "../../../modules/scoops/components/ScoopCard";
 import type { RepliesSectionProps } from "./types";
 import type { TErrorResponse } from "../../../store/types/generic";
 import type { TScoops } from "../../../store/types/scoops";
+import { InfiniteScrollContainer } from "../../common/infinite-scroll";
 
 export default function RepliesSection({
   repliesPayload,
@@ -32,13 +33,17 @@ export default function RepliesSection({
     data: replies,
     isLoading: isLoadingAllReplies,
     isFetching: isFetchingAllReplies,
-  } = useGetAllScoopsByIdQuery(repliesIdStack[0], {
+    hasNextPage,
+    fetchNextPage,
+  } = useGetAllScoopsByIdInfiniteQuery(repliesIdStack[0], {
     skip: !repliesIdStack[0],
   });
 
   const [likeScoops] = useLikeScoopsMutation();
 
   const { handleErrorMessage, handleApiMessage } = useHandleApiMessage();
+
+  const infiniteReplies = replies?.pages.flatMap((data) => data.data) ?? [];
 
   const handleLike = async (scoop_id: string) => {
     try {
@@ -122,21 +127,27 @@ export default function RepliesSection({
 
           {isLoadingAllReplies || isFetchingAllReplies ? (
             <LoadingScreen />
-          ) : repliesIdStack[0] !== "" && replies?.data.data.length !== 0 ? ( //added the repliesIdStack check to fix previous scoops preview
-            replies?.data.data.map((scoop: TScoops) => (
-              <ScoopCard
-                key={scoop.id}
-                id={scoop.id}
-                author={scoop.author}
-                content={scoop.content}
-                date={scoop.created_at}
-                likeCount={scoop.like_count}
-                isLiked={scoop.is_liked}
-                repliesCount={scoop.replies_count}
-                handleReplies={() => handleReplies(scoop)}
-                handleLike={handleLike}
-              />
-            ))
+          ) : repliesIdStack[0] !== "" && infiniteReplies.length !== 0 ? (
+            <InfiniteScrollContainer
+              dataLength={infiniteReplies.length ?? 0}
+              handleNext={fetchNextPage}
+              hasMore={hasNextPage}
+            >
+              {infiniteReplies.map((scoop: TScoops) => (
+                <ScoopCard
+                  key={scoop.id}
+                  id={scoop.id}
+                  author={scoop.author}
+                  content={scoop.content}
+                  date={scoop.created_at}
+                  likeCount={scoop.like_count}
+                  isLiked={scoop.is_liked}
+                  repliesCount={scoop.replies_count}
+                  handleReplies={() => handleReplies(scoop)}
+                  handleLike={handleLike}
+                />
+              ))}
+            </InfiniteScrollContainer>
           ) : (
             <EmptyScreen />
           )}

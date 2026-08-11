@@ -13,3 +13,5 @@ export type TPaginatedResponse<T> = {
 };
 export type TPaginatedApiResponse<T> = TApiResponse<TPaginatedResponse<T>>;
 export type TErrorResponse = { data: { message: string }; status: number };
+
+export type TPaginationParams = { page?: number };

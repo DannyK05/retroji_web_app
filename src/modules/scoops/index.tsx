@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
 import { Edit } from "lucide-react";
 
+import { InfiniteScrollContainer } from "../../components/common/infinite-scroll";
 import Button from "../../components/common/button";
 import Dialog from "../../components/common/dialog";
 import CreateScoopsForm from "./components/CreateScoopsForm";
 import ScoopCard from "./components/ScoopCard";
 
 import {
-  useGetAllScoopsQuery,
+  useGetAllScoopsInfiniteQuery,
   useLikeScoopsMutation,
 } from "../../store/api/scoops";
 import LoadingScreen from "../../components/common/loading-screen";
@@ -15,10 +16,16 @@ import EmptyScreen from "../../components/common/empty-screen";
 import RepliesSection from "../../components/core/replies-section";
 import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
 import { TPostScoopsDto } from "../../store/types/scoops";
-import { TErrorResponse } from "../../store/types/generic";
+import type { TErrorResponse } from "../../store/types/generic";
 
 export default function Scoop() {
-  const { data: scoops, isLoading: isLoadingScoops } = useGetAllScoopsQuery();
+  const {
+    data: scoops,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    isLoading: isLoadingScoops,
+  } = useGetAllScoopsInfiniteQuery();
 
   const [likeScoops] = useLikeScoopsMutation();
 
@@ -29,6 +36,7 @@ export default function Scoop() {
     parent_id: "",
   });
 
+  const infiniteScoops = scoops?.pages?.flatMap((page) => page.data) ?? [] 
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const previousScrollRef = useRef(0);
@@ -81,7 +89,7 @@ export default function Scoop() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : scoops && scoops.data.data.length === 0 ? (
+      ) : infiniteScoops && infiniteScoops.length < 1 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -100,35 +108,41 @@ export default function Scoop() {
             }}
             className="w-full h-[calc(100dvh-122px)] flex flex-col items-start space-y-4 pb-2 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {scoops?.data?.data.map(
-              ({
-                id,
-                author,
-                content,
-                is_liked,
-                like_count,
-                replies_count,
-                created_at,
-              }) => (
-                <ScoopCard
-                  className={
-                    isSideOpen && repliesPayload.parent_id !== id
-                      ? "opacity-40"
-                      : ""
-                  }
-                  key={id}
-                  id={id}
-                  author={author}
-                  content={content}
-                  date={created_at}
-                  likeCount={like_count}
-                  isLiked={is_liked}
-                  repliesCount={replies_count}
-                  handleReplies={handleDisplayReplies}
-                  handleLike={handleLike}
-                />
-              ),
-            )}
+            <InfiniteScrollContainer
+              dataLength={infiniteScoops.length ?? 0}
+              handleNext={() => !isFetching && fetchNextPage()}
+              hasMore={hasNextPage}
+            >
+              {infiniteScoops.map(
+                  ({
+                    id,
+                    author,
+                    content,
+                    is_liked,
+                    like_count,
+                    replies_count,
+                    created_at,
+                  }) => (
+                    <ScoopCard
+                      className={
+                        isSideOpen && repliesPayload.parent_id !== id
+                          ? "opacity-40"
+                          : ""
+                      }
+                      key={id}
+                      id={id}
+                      author={author}
+                      content={content}
+                      date={created_at}
+                      likeCount={like_count}
+                      isLiked={is_liked}
+                      repliesCount={replies_count}
+                      handleReplies={handleDisplayReplies}
+                      handleLike={handleLike}
+                    />
+                  ),
+                )}
+            </InfiniteScrollContainer>
           </div>
 
           <RepliesSection

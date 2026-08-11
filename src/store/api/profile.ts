@@ -7,6 +7,7 @@ import type {
   TGetUserScoopsResponse,
   TGetUserSnapzResponse,
 } from "../types/profile";
+import type { TPaginationParams } from "../types/generic";
 
 export const profileApi = createApi({
   reducerPath: "profileApi",
@@ -27,25 +28,79 @@ export const profileApi = createApi({
       invalidatesTags: ["getUserProfile"],
     }),
 
-    getUserSnapz: builder.query<TGetUserSnapzResponse, number>({
-      query: (user_id) => ({
-        url: `/profile/snapz/${user_id}/`,
-        method: "GET",
-      }),
+    getUserSnapz: builder.infiniteQuery<
+      TGetUserSnapzResponse["data"],
+      number,
+      TPaginationParams["page"]
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam(
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ queryArg, pageParam }) =>
+        `/profile/snapz/${queryArg}/?page=${pageParam}`,
+      transformResponse: (response: TGetUserSnapzResponse) => response.data,
     }),
 
-    getUserScoops: builder.query<TGetUserScoopsResponse, number>({
-      query: (user_id) => ({
-        url: `/profile/scoops/${user_id}/`,
-        method: "GET",
-      }),
+    getUserScoops: builder.infiniteQuery<
+      TGetUserScoopsResponse["data"],
+      number,
+      TPaginationParams["page"]
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam(
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ queryArg, pageParam }) =>
+        `/profile/scoops/${queryArg}/?page=${pageParam}`,
+      transformResponse: (response: TGetUserScoopsResponse) => response.data,
     }),
 
-    getUserComments: builder.query<TGetUserCommentsResponse, number>({
-      query: (user_id) => ({
-        url: `/profile/comments/${user_id}/`,
-        method: "GET",
-      }),
+    getUserComments: builder.infiniteQuery<
+      TGetUserCommentsResponse["data"],
+      number,
+      TPaginationParams["page"]
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam(
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ queryArg, pageParam }) =>
+        `/profile/scoops/${queryArg}/?page=${pageParam}`,
+      transformResponse: (response: TGetUserCommentsResponse) => response.data,
     }),
 
     followUser: builder.mutation<void, TFollowUserDto>({
@@ -63,7 +118,7 @@ export const {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useFollowUserMutation,
-  useGetUserSnapzQuery,
-  useGetUserScoopsQuery,
-  useGetUserCommentsQuery,
+  useGetUserSnapzInfiniteQuery,
+  useGetUserScoopsInfiniteQuery,
+  useGetUserCommentsInfiniteQuery,
 } = profileApi;
