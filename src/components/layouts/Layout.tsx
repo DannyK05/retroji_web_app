@@ -103,6 +103,7 @@ export default function Layout() {
                     className={twMerge(
                       name === "search" && "lg:hidden",
                       "text-retro-link hover:underline",
+                      location.pathname === link && "underline",
                     )}
                     onClick={() => {
                       handleIsNavOpen();
