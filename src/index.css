@@ -166,3 +166,7 @@
       100% 100%;
   }
 }
+/* Infinite sroll outer div selector */
+.infinite-scroll-component__outerdiv {
+  width: 100%;
+}

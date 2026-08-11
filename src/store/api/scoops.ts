@@ -11,25 +11,60 @@ import type {
   TPostScoopsDto,
   TPostScoopsResponse,
 } from "../types/scoops";
-import { TPaginationParams } from "../types/generic";
+import type { TPaginationParams } from "../types/generic";
 
 export const scoopsApi = createApi({
   reducerPath: "scoopsApi",
   tagTypes: ["getAllScoops", "getAllScoopsById"],
   baseQuery: baseQuery,
   endpoints: (builder) => ({
-    getAllScoops: builder.query<TGetAllScoopsResponse, TPaginationParams>({
-      query: ({ page }) => ({
-        url: `/scoops/?page=${page}`,
-        method: "GET",
-      }),
+    getAllScoops: builder.infiniteQuery<
+      TGetAllScoopsResponse["data"],
+      void,
+      TPaginationParams["page"]
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam: (
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) => {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ pageParam }) => `/scoops/?page=${pageParam}`,
+      transformResponse: (data: TGetAllScoopsResponse) => data.data,
       providesTags: ["getAllScoops"],
     }),
-    getAllScoopsById: builder.query<TGetAllScoopsResponse, string>({
-      query: (parent_id) => ({
-        url: `/scoops/${parent_id}/`,
-        method: "GET",
-      }),
+    getAllScoopsById: builder.infiniteQuery<
+      TGetAllScoopsResponse["data"],
+      string,
+      TPaginationParams["page"]
+    >({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        maxPages: 3,
+        getNextPageParam: (
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          _queryArg,
+        ) => {
+          if (lastPage.next !== null && lastPageParam) {
+            return lastPageParam + 1;
+          }
+        },
+      },
+      query: ({ pageParam, queryArg }) =>
+        `/scoops/${queryArg}/?page=${pageParam}`,
+      transformResponse: (data: TGetAllScoopsResponse) => data.data,
       providesTags: ["getAllScoopsById"],
     }),
     postScoops: builder.mutation<TPostScoopsResponse, TPostScoopsDto>({
@@ -60,8 +95,8 @@ export const scoopsApi = createApi({
 });
 
 export const {
-  useLazyGetAllScoopsQuery,
-  useGetAllScoopsByIdQuery,
+  useGetAllScoopsInfiniteQuery,
+  useGetAllScoopsByIdInfiniteQuery,
   usePostScoopsMutation,
   useLikeScoopsMutation,
   useDeleteScoopsMutation,
