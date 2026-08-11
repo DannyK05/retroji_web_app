@@ -5,10 +5,11 @@ import { PlusSquare } from "lucide-react";
 import { useHandleApiMessage } from "../../components/common/message-banner/hooks";
 
 import {
-  useGetAllSnapzQuery,
+  useGetAllSnapzInfiniteQuery,
   useLikeSnapzMutation,
 } from "../../store/api/snapz";
 
+import { InfiniteScrollContainer } from "../../components/common/infinite-scroll";
 import Button from "../../components/common/button";
 import Dialog from "../../components/common/dialog";
 import SnapzCard from "./components/SnapzCard";
@@ -21,7 +22,13 @@ import type { TErrorResponse } from "../../store/types/generic";
 import type { TPostCommentDto } from "../../store/types/snapz";
 
 export default function Snapz() {
-  const { data: snapz, isLoading: isLoadingAllSnapz } = useGetAllSnapzQuery();
+  const {
+    data: snapz,
+    isLoading: isLoadingAllSnapz,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+  } = useGetAllSnapzInfiniteQuery();
 
   const [like] = useLikeSnapzMutation();
 
@@ -32,9 +39,10 @@ export default function Snapz() {
     snapz_id: "",
   });
 
+  const infiniteSnapz = snapz?.pages.flatMap((data) => data.data) ?? [];
+  const previousScrollRef = useRef(0);
   const [isSideOpen, setIsSideOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const previousScrollRef = useRef(0);
 
   const handleisSideOpen = () => {
     setIsSideOpen((prev) => !prev);
@@ -84,7 +92,7 @@ export default function Snapz() {
         <div className="h-[calc(100vh-125px)]">
           <LoadingScreen />
         </div>
-      ) : snapz && snapz.data.data.length === 0 ? (
+      ) : infiniteSnapz && infiniteSnapz.length === 0 ? (
         <div className="h-[calc(100vh-125px)]">
           <EmptyScreen />
         </div>
@@ -101,40 +109,47 @@ export default function Snapz() {
               }
               previousScrollRef.current = currentScroll;
             }}
-            className="w-full h-[calc(100dvh-125px)] flex flex-col items-start space-y-4 col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
+            className="w-full h-[calc(100dvh-125px)] flex flex-col items-start col-span-3 pb-2 px-3 overflow-y-auto lg:h-[calc(100vh-120px)]"
           >
-            {snapz?.data.data.map(
-              ({
-                id,
-                author,
-                created_at,
-                images,
-                caption,
-                like_count,
-                comment_count,
-                is_liked,
-              }) => (
-                <SnapzCard
-                  className={
-                    isSideOpen && commentPayload.snapz_id !== id
-                      ? "opacity-40"
-                      : ""
-                  }
-                  key={id}
-                  id={id}
-                  name={author.username}
-                  userId={author.id}
-                  date={created_at}
-                  images={images}
-                  caption={caption}
-                  like_count={like_count}
-                  isLiked={is_liked}
-                  comment_count={comment_count}
-                  handleComments={handleDisplayComments}
-                  handleLike={handleLike}
-                />
-              ),
-            )}
+            <InfiniteScrollContainer
+              dataLength={infiniteSnapz.length}
+              handleNext={() => isFetching && fetchNextPage()}
+              hasMore={hasNextPage}
+              className="space-y-4"
+            >
+              {infiniteSnapz?.map(
+                ({
+                  id,
+                  author,
+                  created_at,
+                  images,
+                  caption,
+                  like_count,
+                  comment_count,
+                  is_liked,
+                }) => (
+                  <SnapzCard
+                    className={
+                      isSideOpen && commentPayload.snapz_id !== id
+                        ? "opacity-40"
+                        : ""
+                    }
+                    key={id}
+                    id={id}
+                    name={author.username}
+                    userId={author.id}
+                    date={created_at}
+                    images={images}
+                    caption={caption}
+                    like_count={like_count}
+                    isLiked={is_liked}
+                    comment_count={comment_count}
+                    handleComments={handleDisplayComments}
+                    handleLike={handleLike}
+                  />
+                ),
+              )}
+            </InfiniteScrollContainer>
           </div>
 
           <CommentsSection

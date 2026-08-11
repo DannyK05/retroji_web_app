@@ -1,7 +1,9 @@
 import InfiniteScroll from "react-infinite-scroll-component";
+import { twMerge } from "tailwind-merge";
 
 type InfiniteScrollContainerProps = {
   children: React.ReactNode;
+  className?: string;
   handleNext: () => void;
   hasMore: boolean;
   dataLength: number;
@@ -9,13 +11,14 @@ type InfiniteScrollContainerProps = {
 
 export function InfiniteScrollContainer({
   children,
+  className,
   handleNext,
   hasMore,
   dataLength,
 }: InfiniteScrollContainerProps) {
   return (
     <InfiniteScroll
-      className="w-full"
+      className={twMerge("w-full", className)}
       dataLength={dataLength ?? 0}
       next={handleNext}
       hasMore={hasMore}
